@@ -7,7 +7,6 @@
 @stop
 
 @section('script_files')
-<!-- DATA TABES SCRIPT -->
 <script src="{{ URL::asset('js/plugins/datatables/jquery.dataTables.js') }}" type="text/javascript"></script>
 <script src="{{ URL::asset('js/plugins/datatables/dataTables.bootstrap.js') }}" type="text/javascript"></script>
 @stop
@@ -15,15 +14,7 @@
 @section('scripts')
 
 $(function () {
-    $("#example1").dataTable();
-    $('#example2').dataTable({
-        "bPaginate": true,
-        "bLengthChange": false,
-        "bFilter": false,
-        "bSort": true,
-        "bInfo": true,
-        "bAutoWidth": false
-    });
+$("#example1").dataTable();
 });
 
 @stop
@@ -31,7 +22,9 @@ $(function () {
 @section('content')
 <!-- Main content -->
 <section class="content">
-
+    
+    @include('admin.partials.flash_message')
+    
     <div class="row">
         <div class="col-xs-12">
             <div class="box">
@@ -55,7 +48,7 @@ $(function () {
                                 <td>{{ $edition->edition_name_en }}</td>
                                 <td>{{ $edition->edition_name_fr }}</td>
                                 <td>
-                                    <a href="{{route('admin.editions.edit',$edition->edition_id)}}" class="btn btn-primary">
+                                    <a href="{{route('admin.editions.edit',$edition->edition_id)}}" class="btn btn-info">
                                         Edit
                                     </a>
                                 </td>

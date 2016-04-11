@@ -7,7 +7,6 @@
 @stop
 
 @section('script_files')
-<!-- DATA TABES SCRIPT -->
 <script src="{{ URL::asset('js/plugins/datatables/jquery.dataTables.js') }}" type="text/javascript"></script>
 <script src="{{ URL::asset('js/plugins/datatables/dataTables.bootstrap.js') }}" type="text/javascript"></script>
 @stop
@@ -16,14 +15,6 @@
 
 $(function () {
 $("#example1").dataTable();
-$('#example2').dataTable({
-"bPaginate": true,
-"bLengthChange": false,
-"bFilter": false,
-"bSort": true,
-"bInfo": true,
-"bAutoWidth": false
-});
 });
 
 @stop
@@ -39,10 +30,11 @@ $('#example2').dataTable({
             <div class="box">
                 <div class="box-header">
                     <h3 class="box-title">Sections</h3>
-                    <a href="{{route('admin.sections.create')}}" class="btn btn-primary">
+                    <a href="{{route('admin.sections.create')}}" class="btn btn-primary pull-right">
                         Add
                     </a>
-                </div><!-- /.box-header -->
+                </div>
+                <!-- /.box-header -->
                 <div class="box-body table-responsive">
                     <table id="example1" class="table table-bordered table-striped">
                         <thead>
@@ -60,7 +52,7 @@ $('#example2').dataTable({
                                 <td>{{ $section->section_name_en }}</td>
                                 <td>{{ $section->section_name_fr }}</td>
                                 <td>
-                                    <a href="{{route('admin.sections.edit',$section->section_id)}}" class="btn btn-primary">
+                                    <a href="{{route('admin.sections.edit',$section->section_id)}}" class="btn btn-info">
                                         Edit
                                     </a>
                                 </td>
@@ -72,6 +64,7 @@ $('#example2').dataTable({
             </div>
         </div>
     </div>
+    
 </section>
 <!-- /.content -->
 @stop

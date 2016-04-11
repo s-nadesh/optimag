@@ -27,6 +27,7 @@ $router->group([
     get('admin/dashboard', 'DashboardController@index');
     get('admin/profile', 'DashboardController@getProfile');
     post('admin/profile', 'DashboardController@postProfile');
+    
     resource('admin/editions', 'EditionController');
     resource('admin/sections', 'SectionController');
 //  resource('admin/tag', 'TagController');

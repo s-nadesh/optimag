@@ -6,8 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Section;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use \Validator;
 use Session;
+use Validator;
 
 class SectionController extends Controller {
 
@@ -42,7 +42,7 @@ class SectionController extends Controller {
         if ($validator->fails()) {
             return redirect()->back()->withInput()->withErrors($validator->errors());
         }
-        
+
         Section::create($data);
         Session::flash('flash_message', 'Section created successfully!');
         return redirect('/admin/sections');
@@ -74,9 +74,10 @@ class SectionController extends Controller {
         }
         $section = Section::find($id);
         $section->update($data);
-        return redirect('/admin/editions');
+        Session::flash('flash_message', 'Section updated successfully!');
+        return redirect('/admin/sections');
     }
-    
+
     /**
      * Display the specified resource.
      *

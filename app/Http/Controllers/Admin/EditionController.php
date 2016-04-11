@@ -6,7 +6,8 @@ use App\Edition;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Input;
+use Session;
+use Validator;
 
 class EditionController extends Controller {
 
@@ -68,10 +69,17 @@ class EditionController extends Controller {
      * @return Response
      */
     public function update(Request $request, $id) {
-        $data = Input::all();
+        $data = $request->all();
+        $validator = Validator::make($data, Edition::rules($id));
+        if ($validator->fails()) {
+            return redirect()->back()->withInput()->withErrors($validator->errors());
+        }
         $edition = Edition::find($id);
         $edition->update($data);
+        
+        Session::flash('flash_message', 'Edition updated successfully!');
         return redirect('/admin/editions');
+        
     }
 
     /**

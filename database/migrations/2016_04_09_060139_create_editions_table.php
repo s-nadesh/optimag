@@ -17,7 +17,7 @@ class CreateEditionsTable extends Migration {
             $table->string('edition_name_fr');
             $table->string('edition_slug_en', 300);
             $table->string('edition_slug_fr', 300);
-            $table->integer('status')->default(0);
+            $table->integer('status')->default(1);
             $table->timestamps();
         });
     }
