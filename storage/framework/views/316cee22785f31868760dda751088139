@@ -1,0 +1,26 @@
+<?php $__env->startSection('content'); ?>
+<div class="form-box" id="login-box">
+    <?php echo $__env->make('admin.partials.errors', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+    <div class="header">Sign In</div>
+    <form action="<?php echo e(url('/auth/login')); ?>" method="post">
+        <input type="hidden" name="_token" value="<?php echo e(csrf_token()); ?>">
+        <div class="body bg-gray">
+            <div class="form-group">
+                <input type="Email" name="email" class="form-control" placeholder="Email" value="<?php echo e(old('email')); ?>" autofocus/>
+            </div>
+            <div class="form-group">
+                <input type="password" name="password" class="form-control" placeholder="Password"/>
+            </div>
+            <div class="form-group">
+                <input type="checkbox" name="remember"/> Remember me
+            </div>
+        </div>
+        <div class="footer">
+            <button type="submit" class="btn bg-olive btn-block">Sign me in</button>
+            <p><a href="#">I forgot my password</a></p>
+            <!--<a href="register.html" class="text-center">Register a new membership</a>-->
+        </div>
+    </form>
+</div>
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('admin.loginlayout', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

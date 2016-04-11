@@ -1,0 +1,73 @@
+<?php $__env->startSection('title'); ?> Editions <?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('link'); ?>
+<link href="<?php echo e(URL::asset('css/datatables/dataTables.bootstrap.css')); ?>" rel="stylesheet" type="text/css" />
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('script_files'); ?>
+<!-- DATA TABES SCRIPT -->
+<script src="<?php echo e(URL::asset('js/plugins/datatables/jquery.dataTables.js')); ?>" type="text/javascript"></script>
+<script src="<?php echo e(URL::asset('js/plugins/datatables/dataTables.bootstrap.js')); ?>" type="text/javascript"></script>
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('scripts'); ?>
+
+$(function () {
+    $("#example1").dataTable();
+    $('#example2').dataTable({
+        "bPaginate": true,
+        "bLengthChange": false,
+        "bFilter": false,
+        "bSort": true,
+        "bInfo": true,
+        "bAutoWidth": false
+    });
+});
+
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('content'); ?>
+<!-- Main content -->
+<section class="content">
+
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">Editions</h3>
+                </div><!-- /.box-header -->
+                <div class="box-body table-responsive">
+                    <table id="example1" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>S.No</th>
+                                <th>Name En</th>
+                                <th>Name Fr</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach($editions as $key => $edition): ?>
+                            <tr>
+                                <td><?php echo e(++$key); ?></td>
+                                <td><?php echo e($edition->edition_name_en); ?></td>
+                                <td><?php echo e($edition->edition_name_fr); ?></td>
+                                <td>
+                                    <a href="<?php echo e(route('admin.editions.edit',$edition->edition_id)); ?>" class="btn btn-primary">
+                                        Edit
+                                    </a>
+                                </td>
+                            </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div><!-- /.box-body -->
+            </div>
+        </div>
+    </div>
+</section>
+<!-- /.content -->
+<?php $__env->stopSection(); ?>
+
+
+<?php echo $__env->make('admin.layout', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
