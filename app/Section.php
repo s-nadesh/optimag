@@ -26,5 +26,14 @@ class Section extends Model implements SluggableInterface {
             'section_name_fr' => 'required|min:3|unique:sections,section_name_fr,' . ($id ? "$id" : 'NULL') . ',section_id',
                 ], $merge);
     }
+    
+    public static function getSections(){
+        $section = Section::lists('section_name_en', 'section_id');
+        return $section;
+    }
+    
+    public function articles() {
+        return $this->hasMany('App\Article', 'section_id', 'section_id');
+    }
 
 }

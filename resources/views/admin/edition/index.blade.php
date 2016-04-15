@@ -12,19 +12,19 @@
 @stop
 
 @section('scripts')
-
+<script>
 $(function () {
-$("#example1").dataTable();
+    $("#example1").dataTable();
 });
-
+</script>
 @stop
 
 @section('content')
 <!-- Main content -->
 <section class="content">
-    
+
     @include('admin.partials.flash_message')
-    
+
     <div class="row">
         <div class="col-xs-12">
             <div class="box">

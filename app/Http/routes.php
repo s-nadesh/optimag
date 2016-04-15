@@ -30,8 +30,8 @@ $router->group([
     
     resource('admin/editions', 'EditionController');
     resource('admin/sections', 'SectionController');
-//  resource('admin/tag', 'TagController');
-//  get('admin/upload', 'UploadController@index');
+    get('/admin/articles', 'ArticleController@index');
+    resource('admin/article/create', 'ArticleController@index');
 });
 
 // Logging in and out

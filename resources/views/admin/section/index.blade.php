@@ -12,11 +12,11 @@
 @stop
 
 @section('scripts')
-
+<script>
 $(function () {
-$("#example1").dataTable();
+    $("#example1").dataTable();
 });
-
+</script>
 @stop
 
 @section('content')
@@ -64,7 +64,7 @@ $("#example1").dataTable();
             </div>
         </div>
     </div>
-    
+
 </section>
 <!-- /.content -->
 @stop

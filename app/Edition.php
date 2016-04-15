@@ -26,5 +26,14 @@ class Edition extends Model implements SluggableInterface {
             'edition_name_fr' => 'required|min:3|unique:editions,edition_name_fr,' . ($id ? "$id" : 'NULL') . ',edition_id',
                 ], $merge);
     }
+    
+    public static function getEditions(){
+        $edition = Edition::lists('edition_name_en', 'edition_id');
+        return $edition;
+    }
+    
+    public function articles() {
+        return $this->hasMany('App\Article', 'edition_id', 'edition_id');
+    }
 
 }

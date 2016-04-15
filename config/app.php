@@ -129,6 +129,7 @@ return [
         App\Providers\AuthServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\HelperServiceProvider::class,
     ],
     /*
       |--------------------------------------------------------------------------
@@ -176,5 +177,6 @@ return [
         'Html' => 'Illuminate\Html\HtmlFacade',
         'Form' => 'Illuminate\Html\FormFacade',
         'Ekko' => 'Laravelista\Ekko\Facades\Ekko',
+        'MyFuncs' => App\Helpers\MyFuncs::class,
     ],
 ];
