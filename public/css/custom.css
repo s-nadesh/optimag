@@ -1,0 +1,12 @@
+#articleForm .box.box-info{
+    padding: 10px;
+}
+
+.btn-link{
+    color: #FFFFFF !important;
+    margin: 10px;
+}
+
+.btn-link:hover{
+    text-decoration: none;
+}
