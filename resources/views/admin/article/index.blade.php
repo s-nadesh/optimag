@@ -1,6 +1,6 @@
 @extends('admin.layout')
 
-@section('title') Sections @stop
+@section('title') Articles @stop
 
 @section('link')
 <link href="{{ URL::asset('css/datatables/dataTables.bootstrap.css') }}" rel="stylesheet" type="text/css" />
@@ -29,8 +29,8 @@ $(function () {
         <div class="col-xs-12">
             <div class="box">
                 <div class="box-header">
-                    <h3 class="box-title">Sections</h3>
-                    <a href="{{route('admin.sections.create')}}" class="btn btn-primary btn-link pull-right">
+                    <h3 class="box-title">Articles</h3>
+                    <a href="{{URL::to('admin/article/create')}}" class="btn btn-primary btn-link pull-right">
                         Add
                     </a>
                 </div>
@@ -40,19 +40,25 @@ $(function () {
                         <thead>
                             <tr>
                                 <th>S.No</th>
-                                <th>Name En</th>
-                                <th>Name Fr</th>
+                                <th>Language</th>
+                                <th>Edition</th>
+                                <th>Section</th>
+                                <th>Year</th>
+                                <th>Title</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($sections as $key => $section)
+                            @foreach ($articles as $key => $article)
                             <tr>
                                 <td>{{ ++$key }}</td>
-                                <td>{{ $section->section_name_en }}</td>
-                                <td>{{ $section->section_name_fr }}</td>
+                                <td>{{ strtoupper($article->language) }}</td>
+                                <td>{{ $article->edition->edition_name_en }}</td>
+                                <td>{{ $article->section->section_name_en }}</td>
+                                <td>{{ $article->year }}</td>
+                                <td>{{ $article->title }}</td>
                                 <td>
-                                    <a href="{{route('admin.sections.edit',$section->section_id)}}" class="btn btn-info">
+                                    <a href="{{URL::to('admin/article/edit',$article->article_key)}}" class="btn btn-info">
                                         Edit
                                     </a>
                                 </td>

@@ -36,6 +36,11 @@
                     </li>
                 </ul>
             </li>
+            <li class="{{ Ekko::isActiveURL('/admin/article/index') }}">
+                <a href="{{ URL::to('/admin/article/index') }}">
+                    <i class="fa fa-edit"></i> <span>Articles</span>
+                </a>
+            </li>
         </ul>
     </section>
     <!-- /.sidebar -->

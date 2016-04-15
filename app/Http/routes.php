@@ -27,11 +27,19 @@ $router->group([
     get('admin/dashboard', 'DashboardController@index');
     get('admin/profile', 'DashboardController@getProfile');
     post('admin/profile', 'DashboardController@postProfile');
-    
+
+    //Editions
     resource('admin/editions', 'EditionController');
+
+    //Sections
     resource('admin/sections', 'SectionController');
-    get('/admin/articles', 'ArticleController@index');
-    resource('admin/article/create', 'ArticleController@index');
+
+    //Articles
+    get('admin/article/index', 'ArticleController@index');
+    get('admin/article/create', 'ArticleController@create');
+    post('admin/article/store', 'ArticleController@store');
+    get('admin/article/edit/{key}', 'ArticleController@edit');
+    post('admin/article/update', 'ArticleController@update');
 });
 
 // Logging in and out

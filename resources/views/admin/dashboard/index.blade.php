@@ -36,7 +36,7 @@
 <script src="{{ URL::asset('js/plugins/iCheck/icheck.min.js') }}" type="text/javascript"></script>
 
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="{{ URL::asset('js/AdminLTE/dashboard.js') }}" type="text/javascript"></script>
+<!--<script src="{{ URL::asset('js/AdminLTE/dashboard.js') }}" type="text/javascript"></script>-->
 @stop
 
 @section('content')
@@ -53,13 +53,13 @@
                         150
                     </h3>
                     <p>
-                        New Orders
+                        Editions
                     </p>
                 </div>
                 <div class="icon">
                     <i class="ion ion-bag"></i>
                 </div>
-                <a href="#" class="small-box-footer">
+                <a href="{{ URL::to('/admin/editions') }}" class="small-box-footer">
                     More info <i class="fa fa-arrow-circle-right"></i>
                 </a>
             </div>
@@ -72,13 +72,13 @@
                         53<sup style="font-size: 20px">%</sup>
                     </h3>
                     <p>
-                        Bounce Rate
+                        Sections
                     </p>
                 </div>
                 <div class="icon">
                     <i class="ion ion-stats-bars"></i>
                 </div>
-                <a href="#" class="small-box-footer">
+                <a href="{{ Ekko::isActiveURL('/admin/sections') }}" class="small-box-footer">
                     More info <i class="fa fa-arrow-circle-right"></i>
                 </a>
             </div>
@@ -91,19 +91,19 @@
                         44
                     </h3>
                     <p>
-                        User Registrations
+                        Articles
                     </p>
                 </div>
                 <div class="icon">
                     <i class="ion ion-person-add"></i>
                 </div>
-                <a href="#" class="small-box-footer">
+                <a href="{{ URL::to('/admin/article/index') }}" class="small-box-footer">
                     More info <i class="fa fa-arrow-circle-right"></i>
                 </a>
             </div>
         </div><!-- ./col -->
-        <div class="col-lg-3 col-xs-6">
-            <!-- small box -->
+<!--        <div class="col-lg-3 col-xs-6">
+             small box 
             <div class="small-box bg-red">
                 <div class="inner">
                     <h3>
@@ -120,7 +120,7 @@
                     More info <i class="fa fa-arrow-circle-right"></i>
                 </a>
             </div>
-        </div><!-- ./col -->
+        </div> ./col -->
     </div><!-- /.row -->
 
 </section>
