@@ -50,14 +50,14 @@
             <div class="small-box bg-aqua">
                 <div class="inner">
                     <h3>
-                        150
+                        {{ $edition_count }}
                     </h3>
                     <p>
                         Editions
                     </p>
                 </div>
                 <div class="icon">
-                    <i class="ion ion-bag"></i>
+                    <i class="ion ion-folder"></i>
                 </div>
                 <a href="{{ URL::to('/admin/editions') }}" class="small-box-footer">
                     More info <i class="fa fa-arrow-circle-right"></i>
@@ -69,14 +69,14 @@
             <div class="small-box bg-green">
                 <div class="inner">
                     <h3>
-                        53<sup style="font-size: 20px">%</sup>
+                        {{ $section_count }}
                     </h3>
                     <p>
                         Sections
                     </p>
                 </div>
                 <div class="icon">
-                    <i class="ion ion-stats-bars"></i>
+                    <i class="ion ion-folder"></i>
                 </div>
                 <a href="{{ Ekko::isActiveURL('/admin/sections') }}" class="small-box-footer">
                     More info <i class="fa fa-arrow-circle-right"></i>
@@ -88,14 +88,14 @@
             <div class="small-box bg-yellow">
                 <div class="inner">
                     <h3>
-                        44
+                        {{ $article_count }}
                     </h3>
                     <p>
                         Articles
                     </p>
                 </div>
                 <div class="icon">
-                    <i class="ion ion-person-add"></i>
+                    <i class="ion ion-edit"></i>
                 </div>
                 <a href="{{ URL::to('/admin/article/index') }}" class="small-box-footer">
                     More info <i class="fa fa-arrow-circle-right"></i>

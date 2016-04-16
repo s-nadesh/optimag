@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Article;
+use App\Edition;
 use App\Http\Controllers\Controller;
+use App\Section;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -18,7 +21,10 @@ class DashboardController extends Controller {
      * @return Response
      */
     public function index() {
-        return view('admin.dashboard.index');
+        $edition_count = Edition::where('status', '=', '1')->count();
+        $section_count = Section::where('status', '=', '1')->count();
+        $article_count = Article::where('status', '=', '1')->count();
+        return view('admin.dashboard.index', compact('edition_count', 'section_count', 'article_count'));
     }
 
     /**
