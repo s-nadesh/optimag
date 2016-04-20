@@ -37,12 +37,16 @@ $router->group([
     //Adsense
     resource('admin/adsenses', 'AdsenseController');
     get('admin/adsenses/destroy/{key}', 'AdsenseController@destroy');
+    
     //Articles
     get('admin/article/index', 'ArticleController@index');
     get('admin/article/create', 'ArticleController@create');
     post('admin/article/store', 'ArticleController@store');
     get('admin/article/edit/{key}', 'ArticleController@edit');
     post('admin/article/update', 'ArticleController@update');
+    
+    //Ads
+    resource('admin/ads', 'AdsController');
 });
 
 // Logging in and out

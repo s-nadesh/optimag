@@ -36,6 +36,25 @@
                     </li>
                 </ul>
             </li>
+             <li class="treeview {{ Ekko::areActiveURLs(['/admin/ads']) }}">
+                <a href="#">
+                    <i class="fa fa-folder"></i>
+                    <span>Ads</span>
+                    <i class="fa fa-angle-left pull-right"></i>
+                </a>
+                <ul class="treeview-menu">
+                    <li class="{{ Ekko::isActiveURL('/admin/ads') }}">
+                        <a href="{{ URL::to('/admin/ads') }}">
+                            <i class="fa fa-angle-double-right"></i> Ads 
+                        </a>
+                    </li>
+                    <li class="{{ Ekko::isActiveURL('/admin/adsenses') }}">
+                        <a href="{{ URL::to('/admin/adsenses') }}">
+                            <i class="fa fa-angle-double-right"></i> Adsense 
+                        </a>
+                    </li>
+                </ul>
+            </li>
             <li class="{{ Ekko::isActiveURL('/admin/article/index') }}">
                 <a href="{{ URL::to('/admin/article/index') }}">
                     <i class="fa fa-edit"></i> <span>Articles</span>
