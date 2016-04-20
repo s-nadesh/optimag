@@ -34,6 +34,9 @@ $router->group([
     //Sections
     resource('admin/sections', 'SectionController');
 
+    //Adsense
+    resource('admin/adsenses', 'AdsenseController');
+    get('admin/adsenses/destroy/{key}', 'AdsenseController@destroy');
     //Articles
     get('admin/article/index', 'ArticleController@index');
     get('admin/article/create', 'ArticleController@create');
