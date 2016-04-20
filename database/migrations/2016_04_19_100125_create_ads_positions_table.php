@@ -49,5 +49,6 @@ class CreateAdsPositionsTable extends Migration
     public function down()
     {
         //
+         Schema::drop('ads_positions');
     }
 }
