@@ -41,6 +41,7 @@ $(function () {
                             <tr>
                                 <th>S.No</th>
                                 <th>Title</th>
+                                <th>Language</th>
                                 <th>Start Date</th>
                                 <th>End Date</th>
                                 <th>Status</th>
@@ -52,6 +53,7 @@ $(function () {
                             <tr>
                                 <td>{{ ++$key }}</td>
                                 <td>{{ $ad->ad_title }}</td>
+                                 <td>{{ $ad->lang }}</td>
                                 <td>{{ $ad->start_date }}</td>
                                 <td>{{ $ad->end_date }}</td>
                                 <td align="center">

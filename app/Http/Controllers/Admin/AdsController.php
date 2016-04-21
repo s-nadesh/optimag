@@ -19,7 +19,7 @@ class AdsController extends Controller {
      * @return Response
      */
     public function index() {
-        $ads = Ads::all();
+        $ads = Ads::orderBy('ad_id', 'DESC')->get();
         return view('admin.ads.index', compact('ads'));
     }
 
