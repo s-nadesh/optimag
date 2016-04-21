@@ -41,6 +41,9 @@ $(function () {
                             <tr>
                                 <th>S.No</th>
                                 <th>Title</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -51,9 +54,20 @@ $(function () {
                                 <td>{{ $ad->ad_title }}</td>
                                 <td>{{ $ad->start_date }}</td>
                                 <td>{{ $ad->end_date }}</td>
+                                <td align="center">
+                                    @if($ad->status == 1)                                   
+                                        <i class="fa fa-circle text-green"></i>
+                                   @else
+                                        <i class="fa fa-circle text-red"></i>
+                                   @endif
+                                </td>
                                 <td>
-                                    <a href="{{route('admin.ads.edit',$ad->ad_id)}}" class="btn btn-info">
-                                        Edit
+                                     <a href="{{route('admin.ads.edit',$ad->ad_id)}}" >
+                                       <i class="glyphicon glyphicon-pencil"></i>
+                                    </a>&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <a href="{{URL::to('admin/ads/destroy',$ad->ad_id)}}" onclick="return confirm('Are you sure you want to delete?')" >
+                                        <i class="glyphicon glyphicon-trash"></i>
+                                        
                                     </a>
                                 </td>
                             </tr>
