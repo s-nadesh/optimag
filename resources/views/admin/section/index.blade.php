@@ -29,7 +29,6 @@ $(function () {
         <div class="col-xs-12">
             <div class="box">
                 <div class="box-header">
-                    <h3 class="box-title">Sections</h3>
                     <a href="{{route('admin.sections.create')}}" class="btn btn-primary btn-link pull-right">
                         Add
                     </a>
@@ -51,9 +50,9 @@ $(function () {
                                 <td>{{ ++$key }}</td>
                                 <td>{{ $section->section_name_en }}</td>
                                 <td>{{ $section->section_name_fr }}</td>
-                                <td>
-                                    <a href="{{route('admin.sections.edit',$section->section_id)}}" class="btn btn-info">
-                                        Edit
+                                <td align="center">
+                                    <a href="{{route('admin.sections.edit',$section->section_id)}}">
+                                        <i class="glyphicon glyphicon-pencil"></i>
                                     </a>
                                 </td>
                             </tr>

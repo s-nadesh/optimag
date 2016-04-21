@@ -1,6 +1,6 @@
 @extends('admin.layout')
 
-@section('title') Create Section @stop
+@section('title') Create Adsense @stop
 
 @section('content')
 <!-- Main content -->
@@ -11,13 +11,10 @@
     <div class="row">
         <div class="col-md-12">
             <!-- general form elements -->
-            <div class="box box-primary">
-                <div class="box-header">
-                    <h3 class="box-title"> Create Section </h3>
-                </div><!-- /.box-header -->
+            <div class="box box-primary">                
                 <!-- form start -->
                 {!! Form::open(['class' => 'form-horizontal','role' => 'form','route'=>['admin.adsenses.store']]) !!}
-                <div class="box-bodyt">                    
+                <div class="box-body">                    
                         <div class="form-group">
                             {!! Form::label('position', 'Position:*', ['class' => 'col-sm-2 control-label']) !!}
                             <div class="col-sm-5">

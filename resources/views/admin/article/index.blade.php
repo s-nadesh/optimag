@@ -29,7 +29,6 @@ $(function () {
         <div class="col-xs-12">
             <div class="box">
                 <div class="box-header">
-                    <h3 class="box-title">Articles</h3>
                     <a href="{{URL::to('admin/article/create')}}" class="btn btn-primary btn-link pull-right">
                         Add
                     </a>
@@ -39,27 +38,29 @@ $(function () {
                     <table id="example1" class="table table-bordered table-striped">
                         <thead>
                             <tr>
+                                <th class="hidden"></th>
                                 <th>S.No</th>
-                                <th>Language</th>
+                                <th>Title</th>
                                 <th>Edition</th>
                                 <th>Section</th>
                                 <th>Year</th>
-                                <th>Title</th>
+                                
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($articles as $key => $article)
                             <tr>
-                                <td>{{ ++$key }}</td>
-                                <td>{{ strtoupper($article->language) }}</td>
+                                <td class="hidden"> </td>
+                                <td>{{ ++$key }}</td>                                 
+                                <td>{{ $article->title }}</td>
                                 <td>{{ $article->edition->edition_name_en }}</td>
                                 <td>{{ $article->section->section_name_en }}</td>
                                 <td>{{ $article->year }}</td>
-                                <td>{{ $article->title }}</td>
-                                <td>
-                                    <a href="{{URL::to('admin/article/edit',$article->article_key)}}" class="btn btn-info">
-                                        Edit
+                                
+                                <td align="center">
+                                    <a href="{{URL::to('admin/article/edit',$article->article_key)}}">
+                                       <i class="glyphicon glyphicon-pencil"></i>
                                     </a>
                                 </td>
                             </tr>

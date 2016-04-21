@@ -29,7 +29,7 @@ $(function () {
         <div class="col-xs-12">
             <div class="box">
                 <div class="box-header">
-                    <h3 class="box-title">Ads</h3>
+                    
                     <a href="{{route('admin.ads.create')}}" class="btn btn-primary btn-link pull-right">
                         Add
                     </a>

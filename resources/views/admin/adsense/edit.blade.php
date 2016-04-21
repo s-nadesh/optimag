@@ -1,6 +1,6 @@
 @extends('admin.layout')
 
-@section('title') Edit Section @stop
+@section('title') Edit Adsense @stop
 
 @section('content')
 <!-- Main content -->
@@ -12,12 +12,10 @@
         <div class="col-md-12">
             <!-- general form elements -->
             <div class="box box-primary">
-                <div class="box-header">
-                    <h3 class="box-title">Edit Adsense  </h3>
-                </div><!-- /.box-header -->
+                
                 <!-- form start -->
                 {!! Form::model($adsense, ['class' => 'form-horizontal','method' => 'PATCH', 'role' => 'form', 'route'=>['admin.adsenses.update', $adsense->ads_id]]) !!}
-                <div class="box-bodyt">                    
+                <div class="box-body">                    
                         <div class="form-group">
                             {!! Form::label('position', 'Position:*', ['class' => 'col-sm-2 control-label']) !!}
                             <div class="col-sm-5">
@@ -42,7 +40,7 @@
 
                 <div class="box-footer">
                     <div class="col-sm-0 col-sm-offset-2">
-                    {!! Form::submit('Edit', ['class' => 'btn btn-primary']) !!}
+                    {!! Form::submit('Update', ['class' => 'btn btn-primary']) !!}
                     <a href="{{ URL::to('/admin/adsenses') }}" class="btn btn-info">
                         Cancel
                     </a>

@@ -28,9 +28,6 @@ $(function () {
     <div class="row">
         <div class="col-xs-12">
             <div class="box">
-                <div class="box-header">
-                    <h3 class="box-title">Editions</h3>
-                </div><!-- /.box-header -->
                 <div class="box-body table-responsive">
                     <table id="example1" class="table table-bordered table-striped">
                         <thead>
@@ -47,9 +44,9 @@ $(function () {
                                 <td>{{ ++$key }}</td>
                                 <td>{{ $edition->edition_name_en }}</td>
                                 <td>{{ $edition->edition_name_fr }}</td>
-                                <td>
-                                    <a href="{{route('admin.editions.edit',$edition->edition_id)}}" class="btn btn-info">
-                                        Edit
+                                <td align="center">
+                                    <a href="{{route('admin.editions.edit',$edition->edition_id)}}" >
+                                        <i class="glyphicon glyphicon-pencil"></i>
                                     </a>
                                 </td>
                             </tr>

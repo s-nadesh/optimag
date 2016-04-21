@@ -29,7 +29,6 @@ $(function () {
         <div class="col-xs-12">
             <div class="box">
                 <div class="box-header">
-                    <h3 class="box-title">Adsenses</h3>
                     <a href="{{route('admin.adsenses.create')}}" class="btn btn-primary btn-link pull-right">
                         Add
                     </a>
@@ -64,8 +63,7 @@ $(function () {
                                     <a href="{{route('admin.adsenses.edit',$adsense->ads_id)}}" >
                                        <i class="glyphicon glyphicon-pencil"></i>
                                     </a>&nbsp;&nbsp;&nbsp;&nbsp;
-                                    
-                                    <a href="{{URL::to('admin/adsenses/destroy',$adsense->ads_id)}}" onsubmit='return ConfirmDelete('Are you sure you want to submit?')'>
+                                    <a href="{{URL::to('admin/adsenses/destroy',$adsense->ads_id)}}" onclick="return confirm('Are you sure you want to delete?')" >
                                         <i class="glyphicon glyphicon-trash"></i>
                                         
                                     </a>

@@ -20,7 +20,7 @@ class Adsense extends Model {
 
     public static function rules($id = 0, $merge = []) {
         return array_merge([
-            'ads_content' => 'required|min:3|unique:adsenses,ads_content,' . ($id ? "$id" : 'NULL') . ',ads_id',
+            'ads_content' => 'required|min:3',
                 ], $merge);
     }
     
