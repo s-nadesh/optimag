@@ -43,8 +43,7 @@ $(function () {
                                 <th>Title</th>
                                 <th>Edition</th>
                                 <th>Section</th>
-                                <th>Year</th>
-                                
+                                <th>Year</th>                                
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -53,7 +52,7 @@ $(function () {
                             <tr>
                                 <td class="hidden"> </td>
                                 <td>{{ ++$key }}</td>                                 
-                                <td>{{ $article->title }}</td>
+                                <td>{{ $article->title }}<br>{{ App\Article::get_article_title($article->article_key , $article->language) }}</td>
                                 <td>{{ $article->edition->edition_name_en }}</td>
                                 <td>{{ $article->section->section_name_en }}</td>
                                 <td>{{ $article->year }}</td>
