@@ -40,13 +40,14 @@ $(function () {
                         <thead>
                             <tr>
                                 <th>S.No</th>
-                                <th>Title</th>                                
+                                <th>Lang</th>
+                                <th>Title</th> 
+                                <th>Type</th>
+                                <th>Position</th>
                                 <th>Start Date</th>
                                 <th>End Date</th>
                                 <th>Impressions</th>
                                 <th>Clicks</th>
-                                <th>Position</th>
-                                <th>Lang</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -55,13 +56,14 @@ $(function () {
                             @foreach ($ads as $key => $ad)
                             <tr>
                                 <td>{{ ++$key }}</td>
-                                <td>{{ $ad->ad_title }}</td>                                 
+                                <td>{{ $ad->lang }}</td>  
+                                <td>{{ $ad->ad_title }}</td> 
+                                <td>{{ $ad->ad_type }}</td>  
+                                <td>{{ $ad->adsPosition->title }}</td>
                                 <td>{{ $ad->start_date }}</td>
                                 <td>{{ $ad->end_date }}</td>
-                                <td>{{ $ad->impressions }}</td>
-                                <td>{{ $ad->clicks }}</td>                                
-                                <td>{{ $ad->adsPosition->title }}</td>
-                                 <td>{{ $ad->lang }}</td>    
+                                <td>{{ $ad->impressions }}</td>                                 
+                                <td>{{ $ad->clicks }}</td>  
                                 <td align="center">
                                     @if($ad->status == 1)                                   
                                         <i class="fa fa-circle text-green"></i>

@@ -56,3 +56,10 @@ $router->group([
 get('/auth/login', 'Auth\AuthController@getLogin');
 post('/auth/login', 'Auth\AuthController@postLogin');
 get('/auth/logout', 'Auth\AuthController@getLogout');
+
+Route::group(array('prefix' => 'api/v1'), function()
+{    
+    get('home/{langkey}', 'HomeController@index');
+    get('sections/{langkey}/{sid}', 'HomeController@sections');   
+});
+//Route::get('sections/{testkey}', 'HomeController@sections');

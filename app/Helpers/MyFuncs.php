@@ -42,5 +42,63 @@ class MyFuncs {
         } while ($old_guid != $new_guid);
         return $new_guid;
     }
+    
+     public static function banner_display($positionid,$lang) {
+        $data = array(); 
+        
+        $result = MyFuncs::get_banner_result($positionid,$lang);
+
+        $html = '';
+        if (!empty($result)) 
+        {            
+            $data['ad_id']    = $result[0]->ad_id;
+            $data['ad_title'] = $result[0]->ad_title;
+            $data['ad_link']  = $result[0]->ad_link;
+            $data['ad_file']  = $result[0]->ad_file;
+            $data['ad_type']  = $result[0]->ad_type;
+            $data['advertiser_url'] = $result[0]->advertiser_url;
+            $data['client_name']    = $result[0]->client_name;
+            $data['content']        = "";
+           
+            $ads_id = $result[0]->ad_id;
+            
+            // Add one count impressions for the loading banner.
+            DB::table('ads')->where('ad_id', $ads_id)->increment('impressions');
+
+        } else {
+            $adsresult = MyFuncs::get_adsense_result($positionid);
+            if (!empty($adsresult)) {  
+                $data['content'] = $adsresult[0]->content;
+            }
+        }
+
+        return $data;
+    }
+
+    public static function get_adsense_result($positionid) {
+        
+        $ads_result = DB::table('adsenses')                   
+                    ->where('position', '=', $positionid)                   
+                    ->orderBy(DB::raw('RAND()'))
+                    ->take(1)
+                    ->get();   
+        return $ads_result;
+    }
+
+    public static function get_banner_result($positionid,$lang ) {
+       
+        $now   = date('Y-m-d', time());
+        
+        $ad_result = DB::table('ads')
+                    ->where('start_date', '<=', $now)
+                    ->where('end_date', '>=', $now)
+                    ->where('position', '=', $positionid)
+                    ->where('lang', '=', $lang)   
+                    ->orderBy(DB::raw('RAND()'))
+                    ->take(1)
+                    ->get();   
+        
+        return $ad_result;
+    }
 
 }

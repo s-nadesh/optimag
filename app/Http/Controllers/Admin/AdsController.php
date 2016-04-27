@@ -48,7 +48,7 @@ class AdsController extends Controller {
         if ($validator->fails()) {
             return redirect()->back()->withInput()->withErrors($validator->errors());
         }
-        
+               
         if (Input::file()) 
         {            
             $image_obj = Input::file('image');
@@ -56,10 +56,12 @@ class AdsController extends Controller {
             $extension = $image_obj->getClientOriginalExtension(); // getting image extension
             $fileName  = rand(11111, 99999) . time() . '.' . $extension; // renameing image
             $image_obj->move($destinationPath, $fileName); // uploading file to given path
-            $data['ad_file'] = $fileName;            
+            $data['ad_file'] = $fileName;  
+            $data['ad_type'] = "image";
         }else if(isset($data['video_embed'])){  
             // video embed
             $data['ad_file'] = $data['video_embed'];
+            $data['ad_type'] = "video";
         }       
        
         $adsmodel = new Ads;
@@ -131,12 +133,12 @@ class AdsController extends Controller {
             $fileName  = rand(11111, 99999) . time() . '.' . $extension; // renameing image
             $image_obj->move($destinationPath, $fileName); // uploading file to given path
             $data['ad_file'] = $fileName;      
-            
-            $adsmodel->ad_file     = $data['ad_file'];
+            $data['ad_type'] = "image";
+            $adsmodel->ad_file = $data['ad_file'];
         }else if(isset($data['video_embed']) && $data['video_embed']!=""){  
             // video embed
             $data['ad_file'] = $data['video_embed'];
-            
+            $data['ad_type'] = "video";
             $adsmodel->ad_file     = $data['ad_file'];
         }  
         
