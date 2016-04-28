@@ -58,6 +58,13 @@
                     </div>
                     
                     <div class="form-group">
+                        {!! Form::label('page', 'Page:', ['class' => 'col-sm-2 control-label']) !!}
+                        <div class="col-sm-5">
+                            {!! Form::select('page', $pages, null, ['class' => 'form-control']) !!}                                                            
+                        </div>
+                    </div>
+                    
+                    <div class="form-group" id="sec_positions" style="display:none;">
                         {!! Form::label('position', 'Position:', ['class' => 'col-sm-2 control-label']) !!}
                         <div class="col-sm-5">
                             {!! Form::select('position', $positions, null, ['class' => 'form-control']) !!}                                                            
@@ -135,9 +142,10 @@
 <!-- /.content -->
 <?php
 $startdate = $ads->start_date;
-$enddate  = $ads->end_date;
-$position = $ads->position;
-$ad_type  = $ads->ad_type;
+$enddate   = $ads->end_date;
+$page      = $ads->page;
+$position  = $ads->position;
+$ad_type   = $ads->ad_type;
 ?>
 <script type="text/javascript">
 $(function() {
@@ -145,10 +153,10 @@ $(function() {
     $('.year').datepicker({ dateFormat: 'yyyy',autoclose: true });
     $('.date').datepicker({ format: 'yyyy-mm-dd',autoclose: true });   
     
-    var position  = '{{ $position }}';
-    pos_val_show_hide(position);
+    var page  = '{{ $page }}';
+    pos_val_show_hide(page);
     
-    $('#position').on('change', function() {
+    $('#page').on('change', function() {
         var pos_val = this.value    
         pos_val_show_hide(pos_val);         
     });
@@ -162,19 +170,25 @@ $(function() {
     });
     
     function pos_val_show_hide(pos_val)
-    {   
-      
+    {         
         // For home page video or image content display
         if(pos_val!=1)
-         {            
-            $('#hom_type').hide(); 
-            $('#video_cnt').hide();  
-            $('#img_cnt').show(); 
-         }else{
-            $('#hom_type').show();
-            $('#video_cnt').show();  
-            $('#img_cnt').hide(); 
-         }
+        {            
+           $('#hom_type').hide(); 
+           $('#video_cnt').hide();  
+           $('#img_cnt').show(); 
+        }else{
+           $('#hom_type').show();
+           $('#video_cnt').show();  
+           $('#img_cnt').hide(); 
+        }
+
+        if(pos_val==2){
+           $('#sec_positions').show();
+        }else{
+           $('#sec_positions').hide();
+           $('#position').val("Top");
+        }
      }
     
     function ad_type_show_hide(ad_type)

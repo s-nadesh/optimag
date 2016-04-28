@@ -57,6 +57,13 @@
                     </div>
                     
                     <div class="form-group">
+                        {!! Form::label('page', 'Page:', ['class' => 'col-sm-2 control-label']) !!}
+                        <div class="col-sm-5">
+                            {!! Form::select('page', $pages, null, ['class' => 'form-control']) !!}                                                            
+                        </div>
+                    </div>
+                    
+                    <div class="form-group" id="sec_positions" style="display:none;">
                         {!! Form::label('position', 'Position:', ['class' => 'col-sm-2 control-label']) !!}
                         <div class="col-sm-5">
                             {!! Form::select('position', $positions, null, ['class' => 'form-control']) !!}                                                            
@@ -148,7 +155,7 @@ $(function() {
         }
     });
     
-    $('#position').on('change', function() {
+    $('#page').on('change', function() {
         var pos_val = this.value
         
          if(pos_val!=1)
@@ -160,6 +167,13 @@ $(function() {
             $('#hom_type').show();
             $('#video_cnt').show();  
             $('#img_cnt').hide(); 
+         }
+         
+         if(pos_val==2){
+            $('#sec_positions').show();
+         }else{
+            $('#sec_positions').hide();
+            $('#position').val("Top");
          }
     });
 });

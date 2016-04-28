@@ -29,9 +29,10 @@ class AdsController extends Controller {
      * @return Response
      */
     public function create() {
-        $positions = AdsPosition::getAdsPositions();
+        $pages = AdsPosition::getAdsPositions();
         $langs = array("en"=>"EN","fr"=>"FR");
-        return view('admin.ads.create', compact('positions','langs'));
+        $positions = array("Top"=>"Top","Middle"=>"Middle","Bottom"=>"Bottom");
+        return view('admin.ads.create', compact('pages','langs',"positions"));
     }
 
     /**
@@ -43,7 +44,7 @@ class AdsController extends Controller {
     public function store(Request $request) {
        
         $data = $request->all();
-        
+               
         $validator = Validator::make($data, Ads::rules());
         if ($validator->fails()) {
             return redirect()->back()->withInput()->withErrors($validator->errors());
@@ -75,6 +76,7 @@ class AdsController extends Controller {
         $adsmodel->end_date    = $data['end_date'];
         $adsmodel->impressions = "0";
         $adsmodel->clicks      = "0";
+        $adsmodel->page        = $data['page'];
         $adsmodel->position    = $data['position'];
         $adsmodel->lang        = $data['lang'];
         $adsmodel->status      = $data['status'];
@@ -92,8 +94,9 @@ class AdsController extends Controller {
      */
     public function edit($id) {
         $ads = Ads::find($id);
-        $positions = AdsPosition::getAdsPositions();
+        $pages = AdsPosition::getAdsPositions();
         $langs = array("en"=>"EN","fr"=>"FR");
+        $positions = array("Top"=>"Top","Middle"=>"Middle","Bottom"=>"Bottom");
         
         $video_embed = null;
         $image_file  = null;
@@ -103,7 +106,7 @@ class AdsController extends Controller {
         else if($ads->ad_type=="image")
         $image_file = $ads->ad_file;
         
-        return view('admin.ads.edit', compact('ads','positions','langs','video_embed','image_file'));
+        return view('admin.ads.edit', compact('ads','pages','langs','video_embed','image_file','positions'));
     }
 
     /**
@@ -127,7 +130,6 @@ class AdsController extends Controller {
         $image_obj = Input::file('image');
         if (!empty($image_obj)) 
         {  
-            echo "Asd"; exit;
             $destinationPath = public_path() . '/uploads/ads'; // upload path
             $extension = $image_obj->getClientOriginalExtension(); // getting image extension
             $fileName  = rand(11111, 99999) . time() . '.' . $extension; // renameing image
@@ -149,6 +151,7 @@ class AdsController extends Controller {
         $adsmodel->client_name = $data['client_name'];
         $adsmodel->start_date  = $data['start_date'];
         $adsmodel->end_date    = $data['end_date'];
+        $adsmodel->page        = $data['page'];
         $adsmodel->position    = $data['position'];
         $adsmodel->lang        = $data['lang'];
         $adsmodel->status      = $data['status'];

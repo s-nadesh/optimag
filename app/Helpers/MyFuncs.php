@@ -122,7 +122,7 @@ class MyFuncs {
     public static function get_adsense_result($positionid,$counts) {
         
         $ads_result = DB::table('adsenses')                   
-                    ->where('position', '=', $positionid)
+                    ->where('page', '=', $positionid)
                     ->where('status', '=', 1) 
                     ->orderBy(DB::raw('RAND()'))
                     ->take($counts)
@@ -137,7 +137,7 @@ class MyFuncs {
         $ad_result = DB::table('ads')
                     ->where('start_date', '<=', $now)
                     ->where('end_date', '>=', $now)
-                    ->where('position', '=', $positionid)
+                    ->where('page', '=', $positionid)
                     ->where('lang', '=', $lang)  
                     ->where('status', '=', 1) 
                     ->orderBy(DB::raw('RAND()'))

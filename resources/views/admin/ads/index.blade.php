@@ -43,6 +43,7 @@ $(function () {
                                 <th>Lang</th>
                                 <th>Title</th> 
                                 <th>Type</th>
+                                <th>Page</th>
                                 <th>Position</th>
                                 <th>Start Date</th>
                                 <th>End Date</th>
@@ -60,6 +61,7 @@ $(function () {
                                 <td>{{ $ad->ad_title }}</td> 
                                 <td>{{ $ad->ad_type }}</td>  
                                 <td>{{ $ad->adsPosition->title }}</td>
+                                <td>{{ $ad->position }}</td>
                                 <td>{{ $ad->start_date }}</td>
                                 <td>{{ $ad->end_date }}</td>
                                 <td>{{ $ad->impressions }}</td>                                 

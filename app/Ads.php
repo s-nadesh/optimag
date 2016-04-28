@@ -14,7 +14,7 @@ class Ads extends Model{
     }
     
     public function adsPosition() {
-        return $this->belongsTo('App\AdsPosition', 'position', 'pid');
+        return $this->belongsTo('App\AdsPosition', 'page', 'pid');
     }
     
  }
