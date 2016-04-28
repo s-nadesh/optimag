@@ -36,7 +36,7 @@
                     </li>
                 </ul>
             </li>
-             <li class="treeview {{ Ekko::areActiveURLs(['/admin/ads']) }}">
+             <li class="treeview {{ Ekko::areActiveURLs(['/admin/ads','/admin/adsenses']) }}">
                 <a href="#">
                     <i class="fa fa-folder"></i>
                     <span>Ads</span>
