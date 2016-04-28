@@ -43,12 +43,12 @@ class MyFuncs {
         return $new_guid;
     }
     
-     public static function banner_display($positionid,$lang) {
-        $data = array(); 
+    public static function banner_display($positionid,$lang) {
+        $data   = array(); 
         
-        $result = MyFuncs::get_banner_result($positionid,$lang);
+        $counts = 1;
+        $result = MyFuncs::get_banner_result($positionid,$lang,$counts);
 
-        $html = '';
         if (!empty($result)) 
         {            
             $data['ad_id']    = $result[0]->ad_id;
@@ -66,26 +66,71 @@ class MyFuncs {
             DB::table('ads')->where('ad_id', $ads_id)->increment('impressions');
 
         } else {
-            $adsresult = MyFuncs::get_adsense_result($positionid);
+            $adsresult = MyFuncs::get_adsense_result($positionid,$counts);
             if (!empty($adsresult)) {  
-                $data['content'] = $adsresult[0]->content;
+                $data['content'] = $adsresult[0]->ads_content;
             }
         }
 
         return $data;
-    }
+    }    
+    
+    public static function section_banner_display($positionid,$lang)
+    {
+        $data    = array(); 
+        $counts  = 3;
+        $results = MyFuncs::get_banner_result($positionid,$lang,$counts);
+        
+        if (!empty($results)) 
+        {   
+            foreach($results as $binfo)
+            {  
+                $data[] = [
+                'ad_id'     => $binfo->ad_id,
+                'ad_title'  => $binfo->ad_title,
+                'ad_link'   => $binfo->ad_link,
+                'ad_file'   => $binfo->ad_file,
+                'ad_type'   => $binfo->ad_type,
+                'advertiser_url'  => $binfo->advertiser_url,
+                'client_name'     => $binfo->client_name,
+                'content'         => ""
+                ];
+                
+                $ads_id = $binfo->ad_id;
 
-    public static function get_adsense_result($positionid) {
+               // Add one count impressions for the loading banner.
+                DB::table('ads')->where('ad_id', $ads_id)->increment('impressions');
+            }
+
+        } else {
+            
+            $adsresult = MyFuncs::get_adsense_result($positionid,$counts);
+            if (!empty($adsresult)) 
+            {  
+                foreach($adsresult as $rinfo)
+                {                   
+                    $data[] = [
+                       'content' => $rinfo->ads_content
+                    ];
+                }
+            }
+        }
+        
+       return $data;
+    }  
+    
+    public static function get_adsense_result($positionid,$counts) {
         
         $ads_result = DB::table('adsenses')                   
-                    ->where('position', '=', $positionid)                   
+                    ->where('position', '=', $positionid)
+                    ->where('status', '=', 1) 
                     ->orderBy(DB::raw('RAND()'))
-                    ->take(1)
+                    ->take($counts)
                     ->get();   
         return $ads_result;
     }
 
-    public static function get_banner_result($positionid,$lang ) {
+    public static function get_banner_result($positionid,$lang,$counts ) {
        
         $now   = date('Y-m-d', time());
         
@@ -93,9 +138,10 @@ class MyFuncs {
                     ->where('start_date', '<=', $now)
                     ->where('end_date', '>=', $now)
                     ->where('position', '=', $positionid)
-                    ->where('lang', '=', $lang)   
+                    ->where('lang', '=', $lang)  
+                    ->where('status', '=', 1) 
                     ->orderBy(DB::raw('RAND()'))
-                    ->take(1)
+                    ->take($counts)
                     ->get();   
         
         return $ad_result;

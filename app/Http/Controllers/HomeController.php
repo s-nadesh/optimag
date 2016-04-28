@@ -1,12 +1,11 @@
 <?php
-
 namespace App\Http\Controllers;
 // use Symfony\Component\HttpFoundation\Response as Response2;
-
 
 use App\Article;
 use App\Http\Controllers\Controller;
 use App\Edition;
+use App\AdsSetting;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use SebastianBergmann\RecursionContext\Exception;
@@ -71,7 +70,7 @@ class HomeController extends Controller
             // Home - position 1
             $banner_results = MyFuncs::banner_display(1,$lang);
             $response['banner_results'][] = $banner_results;
-                  
+                   
         }catch (Exception $e){
             $statusCode = 400;
         }finally{          
@@ -79,21 +78,56 @@ class HomeController extends Controller
         }
     }
     
-    public function sections($sid)
+    public function sections($lang,$sid)
     {
-        echo "sadasd"; exit;
+        $lang = ($lang!="")?$lang:"en"; 
+        
+        $articles = Article::whereRaw("section_id='$sid' and language='$lang'")->orderBy("article_id","desc")->take(6)->get();
+        
+        try{
+            
+            $statusCode = 200;
+            $response = [
+              'articles'  => [],  
+              'positions' => []  
+            ];   
+        
+            foreach($articles as $article)
+            {
+                $artimage  = "no-image.png";
+                $art_imges = $article->articleImages()->take(1)->lists('image','article_image_id');
+                foreach($art_imges as $aimg)
+                {
+                   $artimage = $aimg; 
+                }  
+              
+                $edition_column = "edition_name_".$lang;
+
+                $response['articles'][] = [
+                    'article_id'    => $article->article_id,
+                    'article_title' => $article->title,
+                    'article_desc'  => $article->description,                     
+                    'year'          => $article->year, 
+                    'edition'       => $article->edition->$edition_column, 
+                    'article_image' => $artimage,
+                    'embed_video'   => $article->embed_video
+                ];
+            }
+            
+            
+            // Ads positions
+            $get_sectionpositions = AdsSetting::where('s_id', '=', 1)->pluck('section_position');
+            $response['positions'][] = [ 'section_positions'    => $get_sectionpositions];
+                
+            // Section Ads 
+            $banner_results = MyFuncs::section_banner_display(2,$lang);
+            $response['banner_results'] = $banner_results;
+        
+        }catch (Exception $e){
+            $statusCode = 400;
+        }finally{          
+            return response()->json([$response, $statusCode]);
+        }    
     }        
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
    
 }

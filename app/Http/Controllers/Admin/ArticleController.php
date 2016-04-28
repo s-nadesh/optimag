@@ -20,7 +20,7 @@ class ArticleController extends Controller {
      * @return Response
      */
     public function index() {
-        $articles = Article::groupBy('article_key')->get();
+        $articles = Article::orderBy('article_id', 'DESC')->groupBy('article_key')->get();
         return view('admin.article.index', compact('articles'));
     }
 

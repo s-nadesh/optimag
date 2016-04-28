@@ -53,6 +53,11 @@
                             <i class="fa fa-angle-double-right"></i> Adsense 
                         </a>
                     </li>
+                    <li class="{{ Ekko::isActiveURL('/admin/adssetting') }}">
+                        <a href="{{ URL::to('/admin/adssetting') }}">
+                            <i class="fa fa-angle-double-right"></i> Settings 
+                        </a>
+                    </li>
                 </ul>
             </li>
             <li class="{{ Ekko::isActiveURL('/admin/article/index') }}">
