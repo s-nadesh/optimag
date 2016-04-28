@@ -50,7 +50,7 @@ $router->group([
     post('admin/ads/store', 'AdsController@store'); 
     get('admin/ads/destroy/{key}', 'AdsController@destroy');
     
-    resource('admin/adssetting', 'AdsSettingController');
+    #resource('admin/adssetting', 'AdsSettingController');
     
 });
 

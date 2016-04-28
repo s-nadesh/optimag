@@ -116,8 +116,8 @@ class HomeController extends Controller
             
             
             // Ads positions
-            $get_sectionpositions = AdsSetting::where('s_id', '=', 1)->pluck('section_position');
-            $response['positions'][] = [ 'section_positions'    => $get_sectionpositions];
+            //$get_sectionpositions = AdsSetting::where('s_id', '=', 1)->pluck('section_position');
+           // $response['positions'][] = [ 'section_positions'    => $get_sectionpositions];
                 
             // Section Ads 
             $banner_results = MyFuncs::section_banner_display(2,$lang);
