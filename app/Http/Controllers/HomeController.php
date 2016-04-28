@@ -62,8 +62,8 @@ class HomeController extends Controller
                 ];
                 
                 $response['sections'][] = [ 
-                    'section_id'  => $article->Section->section_id,      
-                    'section_name'  => $article->Section->$section_column, 
+                    'section_id'  => $article->section->section_id,      
+                    'section_name'  => $article->section->$section_column, 
                 ];
             }
             
