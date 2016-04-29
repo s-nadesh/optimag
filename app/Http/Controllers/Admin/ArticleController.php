@@ -11,6 +11,7 @@ use App\Section;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Session;
+use Intervention\Image\Facades\Image; // Use this if you want facade style code
 
 class ArticleController extends Controller {
 
@@ -76,6 +77,9 @@ class ArticleController extends Controller {
                         $extension = $image_obj->getClientOriginalExtension(); // getting image extension
                         $fileName = rand(11111, 99999) . time() . '.' . $extension; // renameing image
                         $image_obj->move($destinationPath, $fileName); // uploading file to given path
+                        // Image resize
+                        $original_img_path = $destinationPath.$fileName;
+                        $this->resize("100","100",$original_img_path,$fileName); 
 
                         $article_image = new ArticleImage;
                         $article_image->article_id = $article->article_id;
@@ -90,6 +94,28 @@ class ArticleController extends Controller {
         }
         Session::flash('flash_message', 'Article created successfully!');
         return redirect('/admin/article/index');
+    }
+    
+    private function resize($wdth,$hght,$original_img_path,$fileName)
+    {        
+    	try 
+    	{
+    		//$extension    = $image->getClientOriginalExtension();
+    		$imageRealPath 	= $original_img_path;	    	
+	    	//$imageManager = new ImageManager(); // use this if you don't want facade style code
+    		//$img = $imageManager->make($imageRealPath);	    
+	    	$img = Image::make($imageRealPath); // use this if you want facade style code
+//	    	$img->resize(intval($wdth), null , function($constraint) {
+//	    		 $constraint->aspectRatio();
+//	    	});
+                $img->resize(intval($wdth),intval($hght));
+	    	return $img->save(public_path('uploads/thumb'). '/'. $fileName);
+    	}
+    	catch(Exception $e)
+    	{
+    		return false;
+    	}
+
     }
 
     /**
@@ -199,6 +225,10 @@ class ArticleController extends Controller {
                         $extension = $image_obj->getClientOriginalExtension(); // getting image extension
                         $fileName = rand(11111, 99999) . time() . '.' . $extension; // renameing image
                         $image_obj->move($destinationPath, $fileName); // uploading file to given path
+                        // Image resize
+                        $original_img_path = $destinationPath.$fileName;
+                        $this->resize("100","100",$original_img_path,$fileName); 
+                        
                         $article_image->image = $fileName;
                     }
 

@@ -122,6 +122,7 @@ return [
         'Illuminate\Html\HtmlServiceProvider',
         'Cviebrock\EloquentSluggable\SluggableServiceProvider',
         'Laravelista\Ekko\EkkoServiceProvider',
+        Intervention\Image\ImageServiceProvider::class,
         /*
          * Application Service Providers...
          */
@@ -178,5 +179,6 @@ return [
         'Form' => 'Illuminate\Html\FormFacade',
         'Ekko' => 'Laravelista\Ekko\Facades\Ekko',
         'MyFuncs' => App\Helpers\MyFuncs::class,
+        'Image'   => Intervention\Image\Facades\Image::class
     ],
 ];
