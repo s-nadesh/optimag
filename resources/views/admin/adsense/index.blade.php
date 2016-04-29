@@ -39,6 +39,7 @@ $(function () {
                         <thead>
                             <tr>
                                 <th>S.No</th>
+                                <th>Page</th>
                                 <th>Position</th>                               
                                 <th>Status</th>
                                 <th>Action</th>
@@ -48,7 +49,8 @@ $(function () {
                             @foreach ($adsenses as $key => $adsense)
                             <tr>
                                 <td>{{ ++$key }}</td>
-                                <td>{{ $adsense->adsPosition->title }}</td>                             
+                                <td>{{ $adsense->adsPosition->title }}</td>     
+                                <td>{{ $adsense->position }}</td>
                                 <td align="center">
                                     <?php if($adsense->status == 1){ ?>
                                     

@@ -16,12 +16,20 @@
                 <!-- form start -->
                 {!! Form::model($adsense, ['class' => 'form-horizontal','method' => 'PATCH', 'role' => 'form', 'route'=>['admin.adsenses.update', $adsense->ads_id]]) !!}
                 <div class="box-body">                    
-                        <div class="form-group">
-                            {!! Form::label('position', 'Position:*', ['class' => 'col-sm-2 control-label']) !!}
-                            <div class="col-sm-5">
-                                {!! Form::select('position', $positions, null, ['class' => 'form-control']) !!}                                  
-                            </div>
+                       
+                    <div class="form-group">
+                        {!! Form::label('page', 'Page:', ['class' => 'col-sm-2 control-label']) !!}
+                        <div class="col-sm-5">
+                            {!! Form::select('page', $pages, null, ['class' => 'form-control']) !!}                                                            
                         </div>
+                    </div>
+                    
+                    <div class="form-group" id="sec_positions" style="display:none;">
+                        {!! Form::label('position', 'Position:', ['class' => 'col-sm-2 control-label']) !!}
+                        <div class="col-sm-5">
+                            {!! Form::select('position', $positions, null, ['class' => 'form-control']) !!}                                                            
+                        </div>
+                    </div>
                         <div class="form-group">
                             {!! Form::label('ads_content', 'Content:*', ['class' => 'col-sm-2 control-label']) !!}
                             <div class="col-sm-5">
@@ -53,4 +61,32 @@
     <!-- /.row -->
 </section>
 <!-- /.content -->
+<?php
+$page      = $adsense->page;
+$position  = $adsense->position;
+?>
+<script type="text/javascript">
+$(function() {
+    var page  = '{{ $page }}';
+    pos_val_show_hide(page);
+    
+    $('#page').on('change', function() {
+        var pos_val = this.value    
+        pos_val_show_hide(pos_val);         
+    });
+        
+    function pos_val_show_hide(pos_val)
+    {         
+        // For home page video or image content display
+
+        if(pos_val==2){
+           $('#sec_positions').show();
+        }else{
+           $('#sec_positions').hide();
+           $('#position').val("Top");
+        }
+     }
+    
+});
+</script>
 @stop

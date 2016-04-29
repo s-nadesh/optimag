@@ -16,7 +16,13 @@
                 {!! Form::open(['class' => 'form-horizontal','role' => 'form','route'=>['admin.adsenses.store']]) !!}
                 <div class="box-body">                    
                         <div class="form-group">
-                            {!! Form::label('position', 'Position:*', ['class' => 'col-sm-2 control-label']) !!}
+                            {!! Form::label('page', 'Page:*', ['class' => 'col-sm-2 control-label']) !!}
+                            <div class="col-sm-5">
+                                {!! Form::select('page', $pages, null, ['class' => 'form-control']) !!}                                                            
+                            </div>
+                        </div>
+                        <div class="form-group" id="sec_positions" style="display:none;">
+                            {!! Form::label('position', 'Position:', ['class' => 'col-sm-2 control-label']) !!}
                             <div class="col-sm-5">
                                 {!! Form::select('position', $positions, null, ['class' => 'form-control']) !!}                                                            
                             </div>
@@ -51,4 +57,19 @@
     <!-- /.row -->
 </section>
 <!-- /.content -->
+<script type="text/javascript">
+$(function() {
+    
+    $('#page').on('change', function() {
+        var pos_val = this.value
+         
+         if(pos_val==2){
+            $('#sec_positions').show();
+         }else{
+            $('#sec_positions').hide();
+            $('#position').val("Top");
+         }
+    });
+});
+</script>
 @stop

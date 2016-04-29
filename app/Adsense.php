@@ -2,22 +2,13 @@
 
 namespace App;
 
-use Cviebrock\EloquentSluggable\SluggableInterface;
-use Cviebrock\EloquentSluggable\SluggableTrait;
 use Illuminate\Database\Eloquent\Model;
 
 class Adsense extends Model {
 
-    use SluggableTrait;
-
     protected $primaryKey = 'ads_id';
-    protected $fillable = [
-        'ads_content',
-        'position',
-        'status',
-    ];
+    protected $fillable = array('ads_content', 'page', 'position', 'status');
     
-
     public static function rules($id = 0, $merge = []) {
         return array_merge([
             'ads_content' => 'required|min:3',
@@ -25,7 +16,7 @@ class Adsense extends Model {
     }
     
     public function adsPosition() {
-        return $this->belongsTo('App\AdsPosition', 'position', 'pid');
+        return $this->belongsTo('App\AdsPosition', 'page', 'pid');
     }
 
 }

@@ -28,8 +28,9 @@ class AdsenseController extends Controller {
      * @return Response
      */
     public function create() {
-        $positions = AdsPosition::getAdsPositions();
-        return view('admin.adsense.create', compact('positions'));
+        $pages = AdsPosition::getAdsPositions();
+        $positions = array("Top"=>"Top","Middle"=>"Middle","Bottom"=>"Bottom");
+        return view('admin.adsense.create', compact('pages','positions'));
     }
 
     /**
@@ -44,7 +45,7 @@ class AdsenseController extends Controller {
         if ($validator->fails()) {
             return redirect()->back()->withInput()->withErrors($validator->errors());
         }
-
+       
         Adsense::create($data);
         Session::flash('flash_message', 'Adsense created successfully!');
         return redirect('/admin/adsenses');
@@ -58,8 +59,9 @@ class AdsenseController extends Controller {
      */
     public function edit($id) {
         $adsense = Adsense::find($id);
-        $positions = AdsPosition::getAdsPositions();
-        return view('admin.adsense.edit', compact('adsense','positions'));
+        $pages = AdsPosition::getAdsPositions();
+        $positions = array("Top"=>"Top","Middle"=>"Middle","Bottom"=>"Bottom");
+        return view('admin.adsense.edit', compact('adsense','pages','positions'));
     }
 
     /**
