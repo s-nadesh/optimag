@@ -63,5 +63,6 @@ Route::group(array('prefix' => 'api/v1'), function()
 {    
     get('home/{langkey}', 'HomeController@index');
     get('sections/{langkey}/{sid}', 'HomeController@sections');   
+    get('article/{aid}', 'HomeController@article');  
 });
 //Route::get('sections/{testkey}', 'HomeController@sections');

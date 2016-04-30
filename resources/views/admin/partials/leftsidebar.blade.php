@@ -36,7 +36,13 @@
                     </li>
                 </ul>
             </li>
-             <li class="treeview {{ Ekko::areActiveURLs(['/admin/ads','/admin/adsenses']) }}">
+             
+            <li class="{{ Ekko::isActiveURL('/admin/article/index') }}">
+                <a href="{{ URL::to('/admin/article/index') }}">
+                    <i class="fa fa-edit"></i> <span>Articles</span>
+                </a>
+            </li>
+            <li class="treeview {{ Ekko::areActiveURLs(['/admin/ads','/admin/adsenses']) }}">
                 <a href="#">
                     <i class="fa fa-folder"></i>
                     <span>Ads</span>
@@ -59,11 +65,6 @@
                         </a>
                     </li>-->
                 </ul>
-            </li>
-            <li class="{{ Ekko::isActiveURL('/admin/article/index') }}">
-                <a href="{{ URL::to('/admin/article/index') }}">
-                    <i class="fa fa-edit"></i> <span>Articles</span>
-                </a>
             </li>
         </ul>
     </section>

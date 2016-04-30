@@ -75,12 +75,24 @@ class MyFuncs {
         return $data;
     }    
     
-    public static function section_banner_display($positionid,$lang)
+    public static function section_banner_display($positionid,$lang,$articlecounts)
     {
+       // DB::connection()->enableQueryLog();
         $data    = array(); 
-        $counts  = 3;
+        if($articlecounts>3)
+        {    
+            $counts  = 3;
+        }else{
+            $counts  = 2;
+        }  
+       
         $results = MyFuncs::get_banner_result($positionid,$lang,$counts);
-        
+      
+//        $query = DB::getQueryLog();
+//        $lastQuery = end($query);
+//       echo "<pre>";
+//        print_r($lastQuery); exit;
+
         if (!empty($results)) 
         {   
             foreach($results as $binfo)
@@ -93,7 +105,8 @@ class MyFuncs {
                 'ad_type'   => $binfo->ad_type,
                 'advertiser_url'  => $binfo->advertiser_url,
                 'client_name'     => $binfo->client_name,
-                'content'         => ""
+                'content'         => "",
+                'type_val'      => 'banner'        
                 ];
                 
                 $ads_id = $binfo->ad_id;

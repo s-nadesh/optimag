@@ -78,7 +78,7 @@
                 <div class="icon">
                     <i class="ion ion-folder"></i>
                 </div>
-                <a href="{{ Ekko::isActiveURL('/admin/sections') }}" class="small-box-footer">
+                <a href="{{ URL::to('/admin/sections') }}" class="small-box-footer">
                     More info <i class="fa fa-arrow-circle-right"></i>
                 </a>
             </div>
