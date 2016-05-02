@@ -18,16 +18,16 @@ $(document).ready(function () {
     var en_max_fields = 10;
     var en_wrapper = $("#en_images");
     var en_add_button = $(".en_add_button");
-    var en_x = <?php echo count($data['article']['lang']['en']['article_image']) ?>;
+    var en_x = <?php echo count($data['article']['article_image']) ?>;
 
     $(en_add_button).click(function (e) {
         e.preventDefault();
         if (en_x < en_max_fields) {
             var en_html = '<div class="box-body" id="remove_en' + en_x + '"><div class="row">';
-            en_html += '<div class="col-xs-3"><input type="file" name="article[lang][en][article_image][' + en_x + '][image]"></div>';
-            en_html += '<div class="col-xs-2"><input type="text" name="article[lang][en][article_image][' + en_x + '][text]" placeholder="Image Text" class="form-control"></div>';
-            en_html += '<div class="col-xs-2"><input type="text" name="article[lang][en][article_image][' + en_x + '][link]" placeholder="Image Link" class="form-control"></div>';
-            en_html += '<div class="col-xs-4"><textarea rows="2" cols="10" name="article[lang][en][article_image][' + en_x + '][description]" placeholder="Image Description" class="form-control"></textarea></div>';
+            en_html += '<div class="col-xs-3"><input type="file" name="article[article_image][' + en_x + '][image]"></div>';
+            en_html += '<div class="col-xs-2"><input type="text" name="article[article_image][' + en_x + '][text]" placeholder="Image Text" class="form-control"></div>';
+            en_html += '<div class="col-xs-2"><input type="text" name="article[article_image][' + en_x + '][link]" placeholder="Image Link" class="form-control"></div>';
+            en_html += '<div class="col-xs-4"><textarea rows="2" cols="10" name="article[article_image][' + en_x + '][description]" placeholder="Image Description" class="form-control"></textarea></div>';
             en_html += '<div class="col-xs-1"><button class="btn btn-danger en_remove_field" data-remove-id="remove_en' + en_x + '"><i class="fa fa-trash"></i></button></div>';
             en_html += '</div></div>';
             $(en_wrapper).append(en_html);
@@ -42,32 +42,6 @@ $(document).ready(function () {
         en_x--;
     })
 
-    var fr_max_fields = 10;
-    var fr_wrapper = $("#fr_images");
-    var fr_add_button = $(".fr_add_button");
-    var fr_x = <?php echo count($data['article']['lang']['fr']['article_image']) ?>;
-
-    $(fr_add_button).click(function (e) {
-        e.preventDefault();
-        if (fr_x < fr_max_fields) {
-            var fr_html = '<div class="box-body" id="remove_fr' + fr_x + '"><div class="row">';
-            fr_html += '<div class="col-xs-3"><input type="file" name="article[lang][fr][article_image][' + fr_x + '][image]"></div>';
-            fr_html += '<div class="col-xs-2"><input type="text" name="article[lang][fr][article_image][' + fr_x + '][text]" placeholder="Image Text" class="form-control"></div>';
-            fr_html += '<div class="col-xs-2"><input type="text" name="article[lang][fr][article_image][' + fr_x + '][link]" placeholder="Image Link" class="form-control"></div>';
-            fr_html += '<div class="col-xs-4"><textarea rows="2" cols="10" name="article[lang][fr][article_image][' + fr_x + '][description]" placeholder="Image Description" class="form-control"></textarea></div>';
-            fr_html += '<div class="col-xs-1"><button class="btn btn-danger fr_remove_field" data-remove-id="remove_fr' + fr_x + '"><i class="fa fa-trash"></i></button></div>';
-            fr_html += '</div></div>';
-            $(fr_wrapper).append(fr_html);
-            fr_x++;
-        }
-    });
-
-    $(fr_wrapper).on("click", ".fr_remove_field", function (e) {
-        e.preventDefault();
-        var remove_id = $(this).data("remove-id");
-        $('#' + remove_id).remove();
-        fr_x--;
-    })
 });
 </script>
 @stop
@@ -83,8 +57,7 @@ $(document).ready(function () {
             <div class="nav-tabs-custom" id="articlewizard">
                 <ul class="nav nav-tabs">
                     <li class="active"><a href="#tab_1" data-toggle="tab">General</a></li>
-                    <li><a href="#tab_2" data-toggle="tab">English</a></li>
-                    <li><a href="#tab_3" data-toggle="tab">French</a></li>
+                    <li><a href="#tab_2" data-toggle="tab">Article Info</a></li>
                 </ul>
 
                 <div class="tab-content">
@@ -109,43 +82,50 @@ $(document).ready(function () {
                                 {!! Form::select('article[year]', $years, null, ['class' => 'form-control']) !!}
                             </div>
                         </div>
+                        
+                        <div class="form-group">
+                            {!! Form::label('article[language]', 'Language:', ['class' => 'col-sm-2 control-label']) !!}
+                            <div class="col-sm-5">
+                                {!! Form::select('article[language]', $languages, null, ['class' => 'form-control']) !!}
+                            </div>
+                        </div>
                     </div>
 
                     <div class="tab-pane" id="tab_2">
                         <div class="row">
-                            {!! Form::hidden('article[lang][en][article_id]') !!}
+                            {!! Form::hidden('article[article_id]') !!}
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    {!! Form::label('article[lang][en][title]', 'Title:', ['class' => 'col-sm-4 control-label']) !!}
+                                    {!! Form::label('article[title]', 'Title:', ['class' => 'col-sm-4 control-label']) !!}
                                     <div class="col-sm-7">
-                                        {!! Form::text('article[lang][en][title]', null, ['class' => 'form-control', 'placeholder' => 'Title']) !!}
+                                        {!! Form::text('article[title]', null, ['class' => 'form-control', 'placeholder' => 'Title']) !!}
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    {!! Form::label('article[lang][en][writer_name]', 'Writer Name:', ['class' => 'col-sm-4 control-label']) !!}
+                                    {!! Form::label('article[writer_name]', 'Writer Name:', ['class' => 'col-sm-4 control-label']) !!}
                                     <div class="col-sm-7">
-                                        {!! Form::text('article[lang][en][writer_name]', null, ['class' => 'form-control', 'placeholder' => 'Writer Name']) !!}
+                                        {!! Form::text('article[writer_name]', null, ['class' => 'form-control', 'placeholder' => 'Writer Name']) !!}
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    {!! Form::label('article[lang][en][writer_company]', 'Writer Company:', ['class' => 'col-sm-4 control-label']) !!}
+                                    {!! Form::label('article[writer_company]', 'Writer Company:', ['class' => 'col-sm-4 control-label']) !!}
                                     <div class="col-sm-7">
-                                        {!! Form::text('article[lang][en][writer_company]', null, ['class' => 'form-control', 'placeholder' => 'Writer Company']) !!}
+                                        {!! Form::text('article[writer_company]', null, ['class' => 'form-control', 'placeholder' => 'Writer Company']) !!}
                                     </div>
                                 </div>
                             </div>
 
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    {!! Form::label('article[lang][en][description]', 'Description:', ['class' => 'col-sm-4 control-label']) !!}
+                                    {!! Form::label('article[description]', 'Description:', ['class' => 'col-sm-4 control-label']) !!}
                                     <div class="col-sm-7">
-                                        {!! Form::textarea('article[lang][en][description]', null, ['class' => 'form-control', 'placeholder' => 'Description', 'size' => '20x2']) !!}
+                                        {!! Form::textarea('article[description]', null, ['class' => 'form-control', 'placeholder' => 'Description', 'size' => '20x2']) !!}
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    {!! Form::label('article[lang][en][embed_video]', 'Embed Video:', ['class' => 'col-sm-4 control-label']) !!}
+                                    {!! Form::label('article[embed_video]', 'Embed Video:', ['class' => 'col-sm-4 control-label']) !!}
                                     <div class="col-sm-7">
-                                        {!! Form::textarea('article[lang][en][embed_video]', null, ['class' => 'form-control', 'placeholder' => 'Embed Video', 'size' => '20x2']) !!}
+                                        {!! Form::textarea('article[embed_video]', null, ['class' => 'form-control', 'placeholder' => 'Embed Video', 'size' => '20x2']) !!}
                                     </div>
                                 </div>
                             </div>
@@ -161,23 +141,23 @@ $(document).ready(function () {
                                         </button>
                                     </div>
                                     <div id="en_images">
-                                        @if(!empty($data['article']['lang']['en']['article_image']))
-                                        @foreach($data['article']['lang']['en']['article_image'] as $key => $images)
+                                        @if(!empty($data['article']['article_image']))
+                                        @foreach($data['article']['article_image'] as $key => $images)
                                         <div class="box-body" id="remove_en{{$key}}">
                                             <div class="row">
-                                                <input type="hidden" name="article[lang][en][article_image][{{$key}}][article_image_id]" value="{{$images['article_image_id']}}" >
+                                                <input type="hidden" name="article[article_image][{{$key}}][article_image_id]" value="{{$images['article_image_id']}}" >
                                                 <div class="col-xs-3">
-                                                    <input type="file" name="article[lang][en][article_image][{{$key}}][image]">
+                                                    <input type="file" name="article[article_image][{{$key}}][image]">
                                                     <img src="{{ asset('uploads/' . $images['image']) }}" height="80" />
                                                 </div>
                                                 <div class="col-xs-2">
-                                                    <input type="text" name="article[lang][en][article_image][{{$key}}][text]" placeholder="Image Text" class="form-control" value="{{$images['text']}}" >
+                                                    <input type="text" name="article[article_image][{{$key}}][text]" placeholder="Image Text" class="form-control" value="{{$images['text']}}" >
                                                 </div>
                                                 <div class="col-xs-2">
-                                                    <input type="text" name="article[lang][en][article_image][{{$key}}][link]" placeholder="Image Link" class="form-control" value="{{$images['link']}}">
+                                                    <input type="text" name="article[article_image][{{$key}}][link]" placeholder="Image Link" class="form-control" value="{{$images['link']}}">
                                                 </div>
                                                 <div class="col-xs-4">
-                                                    <textarea rows="2" cols="10" name="article[lang][en][article_image][{{$key}}][description]" placeholder="Image Description" class="form-control">{{$images['description']}}</textarea>
+                                                    <textarea rows="2" cols="10" name="article[article_image][{{$key}}][description]" placeholder="Image Description" class="form-control">{{$images['description']}}</textarea>
                                                 </div>
                                                 <div class="col-xs-1">
                                                     <button class="btn btn-danger en_remove_field" data-remove-id="remove_en{{$key}}"><i class="fa fa-trash"></i></button>
@@ -192,88 +172,7 @@ $(document).ready(function () {
                             </div>
                         </div>
                     </div>
-
-                    <div class="tab-pane" id="tab_3">
-                        <div class="row">
-                            {!! Form::hidden('article[lang][fr][article_id]') !!}
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    {!! Form::label('article[lang][fr][title]', 'Title:', ['class' => 'col-sm-4 control-label']) !!}
-                                    <div class="col-sm-7">
-                                        {!! Form::text('article[lang][fr][title]', null, ['class' => 'form-control', 'placeholder' => 'Title']) !!}
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    {!! Form::label('article[lang][fr][writer_name]', 'Writer Name:', ['class' => 'col-sm-4 control-label']) !!}
-                                    <div class="col-sm-7">
-                                        {!! Form::text('article[lang][fr][writer_name]', null, ['class' => 'form-control', 'placeholder' => 'Writer Name']) !!}
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    {!! Form::label('article[lang][fr][writer_company]', 'Writer Company:', ['class' => 'col-sm-4 control-label']) !!}
-                                    <div class="col-sm-7">
-                                        {!! Form::text('article[lang][fr][writer_company]', null, ['class' => 'form-control', 'placeholder' => 'Writer Company']) !!}
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    {!! Form::label('article[lang][fr][description]', 'Description:', ['class' => 'col-sm-4 control-label']) !!}
-                                    <div class="col-sm-7">
-                                        {!! Form::textarea('article[lang][fr][description]', null, ['class' => 'form-control', 'placeholder' => 'Description', 'size' => '20x2']) !!}
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    {!! Form::label('article[lang][fr][embed_video]', 'Embed Video:*', ['class' => 'col-sm-4 control-label']) !!}
-                                    <div class="col-sm-7">
-                                        {!! Form::textarea('article[lang][fr][embed_video]', null, ['class' => 'form-control', 'placeholder' => 'Embed Video', 'size' => '20x2']) !!}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="box box-info">
-                                    <div class="box-header">
-                                        <h3 class="box-title">Images</h3>
-                                        <button class="btn btn-primary fr_add_button pull-right">
-                                            <i class="fa fa-plus"></i> Add More 
-                                        </button>
-                                    </div>
-                                    <div id="fr_images">
-                                        @if(!empty($data['article']['lang']['fr']['article_image']))
-                                        @foreach($data['article']['lang']['fr']['article_image'] as $key => $images)
-                                        <div class="box-body" id="remove_fr{{$key}}">
-                                            <div class="row">
-                                                <input type="hidden" name="article[lang][fr][article_image][{{$key}}][article_image_id]" value="{{$images['article_image_id']}}" >
-                                                <div class="col-xs-3">
-                                                    <input type="file" name="article[lang][fr][article_image][{{$key}}][image]">
-                                                    <img src="{{ asset('uploads/' . $images['image']) }}" height="80" />
-                                                </div>
-                                                <div class="col-xs-2">
-                                                    <input type="text" name="article[lang][fr][article_image][{{$key}}][text]" placeholder="Image Text" class="form-control" value="{{$images['text']}}" >
-                                                </div>
-                                                <div class="col-xs-2">
-                                                    <input type="text" name="article[lang][fr][article_image][{{$key}}][link]" placeholder="Image Link" class="form-control" value="{{$images['link']}}">
-                                                </div>
-                                                <div class="col-xs-4">
-                                                    <textarea rows="2" cols="10" name="article[lang][fr][article_image][{{$key}}][description]" placeholder="Image Description" class="form-control">{{$images['description']}}</textarea>
-                                                </div>
-                                                <div class="col-xs-1">
-                                                    <button class="btn btn-danger fr_remove_field" data-remove-id="remove_fr{{$key}}"><i class="fa fa-trash"></i></button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        @endforeach
-                                        @endif
-                                    </div>
-                                    <!-- /.box-body -->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    
                     <!-- /.tab-pane -->
 
                     <div class="form-group">

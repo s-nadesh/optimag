@@ -21,7 +21,7 @@ class ArticleController extends Controller {
      * @return Response
      */
     public function index() {
-        $articles = Article::orderBy('article_id', 'DESC')->groupBy('article_key')->get();
+        $articles = Article::orderBy('article_id', 'DESC')->get();
         return view('admin.article.index', compact('articles'));
     }
 
@@ -33,8 +33,9 @@ class ArticleController extends Controller {
     public function create() {
         $editions = Edition::getEditions();
         $sections = Section::getSections();
+        $languages = array("en"=>"EN" , "fr"=>"FR");
         $years = MyFuncs::getYears();
-        return view('admin.article.create', compact('editions', 'sections', 'years'));
+        return view('admin.article.create', compact('editions','languages', 'sections', 'years'));
     }
 
     /**
@@ -46,29 +47,29 @@ class ArticleController extends Controller {
     public function store(Request $request) {
         $data = $request->all();
         $data_article = $data['article'];
-        $languages = $data_article['lang'];
+       // $languages = $data_article['lang'];
 
         $article_key = MyFuncs::getArticleUniqueKey();
-        foreach ($languages as $lang => $value) {
+       // foreach ($languages as $lang => $value) {
             $article = new Article;
 
-            $article->edition_id = $data_article['edition_id'];
-            $article->section_id = $data_article['section_id'];
-            $article->year = $data_article['year'];
+            $article->edition_id  = $data_article['edition_id'];
+            $article->section_id  = $data_article['section_id'];
+            $article->year        = $data_article['year'];
 
             $article->article_key = $article_key;
-            $article->language = $lang;
-            $article->title = $value['title'];
-            $article->description = $value['description'];
-            $article->embed_video = $value['embed_video'];
-            $article->writer_name = $value['writer_name'];
-            $article->writer_company = $value['writer_company'];
+            $article->language    = $data_article['language'];
+            $article->title       = $data_article['title'];
+            $article->description = $data_article['description'];
+            $article->embed_video = $data_article['embed_video'];
+            $article->writer_name = $data_article['writer_name'];
+            $article->writer_company = $data_article['writer_company'];
 
             $article->save();
 
             //Images
-            if (isset($value['article_image'])) {
-                $images = $value['article_image'];
+            if (isset($data_article['article_image'])) {
+                $images = $data_article['article_image'];
                 foreach ($images as $image) {
                     if (!empty($image['image'])) {
                         $image_obj = $image['image'];
@@ -78,8 +79,8 @@ class ArticleController extends Controller {
                         $fileName = rand(11111, 99999) . time() . '.' . $extension; // renameing image
                         $image_obj->move($destinationPath, $fileName); // uploading file to given path
                         // Image resize
-                        $original_img_path = $destinationPath.$fileName;
-                        $this->resize("100","100",$original_img_path,$fileName); 
+                        // $original_img_path = $destinationPath.$fileName;
+                        // $this->resize("100","100",$original_img_path,$fileName); 
 
                         $article_image = new ArticleImage;
                         $article_image->article_id = $article->article_id;
@@ -91,7 +92,7 @@ class ArticleController extends Controller {
                     }
                 }
             }
-        }
+      //  }
         Session::flash('flash_message', 'Article created successfully!');
         return redirect('/admin/article/index');
     }
@@ -119,66 +120,43 @@ class ArticleController extends Controller {
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function show($id) {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
      * @return Response
      */
     public function edit($key) {
+        
+        $data = array();
+        
         $editions = Edition::getEditions();
         $sections = Section::getSections();
         $years = MyFuncs::getYears();
+        $languages = array("en"=>"EN" , "fr"=>"FR");
 
-        $en_articles_obj = Article::where(['article_key' => $key, 'language' => 'en'])->first();
-        $en_articles = $en_articles_obj->toArray();
-        $en_articles_image = $en_articles_obj->articleImages->toArray();
-
-        $fr_articles_obj = Article::where(['article_key' => $key, 'language' => 'fr'])->first();
-        $fr_articles = $fr_articles_obj->toArray();
-        $fr_articles_image = $fr_articles_obj->articleImages->toArray();
-
-        $data = array();
-
+        $articles_obj = Article::where(['article_id' => $key])->first();
+        
+        $articles = $articles_obj->toArray();
+        
         $data['article'] = array(
-            'edition_id' => $en_articles['edition_id'],
-            'section_id' => $en_articles['section_id'],
-            'year' => $en_articles['year'],
+            'edition_id'  => $articles['edition_id'],
+            'section_id'  => $articles['section_id'],
+            'year'        => $articles['year'],
+            'language'    => $articles['language'],
+            'article_id'  => $articles['article_id'],
+            'article_key' => $articles['article_key'],
+            'title'       => $articles['title'],
+            'description' => $articles['description'],
+            'embed_video' => $articles['embed_video'],
+            'writer_name' => $articles['writer_name'],
+            'writer_company' => $articles['writer_company'],
         );
-
-        $data['article']['lang']['en'] = array(
-            'article_id' => $en_articles['article_id'],
-            'article_key' => $en_articles['article_key'],
-            'title' => $en_articles['title'],
-            'description' => $en_articles['description'],
-            'embed_video' => $en_articles['embed_video'],
-            'writer_name' => $en_articles['writer_name'],
-            'writer_company' => $en_articles['writer_company'],
-        );
-
-        $data['article']['lang']['fr'] = array(
-            'article_id' => $fr_articles['article_id'],
-            'article_key' => $fr_articles['article_key'],
-            'title' => $fr_articles['title'],
-            'description' => $fr_articles['description'],
-            'embed_video' => $fr_articles['embed_video'],
-            'writer_name' => $fr_articles['writer_name'],
-            'writer_company' => $fr_articles['writer_company'],
-        );
-
-        $data['article']['lang']['en']['article_image'] = $en_articles_image;
-        $data['article']['lang']['fr']['article_image'] = $fr_articles_image;
-
-        return view('admin.article.edit', compact('editions', 'sections', 'years', 'data'));
+        
+        $articles_image = $articles_obj->articleImages->toArray();
+        
+        $data['article']['article_image'] = $articles_image;
+       
+        return view('admin.article.edit', compact('editions', 'sections', 'years', 'data','languages'));
     }
 
     /**
@@ -191,65 +169,68 @@ class ArticleController extends Controller {
     public function update(Request $request) {
         $data = $request->all();
         $data_article = $data['article'];
-        $languages = $data_article['lang'];
+        
+        $article = Article::find($data_article['article_id']);
 
-        foreach ($languages as $lang => $value) {
-            $article = Article::find($value['article_id']);
+        $article->edition_id = $data_article['edition_id'];
+        $article->section_id = $data_article['section_id'];
+        $article->year       = $data_article['year'];
+        $article->language   = $data_article['language'];
 
-            $article->edition_id = $data_article['edition_id'];
-            $article->section_id = $data_article['section_id'];
-            $article->year = $data_article['year'];
+        $article->title          = $data_article['title'];
+        $article->description    = $data_article['description'];
+        $article->embed_video    = $data_article['embed_video'];
+        $article->writer_name    = $data_article['writer_name'];
+        $article->writer_company = $data_article['writer_company'];
 
-            $article->title = $value['title'];
-            $article->description = $value['description'];
-            $article->embed_video = $value['embed_video'];
-            $article->writer_name = $value['writer_name'];
-            $article->writer_company = $value['writer_company'];
+        $article->save();
 
-            $article->save();
+        //Images
+        $item_ids = [];
+        if (isset($data_article['article_image'])) 
+        {
+            $images = $data_article['article_image'];
+            foreach ($images as $image) {
 
-            //Images
-            $item_ids = [];
-            if (isset($value['article_image'])) {
-                $images = $value['article_image'];
-                foreach ($images as $image) {
-
-                    $article_image = new ArticleImage;
-                    if (isset($image['article_image_id']) && $image['article_image_id'] != '') {
-                        $article_image = ArticleImage::find($image['article_image_id']);
-                    }
-
-                    if (!empty($image['image'])) {
-                        $image_obj = $image['image'];
-                        $destinationPath = public_path() . '/uploads/'; // upload path
-                        $extension = $image_obj->getClientOriginalExtension(); // getting image extension
-                        $fileName = rand(11111, 99999) . time() . '.' . $extension; // renameing image
-                        $image_obj->move($destinationPath, $fileName); // uploading file to given path
-                        // Image resize
-                        $original_img_path = $destinationPath.$fileName;
-                        $this->resize("100","100",$original_img_path,$fileName); 
-                        
-                        $article_image->image = $fileName;
-                    }
-
-                    $article_image->article_id = $article->article_id;
-                    $article_image->text = $image['text'];
-                    $article_image->link = $image['link'];
-                    $article_image->description = $image['description'];
-                    $article_image->save();
-                    $item_ids[$article_image->article_image_id] = $article_image->article_image_id;
+                $article_image = new ArticleImage;
+                if (isset($image['article_image_id']) && $image['article_image_id'] != '') {
+                    $article_image = ArticleImage::find($image['article_image_id']);
                 }
+
+                if (!empty($image['image'])) {
+                    $image_obj = $image['image'];
+                    $destinationPath = public_path() . '/uploads/'; // upload path
+                    $extension = $image_obj->getClientOriginalExtension(); // getting image extension
+                    $fileName = rand(11111, 99999) . time() . '.' . $extension; // renameing image
+                    $image_obj->move($destinationPath, $fileName); // uploading file to given path
+                    // Image resize
+                   // $original_img_path = $destinationPath.$fileName;
+                   // $this->resize("100","100",$original_img_path,$fileName); 
+
+                    $article_image->image = $fileName;
+                }
+
+                $article_image->article_id = $article->article_id;
+                $article_image->text = $image['text'];
+                $article_image->link = $image['link'];
+                $article_image->description = $image['description'];
+                $article_image->save();
+                $item_ids[$article_image->article_image_id] = $article_image->article_image_id;
             }
 
             //Remove deleted images in database
             $old_images = $article->articleImages->lists('article_image_id')->toArray();
-            $delete_ids = array_diff($old_images, $item_ids);
-            if (!empty($delete_ids)) {
-                foreach ($delete_ids as $delete_id) {
-                    ArticleImage::destroy($delete_id);
+            if(!empty($item_ids))
+            {    
+                $delete_ids = array_diff($old_images, $item_ids);
+                if (!empty($delete_ids)) {
+                    foreach ($delete_ids as $delete_id) {
+                        ArticleImage::destroy($delete_id);
+                    }
                 }
-            }
+            }    
         }
+
         Session::flash('flash_message', 'Article updated successfully!');
         return redirect('/admin/article/index');
     }
@@ -262,6 +243,12 @@ class ArticleController extends Controller {
      */
     public function destroy($id) {
         //
+    
+        $article = Article::find($id);
+        $article->delete();
+        Session::flash('flash_message', 'Article deleted successfully!');
+        
+        return redirect('/admin/article/index');
     }
 
 }

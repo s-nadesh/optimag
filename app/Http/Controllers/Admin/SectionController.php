@@ -95,7 +95,12 @@ class SectionController extends Controller {
      * @return Response
      */
     public function destroy($id) {
-        //
+        //        
+        $section = Section::find($id);
+        $section->delete();
+        Session::flash('flash_message', 'Section and that related articles deleted successfully!');
+        
+        return redirect('/admin/sections');
     }
 
 }

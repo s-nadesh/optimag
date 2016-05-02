@@ -24,10 +24,10 @@ $(document).ready(function () {
         e.preventDefault();
         if (en_x < en_max_fields) {
             var en_html = '<div class="box-body" id="remove_en' + en_x + '"><div class="row">';
-            en_html += '<div class="col-xs-3"><input type="file" name="article[lang][en][article_image][' + en_x + '][image]"></div>';
-            en_html += '<div class="col-xs-2"><input type="text" name="article[lang][en][article_image][' + en_x + '][text]" placeholder="Image Text" class="form-control"></div>';
-            en_html += '<div class="col-xs-2"><input type="text" name="article[lang][en][article_image][' + en_x + '][link]" placeholder="Image Link" class="form-control"></div>';
-            en_html += '<div class="col-xs-4"><textarea rows="2" cols="10" name="article[lang][en][article_image][' + en_x + '][description]" placeholder="Image Description" class="form-control"></textarea></div>';
+            en_html += '<div class="col-xs-3"><input type="file" name="article[article_image][' + en_x + '][image]"></div>';
+            en_html += '<div class="col-xs-2"><input type="text" name="article[article_image][' + en_x + '][text]" placeholder="Image Text" class="form-control"></div>';
+            en_html += '<div class="col-xs-2"><input type="text" name="article[article_image][' + en_x + '][link]" placeholder="Image Link" class="form-control"></div>';
+            en_html += '<div class="col-xs-4"><textarea rows="2" cols="10" name="article[article_image][' + en_x + '][description]" placeholder="Image Description" class="form-control"></textarea></div>';
             en_html += '<div class="col-xs-1"><button class="btn btn-danger en_remove_field" data-remove-id="remove_en' + en_x + '"><i class="fa fa-trash"></i></button></div>';
             en_html += '</div></div>';
             $(en_wrapper).append(en_html);
@@ -82,8 +82,7 @@ $(document).ready(function () {
             <div class="nav-tabs-custom" id="articlewizard">
                 <ul class="nav nav-tabs">
                     <li class="active"><a href="#tab_1" data-toggle="tab">General</a></li>
-                    <li><a href="#tab_2" data-toggle="tab">English</a></li>
-                    <li><a href="#tab_3" data-toggle="tab">French</a></li>
+                    <li><a href="#tab_2" data-toggle="tab">Article Info</a></li>
                 </ul>
 
                 <div class="tab-content">
@@ -108,42 +107,49 @@ $(document).ready(function () {
                                 {!! Form::select('article[year]', $years, null, ['class' => 'form-control']) !!}
                             </div>
                         </div>
+                        
+                          <div class="form-group">
+                            {!! Form::label('article[language]', 'Language:*', ['class' => 'col-sm-2 control-label']) !!}
+                            <div class="col-sm-5">
+                                {!! Form::select('article[language]', $languages, null, ['class' => 'form-control']) !!}
+                            </div>
+                        </div>
                     </div>
 
                     <div class="tab-pane" id="tab_2">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    {!! Form::label('article[lang][en][title]', 'Title:', ['class' => 'col-sm-4 control-label']) !!}
+                                    {!! Form::label('article[title]', 'Title:', ['class' => 'col-sm-4 control-label']) !!}
                                     <div class="col-sm-7">
-                                        {!! Form::text('article[lang][en][title]', null, ['class' => 'form-control', 'placeholder' => 'Title']) !!}
+                                        {!! Form::text('article[title]', null, ['class' => 'form-control', 'placeholder' => 'Title']) !!}
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    {!! Form::label('article[lang][en][writer_name]', 'Writer Name:', ['class' => 'col-sm-4 control-label']) !!}
+                                    {!! Form::label('article[writer_name]', 'Writer Name:', ['class' => 'col-sm-4 control-label']) !!}
                                     <div class="col-sm-7">
-                                        {!! Form::text('article[lang][en][writer_name]', null, ['class' => 'form-control', 'placeholder' => 'Writer Name']) !!}
+                                        {!! Form::text('article[writer_name]', null, ['class' => 'form-control', 'placeholder' => 'Writer Name']) !!}
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    {!! Form::label('article[lang][en][writer_company]', 'Writer Company:', ['class' => 'col-sm-4 control-label']) !!}
+                                    {!! Form::label('article[writer_company]', 'Writer Company:', ['class' => 'col-sm-4 control-label']) !!}
                                     <div class="col-sm-7">
-                                        {!! Form::text('article[lang][en][writer_company]', null, ['class' => 'form-control', 'placeholder' => 'Writer Company']) !!}
+                                        {!! Form::text('article[writer_company]', null, ['class' => 'form-control', 'placeholder' => 'Writer Company']) !!}
                                     </div>
                                 </div>
                             </div>
 
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    {!! Form::label('article[lang][en][description]', 'Description:', ['class' => 'col-sm-4 control-label']) !!}
+                                    {!! Form::label('article[description]', 'Description:', ['class' => 'col-sm-4 control-label']) !!}
                                     <div class="col-sm-7">
-                                        {!! Form::textarea('article[lang][en][description]', null, ['class' => 'form-control', 'placeholder' => 'Description', 'size' => '20x2']) !!}
+                                        {!! Form::textarea('article[description]', null, ['class' => 'form-control', 'placeholder' => 'Description', 'size' => '20x2']) !!}
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    {!! Form::label('article[lang][en][embed_video]', 'Embed Video:', ['class' => 'col-sm-4 control-label']) !!}
+                                    {!! Form::label('article[embed_video]', 'Embed Video:', ['class' => 'col-sm-4 control-label']) !!}
                                     <div class="col-sm-7">
-                                        {!! Form::textarea('article[lang][en][embed_video]', null, ['class' => 'form-control', 'placeholder' => 'Embed Video', 'size' => '20x2']) !!}
+                                        {!! Form::textarea('article[embed_video]', null, ['class' => 'form-control', 'placeholder' => 'Embed Video', 'size' => '20x2']) !!}
                                     </div>
                                 </div>
                             </div>
@@ -159,63 +165,6 @@ $(document).ready(function () {
                                         </button>
                                     </div>
                                     <div id="en_images">
-
-                                    </div>
-                                    <!-- /.box-body -->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="tab-pane" id="tab_3">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    {!! Form::label('article[lang][fr][title]', 'Title:', ['class' => 'col-sm-4 control-label']) !!}
-                                    <div class="col-sm-7">
-                                        {!! Form::text('article[lang][fr][title]', null, ['class' => 'form-control', 'placeholder' => 'Title']) !!}
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    {!! Form::label('article[lang][fr][writer_name]', 'Writer Name:', ['class' => 'col-sm-4 control-label']) !!}
-                                    <div class="col-sm-7">
-                                        {!! Form::text('article[lang][fr][writer_name]', null, ['class' => 'form-control', 'placeholder' => 'Writer Name']) !!}
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    {!! Form::label('article[lang][fr][writer_company]', 'Writer Company:', ['class' => 'col-sm-4 control-label']) !!}
-                                    <div class="col-sm-7">
-                                        {!! Form::text('article[lang][fr][writer_company]', null, ['class' => 'form-control', 'placeholder' => 'Writer Company']) !!}
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    {!! Form::label('article[lang][fr][description]', 'Description:', ['class' => 'col-sm-4 control-label']) !!}
-                                    <div class="col-sm-7">
-                                        {!! Form::textarea('article[lang][fr][description]', null, ['class' => 'form-control', 'placeholder' => 'Description', 'size' => '20x2']) !!}
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    {!! Form::label('article[lang][fr][embed_video]', 'Embed Video:', ['class' => 'col-sm-4 control-label']) !!}
-                                    <div class="col-sm-7">
-                                        {!! Form::textarea('article[lang][fr][embed_video]', null, ['class' => 'form-control', 'placeholder' => 'Embed Video', 'size' => '20x2']) !!}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="box box-info">
-                                    <div class="box-header">
-                                        <h3 class="box-title">Images</h3>
-                                        <button class="btn btn-primary fr_add_button pull-right">
-                                            <i class="fa fa-plus"> </i> Add More 
-                                        </button>
-                                    </div>
-                                    <div id="fr_images">
 
                                     </div>
                                     <!-- /.box-body -->

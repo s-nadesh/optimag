@@ -40,6 +40,7 @@ $(function () {
                             <tr>
                                 <th class="hidden"></th>
                                 <th>S.No</th>
+                                <th>Language</th>
                                 <th>Title</th>
                                 <th>Edition</th>
                                 <th>Section</th>
@@ -51,15 +52,19 @@ $(function () {
                             @foreach ($articles as $key => $article)
                             <tr>
                                 <td class="hidden"> </td>
-                                <td>{{ ++$key }}</td>                                 
-                                <td>{{ $article->title }}<br>{{ App\Article::get_article_title($article->article_key , $article->language) }}</td>
+                                <td>{{ ++$key }}</td>     
+                                <td>{{ $article->language }}</td>
+                                <td>{{ $article->title }}</td>
                                 <td>{{ $article->edition->edition_name_en }}</td>
                                 <td>{{ $article->section->section_name_en }}</td>
                                 <td>{{ $article->year }}</td>
                                 
                                 <td align="center">
-                                    <a href="{{URL::to('admin/article/edit',$article->article_key)}}">
+                                    <a href="{{URL::to('admin/article/edit',$article->article_id)}}">
                                        <i class="glyphicon glyphicon-pencil"></i>
+                                    </a>&nbsp;&nbsp;&nbsp;&nbsp;
+                                     <a href="{{URL::to('admin/article/destroy',$article->article_id)}}" onclick="return confirm('Are you sure you want to delete?')" >
+                                        <i class="glyphicon glyphicon-trash"></i>
                                     </a>
                                 </td>
                             </tr>

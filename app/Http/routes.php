@@ -33,6 +33,7 @@ $router->group([
 
     //Sections
     resource('admin/sections', 'SectionController');
+    get('admin/sections/destroy/{key}', 'SectionController@destroy');
 
     //Adsense
     resource('admin/adsenses', 'AdsenseController');
@@ -43,6 +44,7 @@ $router->group([
     get('admin/article/create', 'ArticleController@create');
     post('admin/article/store', 'ArticleController@store');
     get('admin/article/edit/{key}', 'ArticleController@edit');
+    get('admin/article/destroy/{key}', 'ArticleController@destroy');
     post('admin/article/update', 'ArticleController@update');
     
     //Ads
