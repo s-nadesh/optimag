@@ -9,16 +9,30 @@
 @section('script_files')
 <script src="{{ URL::asset('js/plugins/datatables/jquery.dataTables.js') }}" type="text/javascript"></script>
 <script src="{{ URL::asset('js/plugins/datatables/dataTables.bootstrap.js') }}" type="text/javascript"></script>
+<script src="{{ URL::asset('js/plugins/datatables/jquery.dataTables.rowGrouping.js') }}" type="text/javascript"></script>
 @stop
 
 @section('scripts')
 <script>
 $(function () {
-    $("#example1").dataTable();
+    $("#example1").dataTable({
+       iDisplayLength: 25, 
+    }).rowGrouping({    
+        bExpandableGrouping: true,
+        iGroupingColumnIndex: 0,
+        sGroupingColumnSortDirection: "desc",
+    });
 });
 </script>
 @stop
-
+<style>
+     td.group
+        {
+            background-color: #d5eafd !important;
+            border-bottom: 1px solid #94bafd;
+            border-top: 1px solid #94bafd;
+        }
+</style>
 @section('content')
 <!-- Main content -->
 <section class="content">
@@ -37,28 +51,23 @@ $(function () {
                 <div class="box-body table-responsive">
                     <table id="example1" class="table table-bordered table-striped">
                         <thead>
-                            <tr>
-                                <th class="hidden"></th>
-                                <th>S.No</th>
-                                <th>Language</th>
-                                <th>Title</th>
-                                <th>Edition</th>
+                            <tr>  
+                                <th>Year</th>    
+                                <th>Title</th>                               
                                 <th>Section</th>
-                                <th>Year</th>                                
+                                <th>Edition</th>
+                                <th>Language</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($articles as $key => $article)
                             <tr>
-                                <td class="hidden"> </td>
-                                <td>{{ ++$key }}</td>     
-                                <td>{{ $article->language }}</td>
-                                <td>{{ $article->title }}</td>
-                                <td>{{ $article->edition->edition_name_en }}</td>
+                               <td>{{ $article->year }} {{ $article->edition->edition_name_en }}</td>
+                               <td>{{ $article->title }}</td>                                
                                 <td>{{ $article->section->section_name_en }}</td>
-                                <td>{{ $article->year }}</td>
-                                
+                                <td>{{ $article->edition->edition_name_en }}</td>                               
+                                <td>{{ $article->language }}</td>                                
                                 <td align="center">
                                     <a href="{{URL::to('admin/article/edit',$article->article_id)}}">
                                        <i class="glyphicon glyphicon-pencil"></i>
