@@ -40,7 +40,7 @@ class HomeController extends Controller
               'banner_results' => []  
             ];            
             
-            $articles = Article::whereRaw("status=1 and edition_id='$edition_id' AND year = '$year' AND language='$lang'")->groupBy('section_id')->orderBy("article_id","desc")->get();
+            $articles = Article::whereRaw("status=1 and edition_id='$edition_id' AND year = '$year' AND language='$lang'")->groupBy('section_id')->orderBy('article_id', 'DESC')->get();
         
             foreach($articles as $article){
                 
@@ -71,7 +71,9 @@ class HomeController extends Controller
             // Home - position 1
             $banner_results = MyFuncs::banner_display(1,$lang);
             $response['banner_results'][] = $banner_results;
-                   
+            echo "<pre>";  
+            print_r($response);
+            exit;
         }catch (Exception $e){
             $statusCode = 400;
         }finally{          
@@ -201,5 +203,12 @@ class HomeController extends Controller
             return response()->json([$response, $statusCode]);
         }   
     }
+    
+    public function search($keyword,$edition)
+    {
+        echo $keyword;
+        echo $edition;
+        
+    }        
    
 }

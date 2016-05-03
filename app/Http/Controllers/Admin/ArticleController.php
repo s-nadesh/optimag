@@ -21,7 +21,7 @@ class ArticleController extends Controller {
      * @return Response
      */
     public function index() {
-        $articles = Article::orderBy('year', 'DESC')->orderBy('edition_id', 'DESC')->get();
+        $articles = Article::orderBy('year', 'DESC')->orderBy('edition_id', 'DESC')->orderBy('article_id', 'DESC')->get();
         return view('admin.article.index', compact('articles'));
     }
 
