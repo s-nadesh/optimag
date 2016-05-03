@@ -71,9 +71,7 @@ class HomeController extends Controller
             // Home - position 1
             $banner_results = MyFuncs::banner_display(1,$lang);
             $response['banner_results'][] = $banner_results;
-            echo "<pre>";  
-            print_r($response);
-            exit;
+         
         }catch (Exception $e){
             $statusCode = 400;
         }finally{          
@@ -85,7 +83,7 @@ class HomeController extends Controller
     {
         $lang = ($lang!="")?$lang:"en"; 
         
-        $articles = Article::whereRaw("status=1 and section_id='$sid' and language='$lang'")->orderBy("article_id","desc")->take(6)->get();
+        $articles = Article::whereRaw("status=1 and section_id='$sid' and language='$lang'")->orderBy('year', 'DESC')->orderBy('edition_id', 'DESC')->orderBy("article_id","desc")->take(6)->get();
         
         try{
             
@@ -120,7 +118,7 @@ class HomeController extends Controller
                     'type_val'      => 'article'    
                 ];
             }
-           
+   
             $articlecounts = count($response['articles']);            
                
             // Ads positions
@@ -153,8 +151,7 @@ class HomeController extends Controller
                 
                $i++;
             } 
-            
-     
+          
         }catch (Exception $e){
             $statusCode = 400;
         }finally{          
@@ -180,6 +177,7 @@ class HomeController extends Controller
                 
                 $lang = $article->language;
                 $edition_column = "edition_name_".$lang;
+                $section_column = "section_name_".$lang;
                 $response['articles'][] = [
                     'article_id'    => $article->article_id,
                     'article_title' => $article->title,
@@ -188,6 +186,7 @@ class HomeController extends Controller
                     'writer_company'=> $article->writer_company,
                     'year'          => $article->year, 
                     'edition'       => $article->edition->$edition_column, 
+                    'section_name'  => $article->section->$section_column,  
                     'article_image' => $art_imges,
                     'embed_video'   => $article->embed_video
                 ];

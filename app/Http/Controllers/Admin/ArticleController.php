@@ -56,6 +56,7 @@ class ArticleController extends Controller {
             $article->edition_id  = $data_article['edition_id'];
             $article->section_id  = $data_article['section_id'];
             $article->year        = $data_article['year'];
+            $article->status      = $data_article['status'];
 
             $article->article_key = $article_key;
             $article->language    = $data_article['language'];
@@ -150,6 +151,7 @@ class ArticleController extends Controller {
             'embed_video' => $articles['embed_video'],
             'writer_name' => $articles['writer_name'],
             'writer_company' => $articles['writer_company'],
+            'status'      => $articles['status'],
         );
         
         $articles_image = $articles_obj->articleImages->toArray();
@@ -176,6 +178,7 @@ class ArticleController extends Controller {
         $article->section_id = $data_article['section_id'];
         $article->year       = $data_article['year'];
         $article->language   = $data_article['language'];
+        $article->status     = $data_article['status'];
 
         $article->title          = $data_article['title'];
         $article->description    = $data_article['description'];

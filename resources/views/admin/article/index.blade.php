@@ -25,13 +25,22 @@ $(function () {
 });
 </script>
 @stop
-<style>
-     td.group
-        {
-            background-color: #d5eafd !important;
-            border-bottom: 1px solid #94bafd;
-            border-top: 1px solid #94bafd;
-        }
+<style>     
+tr:hover th, tr:hover td
+{
+    background-color: #ebebeb;
+    background-image: none;
+}
+td
+{
+    height: 26px;
+    padding: 5px 5px 5px 20px !important;
+    text-align: left;
+    border-bottom: 1px solid #d0d0d0;
+    vertical-align: middle;
+    color: #555555;
+    background-color: #ffffff;
+}        
 </style>
 @section('content')
 <!-- Main content -->
@@ -57,6 +66,7 @@ $(function () {
                                 <th>Section</th>
                                 <th>Edition</th>
                                 <th>Language</th>
+                                <th>Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -67,7 +77,14 @@ $(function () {
                                <td>{{ $article->title }}</td>                                
                                 <td>{{ $article->section->section_name_en }}</td>
                                 <td>{{ $article->edition->edition_name_en }}</td>                               
-                                <td>{{ $article->language }}</td>                                
+                                <td>{{ $article->language }}</td>    
+                                 <td align="center">
+                                    @if($article->status == 1)                               
+                                        <i class="fa fa-circle text-green"></i>
+                                    @else
+                                        <i class="fa fa-circle text-red"></i>
+                                    @endif
+                                </td>
                                 <td align="center">
                                     <a href="{{URL::to('admin/article/edit',$article->article_id)}}">
                                        <i class="glyphicon glyphicon-pencil"></i>

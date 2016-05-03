@@ -114,6 +114,14 @@ $(document).ready(function () {
                                 {!! Form::select('article[language]', $languages, null, ['class' => 'form-control']) !!}
                             </div>
                         </div>
+                        
+                         <div class="form-group">
+                        {!! Form::label('article[status]', 'Status:', ['class' => 'col-sm-2 control-label']) !!}
+                        <div class="col-sm-5">
+                            {!! Form::radio('article[status]', '1', true) !!} Enable
+                            {!! Form::radio('article[status]', '0', null) !!} Disable
+                        </div>
+                    </div>    
                     </div>
 
                     <div class="tab-pane" id="tab_2">
