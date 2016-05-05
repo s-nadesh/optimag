@@ -1,6 +1,6 @@
 @extends('admin.layout')
 
-@section('title') Ads @stop
+@section('title') Archivage Categories @stop
 
 @section('link')
 <link href="{{ URL::asset('css/datatables/dataTables.bootstrap.css') }}" rel="stylesheet" type="text/css" />
@@ -29,9 +29,8 @@ $(function () {
         <div class="col-xs-12">
             <div class="box">
                 <div class="box-header">
-                    
-                    <a href="{{URL::to('admin/ads/create')}}" class="btn btn-primary btn-link pull-right">
-                        Add
+                    <a href="{{route('admin.archivecategories.create')}}" class="btn btn-primary btn-link pull-right">
+                        Add Category
                     </a>
                 </div>
                 <!-- /.box-header -->
@@ -40,47 +39,32 @@ $(function () {
                         <thead>
                             <tr>
                                 <th>S.No</th>
-                                <th>Lang</th>
-                                <th>Title</th> 
-                                <th>Type</th>
-                                <th>Page</th>
-                                <th>Position</th>
-                                <th>Start Date</th>
-                                <th>End Date</th>
-                                <th>Impressions</th>
-                                <th>Clicks</th>
-                                <th>Status</th>
+                                <th>Title in French</th>
+                                <th>Title in English</th>                               
+                                <th></th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($ads as $key => $ad)
+                            @foreach ($archivecategories as $key => $archivecategory)
                             <tr>
                                 <td>{{ ++$key }}</td>
-                                <td>{{ $ad->lang }}</td>  
-                                <td>{{ $ad->ad_title }}</td> 
-                                <td>{{ $ad->ad_type }}</td>  
-                                <td>{{ $ad->adsPosition->title }}</td>
-                                <td>{{ $ad->position }}</td>
-                                <td>{{ $ad->start_date }}</td>
-                                <td>{{ $ad->end_date }}</td>
-                                <td>{{ $ad->impressions }}</td>                                 
-                                <td>{{ $ad->clicks }}</td>  
+                                <td>{{ $archivecategory->category_fr }}</td>     
+                                <td>{{ $archivecategory->category_en }}</td>
                                 <td align="center">
-                                    @if($ad->status == 1)                                   
-                                        <i class="fa fa-circle text-green"></i>
-                                   @else
-                                        <i class="fa fa-circle text-red"></i>
-                                   @endif
+                                    <a href="{{URL::to('admin/archiveimages/index',$archivecategory->id_category)}}" data-toggle="tooltip" title="" class="view" data-original-title="Voir">
+                                        <i class="glyphicon glyphicon-eye-open"></i>
+                                    </a>
                                 </td>
-                                <td>
-                                     <a href="{{URL::to('admin/ads/edit',$ad->ad_id)}}" >
+                                <td align="center">
+                                    <a href="{{route('admin.archivecategories.edit',$archivecategory->id_category)}}" >
                                        <i class="glyphicon glyphicon-pencil"></i>
                                     </a>&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <a href="{{URL::to('admin/ads/destroy',$ad->ad_id)}}" onclick="return confirm('Are you sure you want to delete?')" >
+                                    <a href="{{URL::to('admin/archivecategories/destroy',$archivecategory->id_category)}}" onclick="return confirm('Are you sure you want to delete?')" >
                                         <i class="glyphicon glyphicon-trash"></i>
                                         
                                     </a>
+                                    
                                 </td>
                             </tr>
                             @endforeach

@@ -1,6 +1,6 @@
 @extends('admin.layout')
 
-@section('title') Ads @stop
+@section('title') Archivage Images @stop
 
 @section('link')
 <link href="{{ URL::asset('css/datatables/dataTables.bootstrap.css') }}" rel="stylesheet" type="text/css" />
@@ -30,8 +30,8 @@ $(function () {
             <div class="box">
                 <div class="box-header">
                     
-                    <a href="{{URL::to('admin/ads/create')}}" class="btn btn-primary btn-link pull-right">
-                        Add
+                    <a href="{{URL::to('admin/archiveimages/create')}}" class="btn btn-primary btn-link pull-right">
+                        Add Image
                     </a>
                 </div>
                 <!-- /.box-header -->
@@ -40,44 +40,30 @@ $(function () {
                         <thead>
                             <tr>
                                 <th>S.No</th>
-                                <th>Lang</th>
-                                <th>Title</th> 
-                                <th>Type</th>
-                                <th>Page</th>
-                                <th>Position</th>
-                                <th>Start Date</th>
-                                <th>End Date</th>
-                                <th>Impressions</th>
-                                <th>Clicks</th>
-                                <th>Status</th>
+                                <th>Title in French</th>
+                                <th>Title in English</th> 
+                                <th>Image</th>
+                                <th>Extension </th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($ads as $key => $ad)
+                            @foreach ($archiveimages as $key => $archiveimage)
                             <tr>
                                 <td>{{ ++$key }}</td>
-                                <td>{{ $ad->lang }}</td>  
-                                <td>{{ $ad->ad_title }}</td> 
-                                <td>{{ $ad->ad_type }}</td>  
-                                <td>{{ $ad->adsPosition->title }}</td>
-                                <td>{{ $ad->position }}</td>
-                                <td>{{ $ad->start_date }}</td>
-                                <td>{{ $ad->end_date }}</td>
-                                <td>{{ $ad->impressions }}</td>                                 
-                                <td>{{ $ad->clicks }}</td>  
-                                <td align="center">
-                                    @if($ad->status == 1)                                   
-                                        <i class="fa fa-circle text-green"></i>
-                                   @else
-                                        <i class="fa fa-circle text-red"></i>
-                                   @endif
-                                </td>
+                                <td>{{ $archiveimage->title_image_fr }}</td>  
+                                <td>{{ $archiveimage->title_image_en }}</td> 
+                                <td>{{ $archiveimage->image }}</td>  
+                                <td>{{ $archiveimage->extension }}</td>
                                 <td>
-                                     <a href="{{URL::to('admin/ads/edit',$ad->ad_id)}}" >
+                                    <a href="{{URL::to('uploads/ads',$archiveimage->image)}}" onclick="window.open(this.href, 'archive images',
+'left=20,top=20,width=600,height=600,toolbar=0,resizable=0'); return false;" >
+                                       <i class="glyphicon glyphicon-eye-open"></i>
+                                    </a>&nbsp;&nbsp;&nbsp;&nbsp;
+                                     <a href="{{URL::to('admin/archiveimages/edit',$archiveimage->id_image)}}" >
                                        <i class="glyphicon glyphicon-pencil"></i>
                                     </a>&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <a href="{{URL::to('admin/ads/destroy',$ad->ad_id)}}" onclick="return confirm('Are you sure you want to delete?')" >
+                                    <a href="{{URL::to('admin/archiveimages/destroy',$archiveimage->id_image)}}" onclick="return confirm('Are you sure you want to delete?')" >
                                         <i class="glyphicon glyphicon-trash"></i>
                                         
                                     </a>
@@ -93,5 +79,6 @@ $(function () {
 
 </section>
 <!-- /.content -->
+
 @stop
 

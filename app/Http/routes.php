@@ -39,6 +39,20 @@ $router->group([
     resource('admin/adsenses', 'AdsenseController');
     get('admin/adsenses/destroy/{key}', 'AdsenseController@destroy');
     
+    //ArchiveCategory
+    resource('admin/archivecategories', 'ArchiveCategoryController');
+    post('admin/archivecategories/store', 'ArchiveCategoryController@store'); 
+    get('admin/archivecategories/destroy/{key}', 'ArchiveCategoryController@destroy');
+    
+    //ArchiveImage
+//    resource('admin/archiveimages', 'ArchiveImageController');
+    get('admin/archiveimages/index/{key}', 'ArchiveImageController@index');
+    get('admin/archiveimages/create', 'ArchiveImageController@create');
+    post('admin/archiveimages/store', 'ArchiveImageController@store'); 
+    get('admin/archiveimages/edit/{key}', 'ArchiveImageController@edit');
+    get('admin/archiveimages/destroy/{key}', 'ArchiveImageController@destroy');
+    post('admin/archiveimages/update', 'ArchiveImageController@update');
+    
     //Articles
     get('admin/article/index', 'ArticleController@index');
     get('admin/article/create', 'ArticleController@create');
@@ -48,9 +62,15 @@ $router->group([
     post('admin/article/update', 'ArticleController@update');
     
     //Ads
-    resource('admin/ads', 'AdsController');
+//    resource('admin/ads', 'AdsController');
+    get('admin/ads/index', 'AdsController@index');
+    get('admin/ads/create', 'AdsController@create');
     post('admin/ads/store', 'AdsController@store'); 
     get('admin/ads/destroy/{key}', 'AdsController@destroy');
+    get('admin/ads/show/{key}', 'AdsController@show');
+    get('admin/ads/previewimage/{key}', 'AdsController@previewimage');
+    get('admin/ads/edit/{key}', 'AdsController@edit');
+    post('admin/ads/update', 'AdsController@update');
     
     #resource('admin/adssetting', 'AdsSettingController');
     

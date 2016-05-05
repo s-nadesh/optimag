@@ -71,23 +71,23 @@
                     </div>
                     
                     <div class="form-group" id="hom_type">
-                        {!! Form::label('ad_type', 'Type:', ['class' => 'col-sm-2 control-label']) !!}
+                        {!! Form::label('ad_type', 'Type:*', ['class' => 'col-sm-2 control-label']) !!}
                         <div class="col-sm-5">
-                            {!! Form::radio('ad_type', 'video', true) !!} Video
+                            {!! Form::radio('ad_type', 'video') !!} Video
                             {!! Form::radio('ad_type', 'image') !!} Image
                         </div>
                     </div>  
                     
                     <div id="video_cnt"> 
                         <div class="form-group">
-                            {!! Form::label('video_embed', 'Embed Code:', ['class' => 'col-sm-2 control-label']) !!}
+                            {!! Form::label('video_embed', 'Embed Code:*', ['class' => 'col-sm-2 control-label']) !!}
                             <div class="col-sm-5">
                                 {!! Form::textarea('video_embed', null, ['class' => 'form-control', 'size' => '20x2']) !!}  
                             </div>
                         </div>
                     
                         <div class="form-group">
-                            {!! Form::label('advertiser_url', 'Advertiser’s Website:', array( 'class' => 'col-sm-2 control-label')) !!}
+                            {!! Form::label('advertiser_url', 'Advertiser’s Website:*', array( 'class' => 'col-sm-2 control-label')) !!}
                             <div class="col-sm-5">
                             {!! Form::text('advertiser_url', null, ['placeholder' => 'Advertiser’s Website', 'class' => 'form-control']) !!}
                             </div>   
@@ -96,13 +96,27 @@
                     
                     <div id="img_cnt" style="display:none;"> 
                         <div class="form-group">
-                            {!! Form::label('image', 'Image:', array( 'class' => 'col-sm-2 control-label')) !!}
-                            <div class="col-sm-5">
-                                {!! Form::file('image') !!}                           
+                            {!! Form::label('image', 'Image:*', array( 'class' => 'col-sm-2 control-label')) !!}
+                            <div class="col-sm-3">
+                                <!--{!! Form::file('image') !!}-->                           
+                                <select name="image_category" id="image_category" class="form-control">
+                                    <option value="0">--Select Category--</option>
+                                    @foreach($archivecategories as $key=>$archivecategory )
+                                    <option value="{{ $key }}">{{ $archivecategory }}</option>
+                                    @endforeach
+                                </select>
                             </div>
-                        </div>    
+                            <div class="col-sm-2">
+                                <select name="id_image" id="id_image" class="form-control">
+                                    <option value="0">--Select Image--</option>
+                                </select>
+                                <a class="viewficherfile" href="javascript:void(0);" onclick="window.open(this.href, 'archive images',
+'left=20,top=20,width=600,height=600,toolbar=0,resizable=0'); return false;"><img src={{asset('img/preview.gif')}} alt="preview"></a>
+                            </div>
+                        </div>   
+                        
                         <div class="form-group">
-                            {!! Form::label('ad_link', 'Ad Link:', array( 'class' => 'col-sm-2 control-label')) !!}
+                            {!! Form::label('ad_link', 'Ad Link:*', array( 'class' => 'col-sm-2 control-label')) !!}
                             <div class="col-sm-5">
                             {!! Form::text('ad_link', null, ['placeholder' => 'Ad Link', 'class' => 'form-control']) !!}
                             </div>   
@@ -137,24 +151,55 @@ $(function() {
     $('.year').datepicker({ dateFormat: 'yyyy',autoclose: true });
     $('.date').datepicker({ format: 'yyyy-mm-dd',autoclose: true });    
     
-    $( "#calendar1" ).datepicker( "setDate" , new Date());
-    $( "#calendar2" ).datepicker( "setDate" , new Date());
+    if($( "#calendar1" ).val().length == 0){
+        $( "#calendar1" ).datepicker( "setDate" , new Date());
+    }
+    if($( "#calendar2" ).val().length == 0){
+        $( "#calendar2" ).datepicker( "setDate" , new Date());
+    }
+    var page = $( "#page" ).val();
+    if(page == 1){
+        
+            var typeval1 = $('input[name="ad_type"]:checked').val();
+            if(typeval1 == "image")
+            {
+                $('#video_cnt').hide();  
+                $('#img_cnt').show(); 
+            } 
+
+            if(typeval1 == "video")
+            {
+                $('#video_cnt').show();  
+                $('#img_cnt').hide(); 
+            }
+        
+    }else if(page == 2){
+       $('#sec_positions').show();
+       
+       $('#hom_type').hide();
+       $('#video_cnt').hide();   
+       $('#img_cnt').show(); 
+    }else if(page == 3){
+       $('#sec_positions').hide();
+        $('#hom_type').hide();
+       $('#video_cnt').hide();   
+       $('#img_cnt').show(); 
+    }
     
     $('input[name="ad_type"]').on('ifChecked', function(event){
-        var typeval = $('input[name="ad_type"]:checked').val();
-        if(typeval=="image")
-        {
-            $('#video_cnt').hide();  
-            $('#img_cnt').show(); 
-        } 
-        
-        if(typeval=="video")
-        {
-            $('#video_cnt').show();  
-            $('#img_cnt').hide(); 
-        }
-    });
-    
+            var typeval = $('input[name="ad_type"]:checked').val();
+            if(typeval=="image")
+            {
+                $('#video_cnt').hide();  
+                $('#img_cnt').show(); 
+            } 
+
+            if(typeval=="video")
+            {
+                $('#video_cnt').show();  
+                $('#img_cnt').hide(); 
+            }
+        });
     $('#page').on('change', function() {
         var pos_val = this.value
         
@@ -163,6 +208,7 @@ $(function() {
             $('#hom_type').hide(); 
             $('#video_cnt').hide();  
             $('#img_cnt').show(); 
+            $('input[name="ad_type"]').iCheck('uncheck');
          }else{
             $('#hom_type').show();
             $('#video_cnt').show();  
@@ -171,11 +217,48 @@ $(function() {
          
          if(pos_val==2){
             $('#sec_positions').show();
+            $('input[name="ad_type"]').iCheck('uncheck');
          }else{
             $('#sec_positions').hide();
             $('#position').val("Top");
          }
     });
+    
+    
+    $("#image_category").change(function()
+    {
+        var id=$(this).val();
+
+        $.ajax({
+            type: "GET",
+            url: '/admin/ads/show/'+id,
+            cache: false,
+            success: function(html)
+            {
+                $("#id_image").html(html);
+            }
+        });
+
+    });
+    $("#id_image").change(function(e){
+        var id_image=$(this).val();
+        $.ajax({
+            type: "GET",
+            url: '/admin/ads/previewimage/'+id_image,
+            cache: false,
+            success: function(html){    
+                $(".viewficherfile").attr("href", html);                         
+            }
+         });
+    }); 
+ 
+// Click to preview the ficher file in popup window   
+            
+//    $('.viewficherfile').click(function(event) {
+//        event.preventDefault();           
+//        window.open($(this).attr("href"), "popupWindow", "width=600,height=600,scrollbars=yes");
+//    });    
+    
 });
 </script>
 @stop
