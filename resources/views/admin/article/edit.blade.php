@@ -5,6 +5,10 @@
 @section('script_files')
 <script src="{{ URL::asset('js/jquery.bootstrap.wizard.js') }}" type="text/javascript"></script>
 @stop
+{{--*/ $imgcounts = '1' /*--}}
+ @if(!empty($data['article']['article_image']) && count($data['article']['article_image']) > 0)
+    {{--*/ $imgcounts = count($data['article']['article_image']) /*--}}
+@endif
 
 @section('scripts')
 <script>
@@ -18,7 +22,7 @@ $(document).ready(function () {
     var en_max_fields = 10;
     var en_wrapper = $("#en_images");
     var en_add_button = $(".en_add_button");
-    var en_x = <?php echo count($data['article']['article_image']) ?>;
+    var en_x = <?php echo $imgcounts ?>;
 
     $(en_add_button).click(function (e) {
         e.preventDefault();
@@ -91,12 +95,19 @@ $(document).ready(function () {
                         </div>
                         
                          <div class="form-group">
-                        {!! Form::label('article[status]', 'Status:', ['class' => 'col-sm-2 control-label']) !!}
-                        <div class="col-sm-5">
-                            {!! Form::radio('article[status]', '1', true) !!} Enable
-                            {!! Form::radio('article[status]', '0', null) !!} Disable
+                            {!! Form::label('article[status]', 'Status:', ['class' => 'col-sm-2 control-label']) !!}
+                            <div class="col-sm-5">
+                                {!! Form::radio('article[status]', '1', true) !!} Enable
+                                {!! Form::radio('article[status]', '0', null) !!} Disable
+                            </div>
                         </div>
-                    </div>     
+                        
+                        <div class="form-group">
+                            <div class="col-sm-3 pull-right">
+                                <input type='button' class='btn btn-default button-previous' name='previous' value='Previous' />
+                                <input type='button' class='btn btn-default button-next' name='next' value='Next' />                               
+                            </div>
+                        </div>
                     </div>
 
                     <div class="tab-pane" id="tab_2">
@@ -173,24 +184,34 @@ $(document).ready(function () {
                                             </div>
                                         </div>
                                         @endforeach
+                                        @else
+                                         <div class="box-body" id="remove_en0">
+                                            <div class="row">
+                                                <div class="col-xs-3"><input type="file" name="article[article_image][0][image]"></div>
+                                                <div class="col-xs-2"><input type="text" name="article[article_image][0][text]" placeholder="Image Text" class="form-control"></div>
+                                                <div class="col-xs-2"><input type="text" name="article[article_image][0][link]" placeholder="Image Link" class="form-control"></div>
+                                                <div class="col-xs-4"><textarea rows="2" cols="10" name="article[article_image][0][description]" placeholder="Image Description" class="form-control"></textarea></div>
+                                                <div class="col-xs-1"><button class="btn btn-danger en_remove_field" data-remove-id="remove_en0"><i class="fa fa-trash"></i></button></div>
+                                            </div>
+                                        </div>
                                         @endif
                                     </div>
                                     <!-- /.box-body -->
                                 </div>
                             </div>
                         </div>
+                        
+                        <div class="form-group">
+                            <div class="col-sm-3 pull-right">
+                                <input type='button' class='btn btn-default button-previous' name='previous' value='Previous' />
+                                <input type='button' class='btn btn-default button-next' name='next' value='Next' />
+                                <input type='submit' class='btn btn-primary button-last' name='last' value='Submit' />
+                            </div>
+                        </div>
+                        
                     </div>
                     
                     <!-- /.tab-pane -->
-
-                    <div class="form-group">
-                        <div class="col-sm-3 pull-right">
-                            <input type='button' class='btn btn-default button-previous' name='previous' value='Previous' />
-                            <input type='button' class='btn btn-default button-next' name='next' value='Next' />
-                            <input type='submit' class='btn btn-primary button-last' name='last' value='Submit' />
-                        </div>
-                    </div>
-
                 </div><!-- /.tab-content -->
             </div>
             {!! Form::close() !!}

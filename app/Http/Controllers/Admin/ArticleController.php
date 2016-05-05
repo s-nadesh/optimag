@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Session;
 use Intervention\Image\Facades\Image; // Use this if you want facade style code
+use Validator;
 
 class ArticleController extends Controller {
 
@@ -48,6 +49,17 @@ class ArticleController extends Controller {
         $data = $request->all();
         $data_article = $data['article'];
        // $languages = $data_article['lang'];
+        
+        $messages = [
+            'title.required' => 'Title is required',
+            'description.required'  => 'Description is required',
+        ];
+           
+        $validator = Validator::make($data_article, Article::rules(),$messages);
+        
+        if ($validator->fails()) {
+            return redirect()->back()->withInput()->withErrors($validator->errors());
+        }
 
         $article_key = MyFuncs::getArticleUniqueKey();
        // foreach ($languages as $lang => $value) {
@@ -82,14 +94,16 @@ class ArticleController extends Controller {
                         // Image resize
                         // $original_img_path = $destinationPath.$fileName;
                         // $this->resize("100","100",$original_img_path,$fileName); 
-
-                        $article_image = new ArticleImage;
-                        $article_image->article_id = $article->article_id;
-                        $article_image->image = $fileName;
-                        $article_image->text = $image['text'];
-                        $article_image->link = $image['link'];
-                        $article_image->description = $image['description'];
-                        $article_image->save();
+                        if($extension!="")
+                        {    
+                            $article_image = new ArticleImage;
+                            $article_image->article_id = $article->article_id;
+                            $article_image->image = $fileName;
+                            $article_image->text = $image['text'];
+                            $article_image->link = $image['link'];
+                            $article_image->description = $image['description'];
+                            $article_image->save();
+                        }    
                     }
                 }
             }
@@ -193,31 +207,56 @@ class ArticleController extends Controller {
         if (isset($data_article['article_image'])) 
         {
             $images = $data_article['article_image'];
+     
             foreach ($images as $image) {
-
-                $article_image = new ArticleImage;
+                
                 if (isset($image['article_image_id']) && $image['article_image_id'] != '') {
                     $article_image = ArticleImage::find($image['article_image_id']);
+                    
+                    if (!empty($image['image'])) {
+                        $image_obj = $image['image'];
+                        $destinationPath = public_path() . '/uploads/'; // upload path
+                        $extension = $image_obj->getClientOriginalExtension(); // getting image extension
+                        $fileName = rand(11111, 99999) . time() . '.' . $extension; // renameing image
+                        $image_obj->move($destinationPath, $fileName); // uploading file to given path
+                        // Image resize
+                       // $original_img_path = $destinationPath.$fileName;
+                       // $this->resize("100","100",$original_img_path,$fileName); 
+
+                        $article_image->image = $fileName;
+                    }
+
+                    $article_image->article_id = $article->article_id;
+                    $article_image->text = $image['text'];
+                    $article_image->link = $image['link'];
+                    $article_image->description = $image['description'];
+                    $article_image->save();
+                }else{
+                    $article_image = new ArticleImage;
+                    
+                    if (!empty($image['image'])) {
+                        $image_obj = $image['image'];
+                        $destinationPath = public_path() . '/uploads/'; // upload path
+                        $extension = $image_obj->getClientOriginalExtension(); // getting image extension
+                        $fileName = rand(11111, 99999) . time() . '.' . $extension; // renameing image
+                        if($extension!="")
+                        { 
+                            $image_obj->move($destinationPath, $fileName); // uploading file to given path
+                            // Image resize
+                           // $original_img_path = $destinationPath.$fileName;
+                           // $this->resize("100","100",$original_img_path,$fileName); 
+
+                            $article_image->image = $fileName;
+                            $article_image->article_id = $article->article_id;
+                            $article_image->text = $image['text'];
+                            $article_image->link = $image['link'];
+                            $article_image->description = $image['description'];
+                            $article_image->save();
+                        }    
+                    }                   
                 }
 
-                if (!empty($image['image'])) {
-                    $image_obj = $image['image'];
-                    $destinationPath = public_path() . '/uploads/'; // upload path
-                    $extension = $image_obj->getClientOriginalExtension(); // getting image extension
-                    $fileName = rand(11111, 99999) . time() . '.' . $extension; // renameing image
-                    $image_obj->move($destinationPath, $fileName); // uploading file to given path
-                    // Image resize
-                   // $original_img_path = $destinationPath.$fileName;
-                   // $this->resize("100","100",$original_img_path,$fileName); 
-
-                    $article_image->image = $fileName;
-                }
-
-                $article_image->article_id = $article->article_id;
-                $article_image->text = $image['text'];
-                $article_image->link = $image['link'];
-                $article_image->description = $image['description'];
-                $article_image->save();
+               
                 $item_ids[$article_image->article_image_id] = $article_image->article_image_id;
             }
 

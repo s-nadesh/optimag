@@ -9,6 +9,14 @@ class Article extends Model {
 
     protected $primaryKey = 'article_id';
     
+     public static function rules($id = 0, $merge = []) {
+        return array_merge([
+            'title'       => 'required|min:3',  
+            'description' => 'required|min:10', 
+                ], $merge);
+    }
+    
+    
     public static function get_article_title($article_key,$lang){
         
         $lang = ($lang=="en")?"fr":"en";

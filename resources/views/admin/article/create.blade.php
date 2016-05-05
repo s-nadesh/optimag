@@ -6,6 +6,12 @@
 <script src="{{ URL::asset('js/jquery.bootstrap.wizard.js') }}" type="text/javascript"></script>
 @stop
 
+@if (count($errors) > 0)
+{{--*/ $class_active = 'active' /*--}}
+@else
+{{--*/ $class_active = 'noactive' /*--}}
+@endif
+
 @section('scripts')
 <script>
 $(document).ready(function () {
@@ -14,11 +20,15 @@ $(document).ready(function () {
         'nextSelector': '.button-next',
         'previousSelector': '.button-previous',
     });
-
+    var classactive;    
     var en_max_fields = 10;
     var en_wrapper = $("#en_images");
     var en_add_button = $(".en_add_button");
-    var en_x = 0;
+    var en_x = 1;
+    
+    var classactive = '{{ $class_active }}'
+    if(classactive=="active")
+    $('.nav-tabs a:last').tab('show') 
 
     $(en_add_button).click(function (e) {
         e.preventDefault();
@@ -41,33 +51,7 @@ $(document).ready(function () {
         $('#' + remove_id).remove();
         en_x--;
     })
-
-    var fr_max_fields = 10;
-    var fr_wrapper = $("#fr_images");
-    var fr_add_button = $(".fr_add_button");
-    var fr_x = 0;
-
-    $(fr_add_button).click(function (e) {
-        e.preventDefault();
-        if (fr_x < fr_max_fields) {
-            var fr_html = '<div class="box-body" id="remove_fr' + fr_x + '"><div class="row">';
-            fr_html += '<div class="col-xs-3"><input type="file" name="article[lang][fr][article_image][' + fr_x + '][image]"></div>';
-            fr_html += '<div class="col-xs-2"><input type="text" name="article[lang][fr][article_image][' + fr_x + '][text]" placeholder="Image Text" class="form-control"></div>';
-            fr_html += '<div class="col-xs-2"><input type="text" name="article[lang][fr][article_image][' + fr_x + '][link]" placeholder="Image Link" class="form-control"></div>';
-            fr_html += '<div class="col-xs-4"><textarea rows="2" cols="10" name="article[lang][fr][article_image][' + fr_x + '][description]" placeholder="Image Description" class="form-control"></textarea></div>';
-            fr_html += '<div class="col-xs-1"><button class="btn btn-danger fr_remove_field" data-remove-id="remove_fr' + fr_x + '"><i class="fa fa-trash"></i></button></div>';
-            fr_html += '</div></div>';
-            $(fr_wrapper).append(fr_html);
-            fr_x++;
-        }
-    });
-
-    $(fr_wrapper).on("click", ".fr_remove_field", function (e) { 
-        e.preventDefault();
-        var remove_id = $(this).data("remove-id");
-        $('#' + remove_id).remove();
-        fr_x--;
-    })
+    
 });
 </script>
 @stop
@@ -75,8 +59,8 @@ $(document).ready(function () {
 @section('content')
 <!-- Main content -->
 <section class="content">
-    @include('admin.partials.errors')
-    <div class="row">
+    @include('admin.partials.errors')   
+        <div class="row">
         <div class="col-md-12">
             {!! Form::open(['class' => 'form-horizontal', 'id' => 'articleForm', 'role' => 'form','url'=>['admin/article/store'], 'files'=>true]) !!}
             <div class="nav-tabs-custom" id="articlewizard">
@@ -122,13 +106,19 @@ $(document).ready(function () {
                             {!! Form::radio('article[status]', '0', null) !!} Disable
                         </div>
                     </div>    
+                        <div class="form-group">
+                            <div class="col-sm-3 pull-right">
+                                <input type='button' class='btn btn-default button-previous' name='previous' value='Previous' />
+                                <input type='button' class='btn btn-default button-next' name='next' value='Next' />
+                            </div>
+                        </div>
                     </div>
 
                     <div class="tab-pane" id="tab_2">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    {!! Form::label('article[title]', 'Title:', ['class' => 'col-sm-4 control-label']) !!}
+                                    {!! Form::label('article[title]', 'Title:*', ['class' => 'col-sm-4 control-label']) !!}
                                     <div class="col-sm-7">
                                         {!! Form::text('article[title]', null, ['class' => 'form-control', 'placeholder' => 'Title']) !!}
                                     </div>
@@ -149,7 +139,7 @@ $(document).ready(function () {
 
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    {!! Form::label('article[description]', 'Description:', ['class' => 'col-sm-4 control-label']) !!}
+                                    {!! Form::label('article[description]', 'Description:*', ['class' => 'col-sm-4 control-label']) !!}
                                     <div class="col-sm-7">
                                         {!! Form::textarea('article[description]', null, ['class' => 'form-control', 'placeholder' => 'Description', 'size' => '20x2']) !!}
                                     </div>
@@ -172,23 +162,33 @@ $(document).ready(function () {
                                             <i class="fa fa-plus"></i> Add More
                                         </button>
                                     </div>
+                                    
                                     <div id="en_images">
-
+                                        <div class="box-body" id="remove_en0">
+                                            <div class="row">
+                                                <div class="col-xs-3"><input type="file" name="article[article_image][0][image]"></div>
+                                                <div class="col-xs-2"><input type="text" name="article[article_image][0][text]" placeholder="Image Text" class="form-control"></div>
+                                                <div class="col-xs-2"><input type="text" name="article[article_image][0][link]" placeholder="Image Link" class="form-control"></div>
+                                                <div class="col-xs-4"><textarea rows="2" cols="10" name="article[article_image][0][description]" placeholder="Image Description" class="form-control"></textarea></div>
+                                                <div class="col-xs-1"><button class="btn btn-danger en_remove_field" data-remove-id="remove_en0"><i class="fa fa-trash"></i></button></div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <!-- /.box-body -->
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <!-- /.tab-pane -->
-
-                    <div class="form-group">
+                         <div class="form-group">
                         <div class="col-sm-3 pull-right">
                             <input type='button' class='btn btn-default button-previous' name='previous' value='Previous' />
                             <input type='button' class='btn btn-default button-next' name='next' value='Next' />
                             <input type='submit' class='btn btn-primary button-last' name='last' value='Submit' />
                         </div>
                     </div>
+                    </div>
+                    <!-- /.tab-pane -->
+
+                   
                     
                 </div><!-- /.tab-content -->
             </div>
