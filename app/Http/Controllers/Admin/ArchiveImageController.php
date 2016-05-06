@@ -61,7 +61,7 @@ class ArchiveImageController extends Controller {
         if (Input::file()) 
         {            
             $image_obj = Input::file('image');
-            $destinationPath = public_path() . '/uploads/ads'; // upload path
+            $destinationPath = public_path() . '/uploads/ads/'.$data['id_category'].'/'; // upload path
             $extension = $image_obj->getClientOriginalExtension(); // getting image extension
             $fileName  = rand(11111, 99999) . time() . '.' . $extension; // renameing image
             $image_obj->move($destinationPath, $fileName); // uploading file to given path
@@ -133,10 +133,11 @@ class ArchiveImageController extends Controller {
         $archiveimagemodel = ArchiveImage::find($id);
         
         
+        
         if (Input::file()) 
         {  
             $image_obj = Input::file('image');
-            $destinationPath = public_path() . '/uploads/ads'; // upload path
+            $destinationPath = public_path() . '/uploads/ads/'.$data['id_category'].'/'; // upload path
             $extension = $image_obj->getClientOriginalExtension(); // getting image extension
             $fileName  = rand(11111, 99999) . time() . '.' . $extension; // renameing image
             $image_obj->move($destinationPath, $fileName); // uploading file to given path

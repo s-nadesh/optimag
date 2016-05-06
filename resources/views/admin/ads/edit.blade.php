@@ -103,7 +103,6 @@
                             <div class="col-sm-3">
                                 <!--{!! Form::file('image') !!}-->                           
                                 <select name="image_category" id="image_category" class="form-control">
-                                    <option value="0">--Select Category--</option>
                                     @foreach($archivecategories as $key1=>$archivecategory )
                                     <option value="{{ $key1 }}" @if($category==$key1) selected  @endif>{{ $archivecategory }}</option>
                                     @endforeach
@@ -111,13 +110,14 @@
                             </div>
                             <div class="col-sm-2">
                                 <select name="id_image" id="id_image" class="form-control">
-                                    <option value="0">--Select Image--</option>
                                     @foreach($archiveimages as $archiveimage )
                                     <option value="{{ $archiveimage->id_image }}" @if($id_image==$archiveimage->id_image) selected  @endif>{{ $archiveimage->title_image_en }}</option>
                                     @endforeach
                                 </select>
-                                <a class="viewficherfile" href="{{url('/uploads/ads/'.$image_name)}}" onclick="window.open(this.href, 'archive images',
-'left=20,top=20,width=600,height=600,toolbar=0,resizable=0'); return false;"><img src={{asset('img/preview.gif')}} alt="preview"></a>
+                               <a class="pop" href="javascript:void(0);">
+                                    <img src="" style="display:none;" class="viewficherfile">
+                                    <img src={{asset('img/preview.gif')}} alt="preview">
+                                </a>
                             </div>
                         </div>   
                         
@@ -152,6 +152,16 @@
         </div><!-- ./col -->
     </div>
 </div>
+       <div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">              
+      <div class="modal-body">
+      	<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <img src="" class="imagepreview" style="width: 100%;" >
+      </div>
+    </div>
+  </div>
+</div>
 </section>
 <!-- /.content -->
 <?php
@@ -165,6 +175,13 @@ $ad_type   = $ads->ad_type;
 ?>
 <script type="text/javascript">
 $(function() {
+    
+    $('.pop').on('click', function() {
+                    
+			$('.imagepreview').attr('src', $('.viewficherfile').attr('src'));
+			$('#imagemodal').modal('show');   
+                        $(this).attr('src','javascript:void(0);')
+    });
     
     $('.year').datepicker({ dateFormat: 'yyyy',autoclose: true });
     $('.date').datepicker({ format: 'yyyy-mm-dd',autoclose: true });   
@@ -302,7 +319,7 @@ $(function() {
             url: '/admin/ads/previewimage/'+id_image,
             cache: false,
             success: function(html){   
-                $(".viewficherfile").attr("href", html);                         
+                $(".viewficherfile").attr("src", html);                         
             }
          });
     }); 

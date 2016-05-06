@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Session;
 use Validator;
-
+use File;
 class ArchiveCategoryController extends Controller {
 
     /**
@@ -51,6 +51,9 @@ class ArchiveCategoryController extends Controller {
         $archivecategory->category_fr        = $data['category_fr'];
         $archivecategory->category_en      = $data['category_en'];
         $archivecategory->save();
+        
+        $path = public_path() .  '/uploads/ads/'. $archivecategory->id_category;
+        File::makeDirectory($path);
         
         Session::flash('flash_message', 'Archive category created successfully!');
         return redirect('/admin/archivecategories');

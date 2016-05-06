@@ -73,7 +73,7 @@
                     <div class="form-group" id="hom_type">
                         {!! Form::label('ad_type', 'Type:*', ['class' => 'col-sm-2 control-label']) !!}
                         <div class="col-sm-5">
-                            {!! Form::radio('ad_type', 'video') !!} Video
+                            {!! Form::radio('ad_type', 'video',true) !!} Video
                             {!! Form::radio('ad_type', 'image') !!} Image
                         </div>
                     </div>  
@@ -98,20 +98,24 @@
                         <div class="form-group">
                             {!! Form::label('image', 'Image:*', array( 'class' => 'col-sm-2 control-label')) !!}
                             <div class="col-sm-3">
+                                {!! Form::select('image_category', $archivecategories, null, ['class' => 'form-control','id'=>'image_category']) !!}   
                                 <!--{!! Form::file('image') !!}-->                           
-                                <select name="image_category" id="image_category" class="form-control">
-                                    <option value="0">--Select Category--</option>
+<!--                                <select name="image_category" id="image_category" class="form-control">
+                                    <option value="">--Select Category--</option>
                                     @foreach($archivecategories as $key=>$archivecategory )
                                     <option value="{{ $key }}">{{ $archivecategory }}</option>
                                     @endforeach
-                                </select>
+                                </select>-->
+                                
                             </div>
                             <div class="col-sm-2">
                                 <select name="id_image" id="id_image" class="form-control">
-                                    <option value="0">--Select Image--</option>
+                                    <option value="">--Select Image--</option>
                                 </select>
-                                <a class="viewficherfile" href="javascript:void(0);" onclick="window.open(this.href, 'archive images',
-'left=20,top=20,width=600,height=600,toolbar=0,resizable=0'); return false;"><img src={{asset('img/preview.gif')}} alt="preview"></a>
+                                <a class="pop" href="javascript:void(0);">
+                                    <img src="" style="display:none;" class="viewficherfile">
+                                    <img src={{asset('img/preview.gif')}} alt="preview">
+                                </a>
                             </div>
                         </div>   
                         
@@ -144,10 +148,27 @@
         </div><!-- ./col -->
     </div>
 </div>
+       <div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">              
+      <div class="modal-body">
+      	<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <img src="" class="imagepreview" style="width: 100%;" >
+      </div>
+    </div>
+  </div>
+</div>
 </section>
 <!-- /.content -->
 <script type="text/javascript">
-$(function() {
+    $(function() {
+		$('.pop').on('click', function() {
+                    
+			$('.imagepreview').attr('src', $('.viewficherfile').attr('src'));
+			$('#imagemodal').modal('show');   
+                        $(this).attr('src','javascript:void(0);')
+		});		
+
     $('.year').datepicker({ dateFormat: 'yyyy',autoclose: true });
     $('.date').datepicker({ format: 'yyyy-mm-dd',autoclose: true });    
     
@@ -247,11 +268,35 @@ $(function() {
             url: '/admin/ads/previewimage/'+id_image,
             cache: false,
             success: function(html){    
-                $(".viewficherfile").attr("href", html);                         
+                $(".viewficherfile").attr("src", html);                         
             }
          });
     }); 
- 
+    
+    var image_category=$("#image_category").val();
+    var id_images=$("#id_image").val();
+    
+    if(image_category){
+        $.ajax({
+            type: "GET",
+            url: '/admin/ads/show/'+image_category,
+            cache: false,
+            success: function(html)
+            {
+                $("#id_image").html(html);
+            }
+        });
+    }
+    if(id_images){
+         $.ajax({
+            type: "GET",
+            url: '/admin/ads/previewimage/'+id_images,
+            cache: false,
+            success: function(html){    
+                $(".viewficherfile").attr("src", html);                         
+            }
+         });
+    }
 // Click to preview the ficher file in popup window   
             
 //    $('.viewficherfile').click(function(event) {

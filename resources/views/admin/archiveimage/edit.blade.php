@@ -49,7 +49,7 @@
                                 
                                 {!! Form::hidden('image', $image_file) !!} 
                                 {!! Form::hidden('extension', $extension) !!}
-                                {!! Html::image('uploads/ads/'.$image_file, 'Ad Picture', array('width' => 70, 'height' => 70 ,'class' => 'thumb')) !!}
+                                {!! Html::image('uploads/ads/'.$archiveimage->id_category.'/'.$image_file, 'Ad Picture', array('width' => 70, 'height' => 70 ,'class' => 'thumb')) !!}
                                 @endif
                                 {!! Form::hidden('id_image', $id_image) !!} 
                             </div>

@@ -56,8 +56,10 @@ $(function () {
                                 <td>{{ $archiveimage->image }}</td>  
                                 <td>{{ $archiveimage->extension }}</td>
                                 <td>
-                                    <a href="{{URL::to('uploads/ads',$archiveimage->image)}}" onclick="window.open(this.href, 'archive images',
-'left=20,top=20,width=600,height=600,toolbar=0,resizable=0'); return false;" >
+<!--                                    <a href="{{URL::to('uploads/ads/'.$archiveimage->id_category,$archiveimage->image)}}" onclick="window.open(this.href, 'archive images',
+'left=20,top=20,width=600,height=600,toolbar=0,resizable=0'); return false;" >-->
+                                    <a href="javascript:void(0);" class="pop">
+                                        <img src="{{URL::to('uploads/ads/'.$archiveimage->id_category,$archiveimage->image)}}" style="display:none;">
                                        <i class="glyphicon glyphicon-eye-open"></i>
                                     </a>&nbsp;&nbsp;&nbsp;&nbsp;
                                      <a href="{{URL::to('admin/archiveimages/edit',$archiveimage->id_image)}}" >
@@ -76,9 +78,25 @@ $(function () {
             </div>
         </div>
     </div>
-
+    <div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">              
+      <div class="modal-body">
+      	<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <img src="" class="imagepreview" style="width: 100%;" >
+      </div>
+    </div>
+  </div>
+</div>
 </section>
 <!-- /.content -->
-
+<script type="text/javascript">
+    $(function() {
+		$('.pop').on('click', function() {
+			$('.imagepreview').attr('src', $(this).find('img').attr('src'));
+			$('#imagemodal').modal('show');   
+		});		
+});
+    </script>
 @stop
 

@@ -213,7 +213,7 @@ class AdsController extends Controller {
         //
         $archiveimages = ArchiveImage::where('id_category', '=', $id)->get();
         $options = '';
-        $options = "<option value='0'>--Select Image--</option>"; 
+        $options = "<option value=''>--Select Image--</option>"; 
         foreach($archiveimages as $archiveimage)
         {
             $options .= "<option value='".$archiveimage->id_image."'>".$archiveimage->title_image_en."</option>";  
@@ -223,7 +223,7 @@ class AdsController extends Controller {
     public function previewimage($id) {
         //
         $images = ArchiveImage::find($id);
-        echo url('/uploads/ads/'.$images->image);
+        echo url('/uploads/ads/'.$images->id_category.'/'.$images->image);
     }
     
     /**
