@@ -86,6 +86,6 @@ Route::group(array('prefix' => 'api/v1'), function()
     get('home/{langkey}', 'HomeController@index');
     get('sections/{langkey}/{sid}', 'HomeController@sections');   
     get('article/{aid}', 'HomeController@article');  
-    get('search/{langkey}/{search_value}/{eid}', 'HomeController@search');  
+    get('search/{langkey}/{search_value}/{eid}/{sid}', 'HomeController@search');  
 });
 //Route::get('sections/{testkey}', 'HomeController@sections');

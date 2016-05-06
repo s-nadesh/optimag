@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Article;
 use App\Http\Controllers\Controller;
 use App\Edition;
+use App\Section;
 use App\AdsSetting;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -203,10 +204,8 @@ class HomeController extends Controller
         }   
     }
     
-    public function search($lang="en",$keyword=NULL,$edition=0)
+    public function search($lang="en",$keyword=NULL,$edition=0,$section=0)
     {
-       
-      
         
        //DB::enableQueryLog();  
        $search_str = "status=1 AND language='$lang'";  
@@ -216,35 +215,54 @@ class HomeController extends Controller
                
        if($edition!="0")
        $search_str .= " AND edition_id=$edition ";
+       
+       if($section!="0")
+       $search_str .= " AND section_id=$section ";
                   
        $articles = Article::whereRaw($search_str)->orderBy('year', 'DESC')->orderBy('edition_id', 'DESC')->orderBy("article_id","desc")->get();
-     
+      //dd(DB::getQueryLog());   
        try{            
             $statusCode = 200;
             $response = [
               'articles'  => [],    
-              'editions'  => [],    
-            ];   
+              'editions'  => [],   
+              'sections'  => [],    
+            ];
             
-            $response['editions'][] = Edition::getEditions(); 
-        
+            $edition_column = "edition_name_".$lang;
+            $section_column = "section_name_".$lang;
+           
             foreach($articles as $article)
-            {
-                $art_imges = array();   
-                
-                $lang = $article->language;
-                $edition_column = "edition_name_".$lang;
-                $section_column = "section_name_".$lang;
+            { 
+              
                 $response['articles'][] = [
                     'article_id'    => $article->article_id,
                     'article_title' => $article->title,
                     'article_desc'  => $article->description,                    
-                   // 'year'          => $article->year, 
-                   // 'edition'       => $article->edition->$edition_column, 
-                   // 'section_name'  => $article->section->$section_column, 
+                    'year'          => $article->year, 
+                    'edition'       => $article->edition->$edition_column, 
+                    'section_name'  => $article->section->$section_column, 
                 ];
             }
-          
+            
+            $editions = Edition::orderBy('edition_id', 'DESC')->get();            
+            foreach($editions as $edition)
+            {
+                $response['editions'][] = [
+                    'edition_id'    => $edition->edition_id,
+                    'edition_name'  => $edition->$edition_column
+                ];        
+            }
+            
+            $sections = Section::orderBy('section_id', 'DESC')->get();      
+            foreach($sections as $section)
+            {
+                $response['sections'][] = [
+                    'section_id'    => $section->section_id,
+                    'section_name'  => $section->$section_column
+                ];        
+            }
+                 
         }catch (Exception $e){
             $statusCode = 400;
         }finally{          

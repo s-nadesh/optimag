@@ -25,11 +25,10 @@ class EditionController extends Controller {
      * Show the form for creating a new resource.
      *
      * @return Response
-     */
+     */  
     public function create() {
-        //
+        return view('admin.edition.create');
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -37,7 +36,15 @@ class EditionController extends Controller {
      * @return Response
      */
     public function store(Request $request) {
-        //
+        $data = $request->all();
+        $validator = Validator::make($data, Edition::rules());
+        if ($validator->fails()) {
+            return redirect()->back()->withInput()->withErrors($validator->errors());
+        }
+
+        Edition::create($data);
+        Session::flash('flash_message', 'Edition created successfully!');
+        return redirect('/admin/editions');
     }
 
     /**
