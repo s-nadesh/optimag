@@ -28,6 +28,12 @@
                             {!! Form::text('edition_name_fr', null, ['placeholder' => 'Edition Name Fr', 'class' => 'form-control']) !!}
                         </div>
                     </div>
+                    <div class="form-group">
+                        {!! Form::label('is_current_edition', 'Set as default:', ['class' => 'col-sm-2 control-label']) !!}
+                        <div class="col-sm-5">
+                         {!! Form::checkbox('is_current_edition', 1, null, ['class' => 'form-control']) !!}                                                  
+                        </div>
+                    </div>
                 </div>
 
                     <div class="box-footer">

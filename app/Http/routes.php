@@ -30,6 +30,7 @@ $router->group([
 
     //Editions
     resource('admin/editions', 'EditionController');
+    get('admin/editions/destroy/{key}', 'EditionController@destroy');
 
     //Sections
     resource('admin/sections', 'SectionController');

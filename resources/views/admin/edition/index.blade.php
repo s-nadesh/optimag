@@ -41,6 +41,7 @@ $(function () {
                                 <th>S.No</th>
                                 <th>Name En</th>
                                 <th>Name Fr</th>
+                                <th>Default</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -50,9 +51,17 @@ $(function () {
                                 <td>{{ ++$key }}</td>
                                 <td>{{ $edition->edition_name_en }}</td>
                                 <td>{{ $edition->edition_name_fr }}</td>
+                                <td>
+                                 @if($edition->is_current_edition == 1)                               
+                                        <i class="fa fa-circle text-green"></i>                                   
+                                 @endif
+                                </td>
                                 <td align="center">
                                     <a href="{{route('admin.editions.edit',$edition->edition_id)}}" >
                                         <i class="glyphicon glyphicon-pencil"></i>
+                                    </a>&nbsp;&nbsp;&nbsp;&nbsp;
+                                     <a href="{{URL::to('admin/editions/destroy',array($edition->edition_id))}}" onclick="return confirm('Are you sure you want to delete? Because this action will delete related articles below these edition.')" >
+                                        <i class="glyphicon glyphicon-trash"></i>
                                     </a>
                                 </td>
                             </tr>

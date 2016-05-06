@@ -14,6 +14,7 @@ class Edition extends Model implements SluggableInterface {
     protected $fillable = [
         'edition_name_en',
         'edition_name_fr',
+        'is_current_edition',
     ];
     protected $sluggable = [
         'build_from' => 'edition_name_en',

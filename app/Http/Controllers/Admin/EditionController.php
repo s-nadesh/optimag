@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Session;
 use Validator;
+use DB;
 
 class EditionController extends Controller {
 
@@ -41,7 +42,10 @@ class EditionController extends Controller {
         if ($validator->fails()) {
             return redirect()->back()->withInput()->withErrors($validator->errors());
         }
-
+        
+        if(isset($data['is_current_edition']))
+        $affected = DB::table('editions')->update(array('is_current_edition' => 0));        
+        
         Edition::create($data);
         Session::flash('flash_message', 'Edition created successfully!');
         return redirect('/admin/editions');
@@ -81,7 +85,11 @@ class EditionController extends Controller {
         if ($validator->fails()) {
             return redirect()->back()->withInput()->withErrors($validator->errors());
         }
-        $edition = Edition::find($id);
+        
+        if(isset($data['is_current_edition']))
+        $affected = DB::table('editions')->update(array('is_current_edition' => 0));
+        
+        $edition = Edition::find($id);     
         $edition->update($data);
         
         Session::flash('flash_message', 'Edition updated successfully!');
@@ -89,14 +97,18 @@ class EditionController extends Controller {
         
     }
 
-    /**
+      /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
      * @return Response
      */
     public function destroy($id) {
-        //
+        //    
+        $edition = Edition::find($id);
+        $edition->delete();
+        Session::flash('flash_message', 'Edition deleted successfully!');        
+        return redirect('/admin/editions');
     }
 
 }
