@@ -3,6 +3,7 @@
 namespace App\Helpers;
 
 use Illuminate\Support\Facades\DB;
+use App\ArchiveImage;
 
 class MyFuncs {
 
@@ -52,16 +53,22 @@ class MyFuncs {
         if (!empty($result)) 
         {            
             $data['ad_id']    = $result[0]->ad_id;
-            $data['ad_title'] = $result[0]->ad_title;
-            $data['ad_link']  = $result[0]->ad_link;
-            $data['ad_file']  = $result[0]->ad_file;
+            $data['ad_title'] = $result[0]->ad_title;            
             $data['ad_type']  = $result[0]->ad_type;
-            $data['advertiser_url'] = $result[0]->advertiser_url;
             $data['client_name']    = $result[0]->client_name;
+            if($result[0]->ad_type=="image" && $result[0]->id_image!="")
+            {    
+                $imgid = $result[0]->id_image;
+                $get_imginfo = ArchiveImage::find($imgid);
+                $data['ad_file']  = $get_imginfo->id_category."/".$get_imginfo->image;
+                $data['ad_link']  = $result[0]->ad_link;
+            }else{
+                $data['ad_file']  = $result[0]->ad_file;
+                $data['advertiser_url'] = $result[0]->advertiser_url;
+            } 
             $data['content']        = "";
-           
-            $ads_id = $result[0]->ad_id;
             
+            $ads_id = $result[0]->ad_id;
             // Add one count impressions for the loading banner.
             DB::table('ads')->where('ad_id', $ads_id)->increment('impressions');
 
@@ -90,20 +97,30 @@ class MyFuncs {
       
 //        $query = DB::getQueryLog();
 //        $lastQuery = end($query);
-//       echo "<pre>";
+//        echo "<pre>";
 //        print_r($lastQuery); exit;
 
         if (!empty($results)) 
         {   
             foreach($results as $binfo)
             {  
+                
+                if($binfo->ad_type=="image" && $binfo->id_image!="")
+                {    
+                    $imgid = $binfo->id_image;
+                    $get_imginfo = ArchiveImage::find($imgid);
+                    $ad_file  = $get_imginfo->id_category."/".$get_imginfo->image;
+                }else{
+                    $ad_file  = "no-image.jpg";                   
+                } 
+            
                 $data[] = [
                 'ad_id'     => $binfo->ad_id,
                 'ad_title'  => $binfo->ad_title,
                 'ad_link'   => $binfo->ad_link,
-                'ad_file'   => $binfo->ad_file,
+                'ad_file'   => $ad_file,
                 'ad_type'   => $binfo->ad_type,
-                'advertiser_url'  => $binfo->advertiser_url,
+                'ad_link'   => $binfo->ad_link,
                 'client_name'     => $binfo->client_name,
                 'content'         => "",
                 'type_val'      => 'banner'        

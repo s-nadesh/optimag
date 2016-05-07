@@ -74,11 +74,8 @@ class HomeController extends Controller
                 // Home - position 1
                 $banner_results = MyFuncs::banner_display(1,$lang);
                 $response['banner_results'][] = $banner_results;
-            }  
-            
-            echo "<pre>";
-            print_r($response);
-            exit;
+            } 
+           
         }catch (Exception $e){
             $statusCode = 400;
         }finally{          
