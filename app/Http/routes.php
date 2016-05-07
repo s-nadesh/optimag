@@ -88,5 +88,8 @@ Route::group(array('prefix' => 'api/v1'), function()
     get('sections/{langkey}/{sid}', 'HomeController@sections');   
     get('article/{aid}', 'HomeController@article');  
     get('search/{langkey}/{search_value}/{eid}/{sid}', 'HomeController@search');  
+    get('archiveeditions/{langkey}', 'HomeController@archive_editions');
+    get('archivesections/{langkey}/{eid}', 'HomeController@archive_sections');
+    get('archivearticles/{langkey}/{sid}', 'HomeController@archive_articles');
 });
 //Route::get('sections/{testkey}', 'HomeController@sections');

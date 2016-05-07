@@ -21,15 +21,13 @@ class HomeController extends Controller
      *
      * @return Response
      */
-    public function index($lang)
+    public function index($lang="en")
     {
         DB::enableQueryLog();  
        
-        $cmonth = date("M");
         $get_edition_id = Edition::where('is_current_edition', '=', "1")->first()->edition_id;
        // dd(DB::getQueryLog());   
-        
-        $lang       = ($lang!="")?$lang:"en";    
+          
         $edition_id = $get_edition_id;
         $year       = date("Y");
        
@@ -83,9 +81,8 @@ class HomeController extends Controller
         }
     }
     
-    public function sections($lang,$sid)
+    public function sections($lang="en",$sid)
     {
-        $lang = ($lang!="")?$lang:"en"; 
         
         $articles = Article::whereRaw("status=1 and section_id='$sid' and language='$lang'")->orderBy('year', 'DESC')->orderBy('edition_id', 'DESC')->orderBy("article_id","desc")->take(6)->get();
         
@@ -272,6 +269,91 @@ class HomeController extends Controller
             return response()->json([$response, $statusCode]);
         }  
         
+    } 
+    
+    public function archive_editions($lang="en")
+    {
+        try{            
+            
+            $statusCode = 200;
+            $response = [    
+              'editions'  => [],    
+            ];
+            
+            $edition_column = "edition_name_".$lang;
+            $editions = Edition::orderBy('edition_id', 'DESC')->get();            
+            foreach($editions as $edition)
+            {
+                $response['editions'][] = [
+                    'edition_id'    => $edition->edition_id,
+                    'edition_name'  => $edition->$edition_column
+                ];                
+            }
+            
+        }catch (Exception $e){
+            $statusCode = 400;
+        }finally{          
+            return response()->json([$response, $statusCode]);
+        }  
     }        
    
+    public function archive_sections($lang="en",$editionid)
+    {
+       
+        try{
+            $statusCode = 200;
+            $response   = [
+              'sections'  => [],
+            ];            
+            
+            if($editionid!="" || $editionid>0)
+            {    
+                $articles = Article::whereRaw("status=1 and edition_id='$editionid' AND language='$lang'")->groupBy('section_id')->orderBy('article_id', 'DESC')->get();
+
+                foreach($articles as $article){                     
+
+                    $section_column = "section_name_".$lang;
+                    
+                    $response['sections'][] = [ 
+                        'section_id'  => $article->section->section_id,      
+                        'section_name'  => $article->section->$section_column, 
+                    ];
+                }
+            } 
+            
+        }catch (Exception $e){
+            $statusCode = 400;
+        }finally{          
+            return response()->json([$response, $statusCode]);
+        }
+    }
+    
+    public function archive_articles($lang="en",$sid)
+    {
+        
+        $articles = Article::whereRaw("status=1 and section_id='$sid' and language='$lang'")->orderBy('year', 'DESC')->orderBy('edition_id', 'DESC')->orderBy("article_id","desc")->take(6)->get();
+        
+        try{
+            
+            $statusCode = 200;
+            $response = [
+              'articles'  => [],                
+            ];
+            
+            foreach($articles as $article)
+            {          
+
+                $response['articles'][] = [
+                    'article_id'    => $article->article_id,
+                    'article_title' => $article->title,                    
+                    'year'          => $article->year,                   
+                ];
+            }
+          
+        }catch (Exception $e){
+            $statusCode = 400;
+        }finally{          
+            return response()->json([$response, $statusCode]);
+        }    
+    } 
 }
