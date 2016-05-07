@@ -112,6 +112,7 @@ class AdsController extends Controller {
      * @return Response
      */
     public function edit($id) {
+        $archiveimages = array();
         $ads = Ads::find($id);
 //        $pages = AdsPosition::all();
         $pages = AdsPosition::getAdsPositions();
