@@ -60,7 +60,7 @@ $(function () {
                                     <a href="{{route('admin.archivecategories.edit',$archivecategory->id_category)}}" >
                                        <i class="glyphicon glyphicon-pencil"></i>
                                     </a>&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <a href="{{URL::to('admin/archivecategories/destroy',$archivecategory->id_category)}}" onclick="return confirm('Are you sure you want to delete?')" >
+                                    <a href="{{URL::to('admin/archivecategories/destroy',$archivecategory->id_category)}}" onclick="return confirm('Are you sure you want to delete? Because this action will delete related image below these category.')" >
                                         <i class="glyphicon glyphicon-trash"></i>
                                         
                                     </a>

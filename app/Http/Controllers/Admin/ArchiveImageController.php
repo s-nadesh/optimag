@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\ArchiveCategory;
 use App\ArchiveImage;
+use App\Ads;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Session;
@@ -21,8 +22,10 @@ class ArchiveImageController extends Controller {
     public function index($id) {
 //        $archiveimages = ArchiveImage::orderBy('id_image', 'DESC')->get();
 //        return view('admin.archiveimage.index', compact('archiveimages'));
+        $archivecategory = ArchiveCategory::find($id);
+        $category_name = $archivecategory->category_en;
         $archiveimages = ArchiveImage::where('id_category', '=', $id)->get();
-        return view('admin.archiveimage.index', compact('archiveimages'));
+        return view('admin.archiveimage.index', compact('archiveimages','category_name'));
     }
 
     /**
@@ -177,8 +180,17 @@ class ArchiveImageController extends Controller {
      */
     public function destroy($id) {
         //
-        $archiveimages = ArchiveImage::find($id);
+         $edition_exist = Ads::where(['id_image' => $id])->get()->count(); 
+         $archiveimages = ArchiveImage::find($id);
         $category = $archiveimages->id_category;
+        if($edition_exist>0)
+        {
+            Session::flash('flash_message', 'Sorry this image have ads. So please remove ads and do this action!!!'); 
+            Session::flash('alert-class', 'alert-danger');
+            return redirect('/admin/archiveimages/index/'.$category);
+        }  
+        
+        
         $archiveimages->delete();
         Session::flash('flash_message', 'Archive image deleted successfully!');
         

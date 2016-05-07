@@ -109,7 +109,7 @@
                                 
                             </div>
                             <div class="col-sm-2">
-                                <select name="id_image" id="id_image" class="form-control">
+                                <select name="image" id="image" class="form-control">
                                     <option value="">--Select Image--</option>
                                 </select>
                                 <a class="pop" href="javascript:void(0);">
@@ -256,16 +256,16 @@
             cache: false,
             success: function(html)
             {
-                $("#id_image").html(html);
+                $("#image").html(html);
             }
         });
 
     });
-    $("#id_image").change(function(e){
-        var id_image=$(this).val();
+    $("#image").change(function(e){
+        var image=$(this).val();
         $.ajax({
             type: "GET",
-            url: '/admin/ads/previewimage/'+id_image,
+            url: '/admin/ads/previewimage/'+image,
             cache: false,
             success: function(html){    
                 $(".viewficherfile").attr("src", html);                         
@@ -274,7 +274,7 @@
     }); 
     
     var image_category=$("#image_category").val();
-    var id_images=$("#id_image").val();
+    var id_images=$("#image").val();
     
     if(image_category){
         $.ajax({
@@ -283,7 +283,7 @@
             cache: false,
             success: function(html)
             {
-                $("#id_image").html(html);
+                $("#image").html(html);
             }
         });
     }

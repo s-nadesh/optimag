@@ -109,13 +109,14 @@
                                 </select>
                             </div>
                             <div class="col-sm-2">
-                                <select name="id_image" id="id_image" class="form-control">
+                                <select name="image" id="image" class="form-control">
                                     @foreach($archiveimages as $archiveimage )
                                     <option value="{{ $archiveimage->id_image }}" @if($id_image==$archiveimage->id_image) selected  @endif>{{ $archiveimage->title_image_en }}</option>
                                     @endforeach
                                 </select>
                                <a class="pop" href="javascript:void(0);">
-                                    <img src="" style="display:none;" class="viewficherfile">
+                                   
+                                    <img src="{{URL::to('uploads/ads/'.$category.'/'.$image_name)}}" style="display:none;" class="viewficherfile">
                                     <img src={{asset('img/preview.gif')}} alt="preview">
                                 </a>
                             </div>
@@ -307,16 +308,16 @@ $(function() {
             cache: false,
             success: function(html)
             {
-                $("#id_image").html(html);
+                $("#image").html(html);
             }
         });
 
     });
-    $("#id_image").change(function(e){
-        var id_image=$(this).val();
+    $("#image").change(function(e){
+        var image=$(this).val();
         $.ajax({
             type: "GET",
-            url: '/admin/ads/previewimage/'+id_image,
+            url: '/admin/ads/previewimage/'+image,
             cache: false,
             success: function(html){   
                 $(".viewficherfile").attr("src", html);                         

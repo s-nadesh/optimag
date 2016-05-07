@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\ArchiveCategory;
+use App\ArchiveImage;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -111,6 +112,16 @@ class ArchiveCategoryController extends Controller {
     public function destroy($id) {
         //
     
+        $edition_exist = ArchiveImage::where(['id_category' => $id])->get()->count(); 
+    
+        if($edition_exist>0)
+        {
+            Session::flash('flash_message', 'Sorry this category have image(s). So please remove image and do this action!!!'); 
+            Session::flash('alert-class', 'alert-danger');
+            return redirect('/admin/archivecategories');
+        }    
+        
+        
         $archivecategory = ArchiveCategory::find($id);
         $archivecategory->delete();
         Session::flash('flash_message', 'Archive category deleted successfully!');

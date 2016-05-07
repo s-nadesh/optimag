@@ -71,10 +71,10 @@ class AdsController extends Controller {
 //            $data['ad_type'] = "image";
 //        }
         
-        if($data['id_image']!='0'){
+        if($data['image']!='0'){
             $data['ad_type'] = "image";
             $data['ad_file'] = '';
-            $id_image= $data['id_image'];
+            $id_image= $data['image'];
         }
         else if(isset($data['video_embed'])){  
             // video embed
@@ -130,7 +130,9 @@ class AdsController extends Controller {
         
         if($id_image != null){ 
             $image = ArchiveImage::find($id_image);
-            $category = $image->id_category;
+            if($image->id_category){
+                $category = $image->id_category;            
+            }
             $archiveimages = ArchiveImage::where('id_category', '=', $category)->get();
             $image_name = $image->image;
         }
@@ -173,10 +175,10 @@ class AdsController extends Controller {
 //            $data['ad_type'] = "image";
 //            $adsmodel->ad_file = $data['ad_file'];
 //        }
-        if($data['id_image']!='0'){
+        if($data['image']!='0'){
             $data['ad_type'] = "image";
             $data['ad_file'] = '';
-            $id_image= $data['id_image'];
+            $id_image= $data['image'];
         }
         else if(isset($data['video_embed']) && $data['video_embed']!=""){  
             // video embed

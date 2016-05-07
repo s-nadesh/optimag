@@ -29,7 +29,9 @@ $(function () {
         <div class="col-xs-12">
             <div class="box">
                 <div class="box-header">
-                    
+                    <section class="content-header">
+                        <h3>&nbsp;&nbsp;&nbsp;Category - {{ $category_name }}</h3>
+                    </section>
                     <a href="{{URL::to('admin/archiveimages/create')}}" class="btn btn-primary btn-link pull-right">
                         Add Image
                     </a>
@@ -65,7 +67,7 @@ $(function () {
                                      <a href="{{URL::to('admin/archiveimages/edit',$archiveimage->id_image)}}" >
                                        <i class="glyphicon glyphicon-pencil"></i>
                                     </a>&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <a href="{{URL::to('admin/archiveimages/destroy',$archiveimage->id_image)}}" onclick="return confirm('Are you sure you want to delete?')" >
+                                    <a href="{{URL::to('admin/archiveimages/destroy',$archiveimage->id_image)}}" onclick="return confirm('Are you sure you want to delete? Because this action will delete related ads below these image.')" >
                                         <i class="glyphicon glyphicon-trash"></i>
                                         
                                     </a>
