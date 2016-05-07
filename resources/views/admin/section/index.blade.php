@@ -54,7 +54,7 @@ $(function () {
                                     <a href="{{route('admin.sections.edit',$section->section_id)}}">
                                         <i class="glyphicon glyphicon-pencil"></i>
                                     </a>&nbsp;&nbsp;&nbsp;&nbsp;
-                                     <a href="{{URL::to('admin/sections/destroy',array($section->section_id))}}" onclick="return confirm('Are you sure you want to delete? Because this action will delete related articles below these section.')" >
+                                     <a href="{{URL::to('admin/sections/destroy',array($section->section_id))}}" onclick="return confirm('Are you sure you want to delete?')" >
                                         <i class="glyphicon glyphicon-trash"></i>
                                     </a>
                                 </td>

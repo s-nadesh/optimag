@@ -105,6 +105,15 @@ class EditionController extends Controller {
      * @return Response
      */
     public function destroy($id) {
+        
+        $check_current_edition = Edition::where(['edition_id' => $id])->pluck('is_current_edition');
+        if($check_current_edition==1)
+        {
+            Session::flash('flash_message', 'Sorry you can\'t delete the current edition!!!'); 
+            Session::flash('alert-class', 'alert-danger');
+            return redirect('/admin/editions');
+        } 
+         
         // Check the article exist for this edition    
         $edition_exist = Article::where(['edition_id' => $id])->get()->count(); 
     
