@@ -129,12 +129,9 @@ class AdsController extends Controller {
         $id_image = $ads->id_image;
         
         if($id_image != null){ 
-            $image = ArchiveImage::find($id_image);
-            if($image->id_category){
-                $category = $image->id_category;            
-            }
+            $category   = $ads->archiveimage->id_category;   
+            $image_name = $ads->archiveimage->image;
             $archiveimages = ArchiveImage::where('id_category', '=', $category)->get();
-            $image_name = $image->image;
         }
         
         $ad_id = $ads->ad_id;

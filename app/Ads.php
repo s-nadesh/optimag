@@ -32,4 +32,8 @@ class Ads extends Model{
         return $this->belongsTo('App\AdsPosition', 'page', 'pid');
     }
     
+    public function archiveimage() {
+        return $this->belongsTo('App\ArchiveImage', 'id_image', 'id_image');
+    }
+    
  }

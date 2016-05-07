@@ -18,7 +18,7 @@ class ArchiveImage extends Model{
 //                ], $merge);
 //    }
     
-    public function archive() {
+    public function archivecategory() {
         return $this->belongsTo('App\ArchiveCategory', 'id_category', 'id_category');
     }
     

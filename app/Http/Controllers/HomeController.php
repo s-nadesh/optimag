@@ -26,7 +26,7 @@ class HomeController extends Controller
         DB::enableQueryLog();  
        
         $cmonth = date("M");
-        $get_edition_id = Edition::where('edition_slug_en', 'like', "%$cmonth%")->pluck('edition_id');
+        $get_edition_id = Edition::where('is_current_edition', '=', "1")->first()->edition_id;
        // dd(DB::getQueryLog());   
         
         $lang       = ($lang!="")?$lang:"en";    
@@ -41,38 +41,44 @@ class HomeController extends Controller
               'banner_results' => []  
             ];            
             
-            $articles = Article::whereRaw("status=1 and edition_id='$edition_id' AND year = '$year' AND language='$lang'")->groupBy('section_id')->orderBy('article_id', 'DESC')->get();
-        
-            foreach($articles as $article){
-                
-                $artimage  = "no-image.png";
-                $art_imges = $article->articleImages()->take(1)->lists('image','article_image_id');
-                foreach($art_imges as $aimg)
-                {
-                   $artimage = $aimg; 
-                }    
-                
-                $section_column = "section_name_".$lang;
-                
-                $response['articles'][] = [
-                    'article_id'    => $article->article_id,
-                    'article_title' => $article->title,
-                    'article_desc'  => $article->description,  
-                    'section_name'  => $article->section->$section_column,  
-                    'article_image'  => $artimage,
-                    'embed_video'   => $article->embed_video
-                ];
-                
-                $response['sections'][] = [ 
-                    'section_id'  => $article->section->section_id,      
-                    'section_name'  => $article->section->$section_column, 
-                ];
-            }
+            if($get_edition_id!="" || $get_edition_id>0)
+            {    
+                $articles = Article::whereRaw("status=1 and edition_id='$edition_id' AND year = '$year' AND language='$lang'")->groupBy('section_id')->orderBy('article_id', 'DESC')->get();
+
+                foreach($articles as $article){
+
+                    $artimage  = "no-image.png";
+                    $art_imges = $article->articleImages()->take(1)->lists('image','article_image_id');
+                    foreach($art_imges as $aimg)
+                    {
+                       $artimage = $aimg; 
+                    }    
+
+                    $section_column = "section_name_".$lang;
+
+                    $response['articles'][] = [
+                        'article_id'    => $article->article_id,
+                        'article_title' => $article->title,
+                        'article_desc'  => $article->description,  
+                        'section_name'  => $article->section->$section_column,  
+                        'article_image'  => $artimage,
+                        'embed_video'   => $article->embed_video
+                    ];
+
+                    $response['sections'][] = [ 
+                        'section_id'  => $article->section->section_id,      
+                        'section_name'  => $article->section->$section_column, 
+                    ];
+                }
+
+                // Home - position 1
+                $banner_results = MyFuncs::banner_display(1,$lang);
+                $response['banner_results'][] = $banner_results;
+            }  
             
-            // Home - position 1
-            $banner_results = MyFuncs::banner_display(1,$lang);
-            $response['banner_results'][] = $banner_results;
-         
+            echo "<pre>";
+            print_r($response);
+            exit;
         }catch (Exception $e){
             $statusCode = 400;
         }finally{          
