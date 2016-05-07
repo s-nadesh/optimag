@@ -1,6 +1,6 @@
 @extends('admin.layout')
 
-@section('title') Add Edition @stop
+@section('title') Add an edition @stop
 
 @section('content')
 <!-- Main content -->

@@ -1,6 +1,6 @@
 @extends('admin.layout')
 
-@section('title') Create Article @stop
+@section('title') Create an article @stop
 
 @section('script_files')
 <script src="{{ URL::asset('js/jquery.bootstrap.wizard.js') }}" type="text/javascript"></script>

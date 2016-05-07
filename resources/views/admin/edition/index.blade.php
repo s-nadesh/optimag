@@ -30,7 +30,7 @@ $(function () {
             <div class="box">
                 <div class="box-header">
                     <a href="{{URL::to('admin/editions/create')}}" class="btn btn-primary btn-link pull-right">
-                        Add
+                        Add an edition
                     </a>
                 </div>
                 <!-- /.box-header -->
@@ -51,7 +51,7 @@ $(function () {
                                 <td>{{ ++$key }}</td>
                                 <td>{{ $edition->edition_name_en }}</td>
                                 <td>{{ $edition->edition_name_fr }}</td>
-                                <td>
+                                <td align="center">
                                  @if($edition->is_current_edition == 1)                               
                                         <i class="fa fa-circle text-green"></i>                                   
                                  @endif

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Edition;
+use App\Article;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -104,7 +105,17 @@ class EditionController extends Controller {
      * @return Response
      */
     public function destroy($id) {
-        //    
+        // Check the article exist for this edition    
+        $edition_exist = Article::where(['edition_id' => $id])->get()->count(); 
+    
+        if($edition_exist>0)
+        {
+            Session::flash('flash_message', 'Sorry this edition have article(s). So please remove articles and do this action!!!'); 
+            Session::flash('alert-class', 'alert-danger');
+            return redirect('/admin/editions');
+        }    
+        
+        // Delete edition
         $edition = Edition::find($id);
         $edition->delete();
         Session::flash('flash_message', 'Edition deleted successfully!');        

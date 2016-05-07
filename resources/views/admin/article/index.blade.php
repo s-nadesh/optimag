@@ -53,7 +53,7 @@ td
             <div class="box">
                 <div class="box-header">
                     <a href="{{URL::to('admin/article/create')}}" class="btn btn-primary btn-link pull-right">
-                        Add
+                        Add an article
                     </a>
                 </div>
                 <!-- /.box-header -->

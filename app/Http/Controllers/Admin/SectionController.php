@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Section;
+use App\Article;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Session;
@@ -68,26 +69,18 @@ class SectionController extends Controller {
      */
     public function update(Request $request, $id) {
         $data = $request->all();
+       
         $validator = Validator::make($data, Section::rules($id));
         if ($validator->fails()) {
             return redirect()->back()->withInput()->withErrors($validator->errors());
         }
+        
         $section = Section::find($id);
         $section->update($data);
         Session::flash('flash_message', 'Section updated successfully!');
         return redirect('/admin/sections');
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function show($id) {
-        //
-    }
-
+    
     /**
      * Remove the specified resource from storage.
      *
@@ -95,7 +88,17 @@ class SectionController extends Controller {
      * @return Response
      */
     public function destroy($id) {
-        //        
+        // Check the article exist for this section    
+        $section_exist = Article::where(['section_id' => $id])->get()->count(); 
+    
+        if($section_exist>0)
+        {
+            Session::flash('flash_message', 'Sorry this section have article(s). So please remove articles and do this action!!!'); 
+            Session::flash('alert-class', 'alert-danger');
+            return redirect('/admin/sections');
+        }    
+        
+        // Delete section
         $section = Section::find($id);
         $section->delete();
         Session::flash('flash_message', 'Section and that related articles deleted successfully!');

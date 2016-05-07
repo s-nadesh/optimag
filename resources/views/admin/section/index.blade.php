@@ -30,7 +30,7 @@ $(function () {
             <div class="box">
                 <div class="box-header">
                     <a href="{{route('admin.sections.create')}}" class="btn btn-primary btn-link pull-right">
-                        Add
+                        Add section
                     </a>
                 </div>
                 <!-- /.box-header -->
