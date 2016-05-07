@@ -47,7 +47,7 @@ class AdsController extends Controller {
     public function store(Request $request) {
 
         $data = $request->all();
-       
+        $id_image ='';
         
         $messages = [
                         'required' => 'The :attribute field is required.',
@@ -147,7 +147,7 @@ class AdsController extends Controller {
      * @return Response
      */
     public function update(Request $request) {
-        
+        $id_image = '';
         $data = $request->all();
         $id = $data['ad_id'];
         $messages = [
@@ -173,7 +173,7 @@ class AdsController extends Controller {
 //            $data['ad_type'] = "image";
 //            $adsmodel->ad_file = $data['ad_file'];
 //        }
-        if($data['image']!='0'){
+        if(isset($data['image']) && $data['image']!='0'){
             $data['ad_type'] = "image";
             $data['ad_file'] = '';
             $id_image= $data['image'];
