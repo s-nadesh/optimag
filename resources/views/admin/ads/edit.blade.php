@@ -101,19 +101,13 @@
                         <div class="form-group">
                             {!! Form::label('image', 'Image:*', array( 'class' => 'col-sm-2 control-label')) !!}
                             <div class="col-sm-3">
+                                {!! Form::select('image_category', $archivecategories, $category, ['class' => 'form-control','id'=>'image_category']) !!}   
                                 <!--{!! Form::file('image') !!}-->                           
-                                <select name="image_category" id="image_category" class="form-control">
-                                    @foreach($archivecategories as $key1=>$archivecategory )
-                                    <option value="{{ $key1 }}" @if($category==$key1) selected  @endif>{{ $archivecategory }}</option>
-                                    @endforeach
-                                </select>
                             </div>
                             <div class="col-sm-2">
-                                <select name="image" id="image" class="form-control">
-                                    @foreach($archiveimages as $archiveimage )
-                                    <option value="{{ $archiveimage->id_image }}" @if($id_image==$archiveimage->id_image) selected  @endif>{{ $archiveimage->title_image_en }}</option>
-                                    @endforeach
-                                </select>
+                                
+                                {!! Form::select('image',$archiveimages, $id_image, ['class' => 'form-control','id'=>'image']) !!}
+
                                <a class="pop" href="javascript:void(0);">
                                    
                                     <img src="{{URL::to('uploads/ads/'.$category.'/'.$image_name)}}" style="display:none;" class="viewficherfile">
@@ -268,7 +262,30 @@ $(function() {
          }
     });
     
-     
+//     var image_category=$("#image_category").val();
+//    var id_images=$("#image").val();
+//    
+//    if(image_category){
+//        $.ajax({
+//            type: "GET",
+//            url: '/admin/ads/show/'+image_category,
+//            cache: false,
+//            success: function(html)
+//            {
+//                $("#image").html(html);
+//            }
+//        });
+//    }
+//    if(id_images){
+//         $.ajax({
+//            type: "GET",
+//            url: '/admin/ads/previewimage/'+id_images,
+//            cache: false,
+//            success: function(html){    
+//                $(".viewficherfile").attr("src", html);                         
+//            }
+//         });
+//    }
     
 //        var id=$("#image_category").val();
 //        if(id){

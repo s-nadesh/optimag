@@ -17,6 +17,7 @@ class ArchiveCategory extends Model {
     
     public static function getArchiveCategory(){
         $category = ArchiveCategory::lists('category_en', 'id_category');
+        $category->prepend('--Select Category--', '');
         return $category;
     }
 

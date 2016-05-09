@@ -109,9 +109,7 @@
                                 
                             </div>
                             <div class="col-sm-2">
-                                <select name="image" id="image" class="form-control">
-                                    <option value="">--Select Image--</option>
-                                </select>
+                                {!! Form::select('image',[''=>'--Select Image--'], null, ['class' => 'form-control','id'=>'image']) !!}
                                 <a class="pop" href="javascript:void(0);">
                                     <img src="" style="display:none;" class="viewficherfile">
                                     <img src={{asset('img/preview.gif')}} alt="preview">

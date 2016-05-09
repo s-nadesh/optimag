@@ -71,7 +71,7 @@ class AdsController extends Controller {
 //            $data['ad_type'] = "image";
 //        }
         
-        if($data['image']!='0'){
+        if($data['image']!=''){
             $data['ad_type'] = "image";
             $data['ad_file'] = '';
             $id_image= $data['image'];
@@ -132,9 +132,19 @@ class AdsController extends Controller {
         if($id_image != null){ 
             $category   = $ads->archiveimage->id_category;   
             $image_name = $ads->archiveimage->image;
-            $archiveimages = ArchiveImage::where('id_category', '=', $category)->get();
+            $archiveimages = ArchiveImage::where('id_category',$category)->lists('title_image_en', 'id_image');
+            $archiveimages->prepend('--Select Image--', '');
+//            $archiveimages1 = ArchiveImage::where('id_category',$category)->get();            
         }
-        
+//        echo $id_image;
+//        echo '<pre>';
+//        print_r($archiveimages);
+        if(empty($archiveimages)){
+            $archiveimages = [''=>'--Select Image--'];
+        }
+//        echo '<pre>';
+//        print_r($archiveimages);
+//        exit;
         $ad_id = $ads->ad_id;
         return view('admin.ads.edit', compact('ads','pages','langs','video_embed','id_image','positions','archivecategories','ad_id','category','archiveimages','image_name'));
     }
