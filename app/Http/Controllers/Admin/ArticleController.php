@@ -291,6 +291,10 @@ class ArticleController extends Controller {
                     }
                 }
             }    
+        }else{
+               if(ArticleImage::where(['article_id' => $data_article['article_id']])->exists()){
+                   ArticleImage::where('article_id', '=', $data_article['article_id'])->delete();
+               }
         }
 
         Session::flash('flash_message', 'Article updated successfully!');
