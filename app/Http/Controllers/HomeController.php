@@ -222,9 +222,13 @@ class HomeController extends Controller
        }
        
        if($section!="0")
-       $search_str .= " AND section_id=$section ";
-                  
-       $articles = Article::whereRaw($search_str)->orderBy('year', 'DESC')->orderBy('edition_id', 'DESC')->orderBy("article_id","desc")->get();
+        $search_str .= " AND section_id=$section ";
+       
+        if($edition!="0" || $section!="0" || $keyword!="NULL" ){            
+            $articles = Article::whereRaw($search_str)->orderBy('year', 'DESC')->orderBy('edition_id', 'DESC')->orderBy("article_id","desc")->take(6)->get();
+        }else{
+            $articles = Article::whereRaw($search_str)->orderBy('year', 'DESC')->orderBy('edition_id', 'DESC')->orderBy("article_id","desc")->get();
+        }
       //dd(DB::getQueryLog());   
        try{            
             $statusCode = 200;
@@ -356,7 +360,7 @@ class HomeController extends Controller
                 $section_id = $id_with_year["0"];
                 $edition_id = $id_with_year["1"];
                 $year = $id_with_year["2"];
-                $articles = Article::whereRaw("status=1 and edition_id='$edition_id' and section_id='$section_id' and year='$year' and language='$lang'")->orderBy('edition_id', 'DESC')->orderBy("article_id","DESC")->take(10)->get();
+                $articles = Article::whereRaw("status=1 and edition_id='$edition_id' and section_id='$section_id' and year='$year' and language='$lang'")->orderBy('edition_id', 'DESC')->orderBy("article_id","DESC")->get();
                 foreach($articles as $article)
                 {       
 
