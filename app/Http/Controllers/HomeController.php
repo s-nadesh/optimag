@@ -213,8 +213,13 @@ class HomeController extends Controller
        if($keyword!="NULL" )
        $search_str .= " AND (title LIKE '%$keyword%' || description LIKE '%$keyword%' || writer_name LIKE '%$keyword%' || writer_company LIKE '%$keyword%' )";  
                
-       if($edition!="0")
-       $search_str .= " AND edition_id=$edition ";
+       if($edition!="0"){
+        $id_with_year = explode("-", $edition);
+        $edition_id = $id_with_year["0"];
+        $year = $id_with_year["1"];
+        $search_str .= " AND edition_id=$edition_id AND year =$year ";
+//       $search_str .= " AND edition_id=$edition ";
+       }
        
        if($section!="0")
        $search_str .= " AND section_id=$section ";
@@ -232,37 +237,65 @@ class HomeController extends Controller
             $edition_column = "edition_name_".$lang;
             $section_column = "section_name_".$lang;
            
-            foreach($articles as $article)
-            { 
-              
-                $response['articles'][] = [
-                    'article_id'    => $article->article_id,
-                    'article_title' => $article->title,
-                    'article_desc'  => $article->description,                    
-                    'year'          => $article->year, 
-                    'edition'       => $article->edition->$edition_column, 
-                    'section_name'  => $article->section->$section_column, 
-                ];
-            }
+            $check_empty= '0';
             
-            $editions = Edition::orderBy('edition_id', 'DESC')->get();            
+                    
+                foreach($articles as $article)
+                { 
+                    $check_empty++;
+                    $response['articles'][] = [
+                        'article_id'    => $article->article_id,
+                        'article_title' => $article->title,
+                        'article_desc'  => $article->description,                    
+                        'year'          => $article->year, 
+                        'edition'       => $article->edition->$edition_column, 
+                        'section_name'  => $article->section->$section_column, 
+                    ];
+                }
+                if($check_empty == 0){
+                    $response['articles'][] = ['no_articles'=>'No articles were found'];
+                }
+            
+            $editions = Article::whereRaw("status=1 AND language='$lang'")->groupBy('edition_id')->orderBy('year', 'DESC')->orderBy('edition_id', 'DESC')->get();
+            //$editions = Edition::orderBy('edition_id', 'DESC')->get();       
+            $i=0;
             foreach($editions as $edition)
             {
-                $response['editions'][] = [
-                    'edition_id'    => $edition->edition_id,
-                    'edition_name'  => $edition->$edition_column
-                ];        
+                
+//                $response['editions'][] = [
+//                        'edition_id'    => $edition->edition_id,
+//                        'edition_name'  => $edition->$edition_column
+//                    ]; 
+                if($i == 0){
+                        $response['editions'][] = [
+                        'edition_id'    => 0,
+                        'edition_name'  => 'All Editions'
+                    ]; $i =1;
+                }
+                    $edition_year_with_column = $edition->edition->$edition_column.' '.$edition->year;
+                    $edition_year_with_id = $edition->edition->edition_id.'-'.$edition->year;
+                    $response['editions'][] = [
+                        'edition_id'    => $edition_year_with_id,
+                        'edition_name'  => $edition_year_with_column
+                    ];    
+                
             }
-            
+            $i = 0;
             $sections = Section::orderBy('section_id', 'DESC')->get();      
             foreach($sections as $section)
             {
+                if($i == 0){
+                        $response['sections'][] = [
+                        'section_id'    => 0,
+                        'section_name'  => 'All Sections'
+                    ]; $i =1;
+                }
                 $response['sections'][] = [
                     'section_id'    => $section->section_id,
                     'section_name'  => $section->$section_column
                 ];        
             }
-                 
+           
         }catch (Exception $e){
             $statusCode = 400;
         }finally{          
@@ -284,29 +317,33 @@ class HomeController extends Controller
             
             if($page=="editions")
             {   
-                $articles = Article::whereRaw("status=1 AND language='$lang'")->groupBy('edition_id')->orderBy('edition_id', 'DESC')->get();
+                $articles = Article::whereRaw("status=1 AND language='$lang'")->groupBy('edition_id')->orderBy('year', 'DESC')->orderBy('edition_id', 'DESC')->get();
 
                 foreach($articles as $article){                     
 
                     $edition_column = "edition_name_".$lang;
-
+                    $edition_year_with_column = $article->edition->$edition_column.' '.$article->year;
+                    $edition_year_with_id = $article->edition->edition_id.'-'.$article->year;
                     $response['editions'][] = [ 
-                        'edition_id'  => $article->edition->edition_id,      
-                        'edition_name'  => $article->edition->$edition_column, 
+                        'edition_id'  => $edition_year_with_id,      
+                        'edition_name'  => $edition_year_with_column,                        
                     ];
                 }              
             }
             
             if($page=="sections" && $id>0)
             { 
-                $articles = Article::whereRaw("status=1 and edition_id='$id' AND language='$lang'")->groupBy('section_id')->orderBy('article_id', 'DESC')->get();
+                $id_with_year = explode("-", $id);
+                $edition_id = $id_with_year["0"];
+                $year = $id_with_year["1"];
+                $articles = Article::whereRaw("status=1 and edition_id='$edition_id' AND year='$year' AND language='$lang'")->groupBy('section_id')->orderBy('article_id', 'DESC')->get();
 
                 foreach($articles as $article){                     
 
                     $section_column = "section_name_".$lang;
-                    
+                    $section_year_with_id = $article->section->section_id.'-'.$edition_id.'-'.$article->year;
                     $response['sections'][] = [ 
-                        'section_id'  => $article->section->section_id,      
+                        'section_id'  => $section_year_with_id,      
                         'section_name'  => $article->section->$section_column, 
                     ];
                 }
@@ -314,7 +351,12 @@ class HomeController extends Controller
             
             if($page=="articles" && $id>0)
             {
-                $articles = Article::whereRaw("status=1 and section_id='$id' and language='$lang'")->orderBy('year', 'DESC')->orderBy('edition_id', 'DESC')->orderBy("article_id","desc")->take(6)->get();
+                 $id_with_year = explode("-", $id);
+                 
+                $section_id = $id_with_year["0"];
+                $edition_id = $id_with_year["1"];
+                $year = $id_with_year["2"];
+                $articles = Article::whereRaw("status=1 and edition_id='$edition_id' and section_id='$section_id' and year='$year' and language='$lang'")->orderBy('edition_id', 'DESC')->orderBy("article_id","DESC")->take(10)->get();
                 foreach($articles as $article)
                 {       
 
@@ -325,7 +367,7 @@ class HomeController extends Controller
                     ];
                 }
             }
-        
+           
         }catch (Exception $e){
             $statusCode = 400;
         }finally{          
