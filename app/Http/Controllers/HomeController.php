@@ -222,13 +222,9 @@ class HomeController extends Controller
        }
        
        if($section!="0")
-        $search_str .= " AND section_id=$section ";
-       
-        if($edition!="0" || $section!="0" || $keyword!="NULL" ){            
-            $articles = Article::whereRaw($search_str)->orderBy('year', 'DESC')->orderBy('edition_id', 'DESC')->orderBy("article_id","desc")->take(6)->get();
-        }else{
-            $articles = Article::whereRaw($search_str)->orderBy('year', 'DESC')->orderBy('edition_id', 'DESC')->orderBy("article_id","desc")->get();
-        }
+       $search_str .= " AND section_id=$section ";
+                  
+       $articles = Article::whereRaw($search_str)->orderBy('year', 'DESC')->orderBy('edition_id', 'DESC')->orderBy("article_id","desc")->get();
       //dd(DB::getQueryLog());   
        try{            
             $statusCode = 200;
