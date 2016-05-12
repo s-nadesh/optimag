@@ -51,6 +51,8 @@
                                 {!! Form::hidden('extension', $extension) !!}
                                 {!! Html::image('uploads/ads/'.$archiveimage->id_category.'/'.$image_file, 'Ad Picture', array('width' => 70, 'height' => 70 ,'class' => 'thumb')) !!}
                                 @endif
+                                <br>
+                                <span > Dimensions (1024 *512)</span>
                                 {!! Form::hidden('id_image', $id_image) !!} 
                             </div>
                             

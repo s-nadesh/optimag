@@ -73,6 +73,10 @@ $router->group([
     get('admin/ads/edit/{key}', 'AdsController@edit');
     post('admin/ads/update', 'AdsController@update');
     
+    //AboutUsController
+    get('admin/aboutus/edit', 'AboutUsController@edit'); 
+    post('admin/aboutus/update', 'AboutUsController@update');
+    
     #resource('admin/adssetting', 'AdsSettingController');
     
 });

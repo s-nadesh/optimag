@@ -76,6 +76,11 @@
                     </li>-->
                 </ul>
             </li>
+            <li class="{{ Ekko::isActiveURL('/admin/aboutus/edit') }}">
+                <a href="{{ URL::to('/admin/aboutus/edit') }}">
+                    <i class="fa fa-user"></i> <span>About Us</span>
+                </a>
+            </li>
         </ul>
     </section>
     <!-- /.sidebar -->

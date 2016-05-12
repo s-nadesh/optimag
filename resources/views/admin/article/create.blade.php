@@ -34,7 +34,7 @@ $(document).ready(function () {
         e.preventDefault();
         if (en_x < en_max_fields) {
             var en_html = '<div class="box-body" id="remove_en' + en_x + '"><div class="row">';
-            en_html += '<div class="col-xs-3"><input type="file" name="article[article_image][' + en_x + '][image]"></div>';
+            en_html += '<div class="col-xs-3"><input type="file" name="article[article_image][' + en_x + '][image]"><span> Dimensions (1024 *512)</span></div>';
             en_html += '<div class="col-xs-2"><input type="text" name="article[article_image][' + en_x + '][text]" placeholder="Image Text" class="form-control"></div>';
             en_html += '<div class="col-xs-2"><input type="text" name="article[article_image][' + en_x + '][link]" placeholder="Image Link" class="form-control"></div>';
             en_html += '<div class="col-xs-4"><textarea rows="2" cols="10" name="article[article_image][' + en_x + '][description]" placeholder="Image Description" class="form-control"></textarea></div>';
@@ -166,7 +166,7 @@ $(document).ready(function () {
                                     <div id="en_images">
                                         <div class="box-body" id="remove_en0">
                                             <div class="row">
-                                                <div class="col-xs-3"><input type="file" name="article[article_image][0][image]"></div>
+                                                <div class="col-xs-3"><input type="file" name="article[article_image][0][image]"><span > Dimensions (1024 *512)</span></div>
                                                 <div class="col-xs-2"><input type="text" name="article[article_image][0][text]" placeholder="Image Text" class="form-control"></div>
                                                 <div class="col-xs-2"><input type="text" name="article[article_image][0][link]" placeholder="Image Link" class="form-control"></div>
                                                 <div class="col-xs-4"><textarea rows="2" cols="10" name="article[article_image][0][description]" placeholder="Image Description" class="form-control"></textarea></div>

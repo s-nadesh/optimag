@@ -43,7 +43,8 @@
                     <div class="form-group">
                         {!! Form::label('image', 'Image:*', array( 'class' => 'col-sm-2 control-label')) !!}
                         <div class="col-sm-5">
-                            {!! Form::file('image') !!}                           
+                            {!! Form::file('image') !!}
+                            <span> Dimensions (1024 *512)</span>
                         </div>
                     </div>    
                     

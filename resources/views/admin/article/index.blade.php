@@ -40,7 +40,10 @@ td
     vertical-align: middle;
     color: #555555;
     background-color: #ffffff;
-}        
+} 
+.change_width{
+    width: 100px !important;
+}
 </style>
 @section('content')
 <!-- Main content -->
@@ -63,11 +66,11 @@ td
                             <tr>  
                                 <th>Year</th>    
                                 <th>Title</th>                               
-                                <th>Section</th>
-                                <th>Edition</th>
-                                <th>Language</th>
-                                <th>Status</th>
-                                <th>Action</th>
+                                <th class="change_width">Section</th>
+                                <th class="change_width">Edition</th>
+                                <th class="change_width">Language</th>
+                                <th class="change_width">Status</th>
+                                <th class="change_width">Action</th>
                             </tr>
                         </thead>
                         <tbody>
