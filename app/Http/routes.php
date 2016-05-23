@@ -93,5 +93,31 @@ Route::group(array('prefix' => 'api/v1'), function()
     get('article/{aid}', 'HomeController@article');  
     get('search/{langkey}/{search_value}/{eid}/{sid}', 'HomeController@search');  
     get('archive/{pages}/{langkey}/{id}', 'HomeController@archives');
+    get('aboutus/{langkey}', 'HomeController@aboutus');
+});
+
+Route::get('admin/sendemail', function () {
+
+//    $data = array(
+//        'name' => "Learning Laravel",
+//    );
+
+    $data = [ 'name' => Input::get('message') ];
+Mail::send('admin.emails.welcome', $data, function($message)
+{
+    $message->to('nachiyappan.arumugam@arkinfotec.com', 'nachi')
+        ->from('nachiyappan92@gmail.com')
+        ->subject('Welcome!');
+});
+//    Mail::send('admin.emails.welcome', $data, function ($message) {
+//
+//        $message->from('nachiyappan.arumugam@arkinfotec.com', 'Learning Laravel');
+//
+//        $message->to('nachiyappan92@gmail.com')->subject('Learning Laravel test email');
+//
+//    });
+
+    return "Your email has been sent successfully";
+
 });
 //Route::get('sections/{testkey}', 'HomeController@sections');

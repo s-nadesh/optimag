@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Edition;
 use App\Section;
 use App\AdsSetting;
+use App\AboutUs;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use SebastianBergmann\RecursionContext\Exception;
@@ -170,7 +171,8 @@ class HomeController extends Controller
             $response = [
               'articles'  => [],              
             ];   
-        
+            $match = array();
+            $url = '';
             foreach($articles as $article)
             {
                 $art_imges = array();
@@ -179,6 +181,12 @@ class HomeController extends Controller
                 $lang = $article->language;
                 $edition_column = "edition_name_".$lang;
                 $section_column = "section_name_".$lang;
+                
+                if($article->embed_video != ''){
+                    preg_match('/src="([^"]+)"/', $article->embed_video, $match);
+                    $url = $match[1];
+                }
+                
                 $response['articles'][] = [
                     'article_id'    => $article->article_id,
                     'article_title' => $article->title,
@@ -189,10 +197,12 @@ class HomeController extends Controller
                     'edition'       => $article->edition->$edition_column, 
                     'section_name'  => $article->section->$section_column,  
                     'article_image' => $art_imges,
-                    'embed_video'   => $article->embed_video
+                    'embed_video'   => $url
                 ];
             } 
-            
+//            echo '<pre>';
+//            print_r($response['articles']);
+//            exit;
              // Article Ads 
             $banner_results = MyFuncs::banner_display(3,$lang);
             $response['banner_results'][] = $banner_results;
@@ -310,25 +320,43 @@ class HomeController extends Controller
             
             $statusCode = 200;
             $response = [    
+              'years'  => [],
               'editions'  => [],
               'sections'  => [],
               'articles'  => []
             ];
             
-            if($page=="editions")
+            if($page=="years")
             {   
-                $articles = Article::whereRaw("status=1 AND language='$lang'")->groupBy('edition_id')->orderBy('year', 'DESC')->orderBy('edition_id', 'DESC')->get();
+                $articles = Article::whereRaw("status=1 AND language='$lang'")->groupBy('year')->orderBy('year', 'DESC')->get();
 
                 foreach($articles as $article){                     
 
+                    $response['years'][] = [ 
+                        'year'  => $article->year,      
+                    ];
+                }  
+                if(empty($response['years'])){
+                    $response['years'][]="No records found";
+                }
+            }
+            
+            if($page=="editions" && $id>0)
+            {   
+                $articles = Article::whereRaw("status=1 AND language='$lang' AND year = '$id'")->groupBy('edition_id')->orderBy('year', 'DESC')->orderBy('edition_id', 'DESC')->get();
+
+                foreach($articles as $article){                     
                     $edition_column = "edition_name_".$lang;
-                    $edition_year_with_column = $article->edition->$edition_column.' '.$article->year;
+                    $edition_year_with_column = $article->edition->$edition_column;
                     $edition_year_with_id = $article->edition->edition_id.'-'.$article->year;
                     $response['editions'][] = [ 
                         'edition_id'  => $edition_year_with_id,      
                         'edition_name'  => $edition_year_with_column,                        
                     ];
-                }              
+                }   
+                if(empty($response['editions'])){
+                    $response['editions'][]="No records found";
+                }
             }
             
             if($page=="sections" && $id>0)
@@ -347,6 +375,9 @@ class HomeController extends Controller
                         'section_name'  => $article->section->$section_column, 
                     ];
                 }
+                if(empty($response['sections'])){
+                    $response['sections'][]="No records found";
+                }
             }
             
             if($page=="articles" && $id>0)
@@ -362,9 +393,13 @@ class HomeController extends Controller
 
                     $response['articles'][] = [
                         'article_id'    => $article->article_id,
-                        'article_title' => $article->title,                    
+                        'article_title' => $article->title,
+                        'article_description' => $article->description,
                         'year'          => $article->year,                   
                     ];
+                }
+                if(empty($response['articles'])){
+                    $response['articles'][]="No records found";
                 }
             }
            
@@ -374,5 +409,26 @@ class HomeController extends Controller
             return response()->json([$response, $statusCode]);
         }      
          
+    }
+    public function aboutus($lang="en")
+    {
+        
+        $aboutus = AboutUs::find(1);
+        
+        try{
+            
+            $statusCode = 200;
+            $content_column = "content_".$lang;
+            if($aboutus->$content_column != ''){
+                $response[$content_column] = $aboutus->$content_column;
+            }else{
+                $response[$content_column] = array(); 
+            }
+            
+        }catch (Exception $e){
+            $statusCode = 400;
+        }finally{          
+            return response()->json([$response, $statusCode]);
+        }    
     }
 }
