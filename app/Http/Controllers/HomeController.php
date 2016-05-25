@@ -187,6 +187,8 @@ class HomeController extends Controller
                     $url = $match[1];
                 }
                 
+               if($url!="") 
+               {    
                 $response['articles'][] = [
                     'article_id'    => $article->article_id,
                     'article_title' => $article->title,
@@ -199,10 +201,20 @@ class HomeController extends Controller
                     'article_image' => $art_imges,
                     'embed_video'   => $url
                 ];
+               }else{
+                $response['articles'][] = [
+                    'article_id'    => $article->article_id,
+                    'article_title' => $article->title,
+                    'article_desc'  => $article->description,  
+                    'writer_name'   => $article->writer_name,
+                    'writer_company'=> $article->writer_company,
+                    'year'          => $article->year, 
+                    'edition'       => $article->edition->$edition_column, 
+                    'section_name'  => $article->section->$section_column,  
+                    'article_image' => $art_imges,                    
+                ];
+               } 
             } 
-//            echo '<pre>';
-//            print_r($response['articles']);
-//            exit;
              // Article Ads 
             $banner_results = MyFuncs::banner_display(3,$lang);
             $response['banner_results'][] = $banner_results;
