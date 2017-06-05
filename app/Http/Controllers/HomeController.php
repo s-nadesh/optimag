@@ -2,12 +2,8 @@
 namespace App\Http\Controllers;
 // use Symfony\Component\HttpFoundation\Response as Response2;
 
-use App\Article;
+use App\User;
 use App\Http\Controllers\Controller;
-use App\Edition;
-use App\Section;
-use App\AdsSetting;
-use App\AboutUs;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use SebastianBergmann\RecursionContext\Exception;
@@ -22,70 +18,11 @@ class HomeController extends Controller
      *
      * @return Response
      */
-    public function index($lang="en")
-    {
-        DB::enableQueryLog();  
-       
-        $get_edition_id = Edition::where('is_current_edition', '=', "1")->first()->edition_id;
-       // dd(DB::getQueryLog());   
-          
-        $edition_id = $get_edition_id;
-        $year       = date("Y");
-       
-        try{
-            $statusCode = 200;
-            $response   = [
-              'articles'  => [],
-              'sections'  => [],
-              'banner_results' => []  
-            ];            
-            
-            if($get_edition_id!="" || $get_edition_id>0)
-            {    
-                $articles = Article::whereRaw("status=1 and edition_id='$edition_id' AND year = '$year' AND language='$lang'")->groupBy('section_id')->orderBy('article_id', 'DESC')->get();
-
-                foreach($articles as $article){
-
-                    $artimage  = "no-image.png";
-                    $art_imges = $article->articleImages()->take(1)->lists('image','article_image_id');
-                    foreach($art_imges as $aimg)
-                    {
-                       $artimage = $aimg; 
-                    }    
-
-                    $section_column = "section_name_".$lang;
-
-                    $response['articles'][] = [
-                        'article_id'    => $article->article_id,
-                        'article_title' => $article->title,
-                        'article_desc'  => $article->description,  
-                        'section_name'  => $article->section->$section_column,  
-                        'article_image'  => $artimage,
-                        'embed_video'   => $article->embed_video
-                    ];
-
-                    $response['sections'][] = [ 
-                        'section_id'  => $article->section->section_id,      
-                        'section_name'  => $article->section->$section_column, 
-                    ];
-                }
-
-                // Home - position 1
-                $banner_results = MyFuncs::banner_display(1,$lang);
-                $response['banner_results'][] = $banner_results;
-            } 
-           
-        }catch (Exception $e){
-            $statusCode = 400;
-        }finally{          
-            return response()->json([$response, $statusCode]);
-        }
-    }
-    
-    public function sections($lang="en",$sid)
+        
+    public function login($user,$pwd)
     {
         
-        $articles = Article::whereRaw("status=1 and section_id='$sid' and language='$lang'")->orderBy('year', 'DESC')->orderBy('edition_id', 'DESC')->orderBy("article_id","desc")->take(6)->get();
+        $articles = User::whereRaw("status=1 and section_id='$sid' and language='$lang'")->orderBy('year', 'DESC')->orderBy('edition_id', 'DESC')->orderBy("article_id","desc")->take(6)->get();
         
         try{
             
