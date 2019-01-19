@@ -3,6 +3,8 @@ namespace App\Http\Controllers;
 // use Symfony\Component\HttpFoundation\Response as Response2;
 
 use App\User;
+use App\AboutUs;
+use App\Article;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -359,6 +361,7 @@ class HomeController extends Controller
         }      
          
     }
+    
     public function aboutus($lang="en")
     {
         
