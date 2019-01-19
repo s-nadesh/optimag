@@ -2,10 +2,10 @@
 namespace App\Http\Controllers;
 // use Symfony\Component\HttpFoundation\Response as Response2;
 
-use App\User;
-use App\AboutUs;
 use App\Article;
-use App\Http\Controllers\Controller;
+use App\Edition;
+use App\Section;
+use App\AboutUs;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use SebastianBergmann\RecursionContext\Exception;
@@ -20,86 +20,145 @@ class HomeController extends Controller
      *
      * @return Response
      */
-        
-    public function login($user,$pwd)
+    public function index($lang="en")
     {
-        
-        $articles = User::whereRaw("status=1 and section_id='$sid' and language='$lang'")->orderBy('year', 'DESC')->orderBy('edition_id', 'DESC')->orderBy("article_id","desc")->take(6)->get();
-        
+        DB::enableQueryLog();
+
+        $get_edition_id = Edition::where('is_current_edition', '=', "1")->first()->edition_id;
+        // dd(DB::getQueryLog());
+
+        $edition_id = $get_edition_id;
+        $year       = date("Y");
+
         try{
-            
+            $statusCode = 200;
+            $response   = [
+                'articles'  => [],
+                'sections'  => [],
+                'banner_results' => []
+            ];
+
+            if($get_edition_id!="" || $get_edition_id>0)
+            {
+                $articles = Article::whereRaw("status=1 and edition_id='$edition_id' AND year = '$year' AND language='$lang'")->groupBy('section_id')->orderBy('article_id', 'DESC')->get();
+
+                foreach($articles as $article){
+
+                    $artimage  = "no-image.png";
+                    $art_imges = $article->articleImages()->take(1)->lists('image','article_image_id');
+                    foreach($art_imges as $aimg)
+                    {
+                        $artimage = $aimg;
+                    }
+
+                    $section_column = "section_name_".$lang;
+
+                    $response['articles'][] = [
+                        'article_id'    => $article->article_id,
+                        'article_title' => $article->title,
+                        'article_desc'  => $article->description,
+                        'section_name'  => $article->section->$section_column,
+                        'article_image'  => $artimage,
+                        'embed_video'   => $article->embed_video
+                    ];
+
+                    $response['sections'][] = [
+                        'section_id'  => $article->section->section_id,
+                        'section_name'  => $article->section->$section_column,
+                    ];
+                }
+
+                // Home - position 1
+                $banner_results = MyFuncs::banner_display(1,$lang);
+                $response['banner_results'][] = $banner_results;
+            }
+
+        }catch (Exception $e){
+            $statusCode = 400;
+        }finally{
+            return response()->json([$response, $statusCode]);
+        }
+    }
+
+    public function sections($lang="en",$sid)
+    {
+
+        $articles = Article::whereRaw("status=1 and section_id='$sid' and language='$lang'")->orderBy('year', 'DESC')->orderBy('edition_id', 'DESC')->orderBy("article_id","desc")->take(6)->get();
+
+        try{
+
             $statusCode = 200;
             $response = [
-              'articles'  => [],    
-              'banner_results' => []  
-            ]; 
+                'articles'  => [],
+                'banner_results' => []
+            ];
             $response1= [
-               'sections_content' => [] 
-            ]; 
-            
+                'sections_content' => []
+            ];
+
             foreach($articles as $article)
             {
                 $artimage  = "no-image.png";
                 $art_imges = $article->articleImages()->take(1)->lists('image','article_image_id');
                 foreach($art_imges as $aimg)
                 {
-                   $artimage = $aimg; 
-                }  
-              
+                    $artimage = $aimg;
+                }
+
                 $edition_column = "edition_name_".$lang;
 
                 $response['articles'][] = [
                     'article_id'    => $article->article_id,
                     'article_title' => $article->title,
-                    'article_desc'  => $article->description,                     
-                    'year'          => $article->year, 
-                    'edition'       => $article->edition->$edition_column, 
+                    'article_desc'  => $article->description,
+                    'year'          => $article->year,
+                    'edition'       => $article->edition->$edition_column,
                     'article_image' => $artimage,
                     'embed_video'   => $article->embed_video,
-                    'type_val'      => 'article'    
+                    'type_val'      => 'article'
                 ];
             }
-   
-            $articlecounts = count($response['articles']);            
-               
+
+            $articlecounts = count($response['articles']);
+
             // Ads positions
             //$get_sectionpositions = AdsSetting::where('s_id', '=', 1)->pluck('section_position');
-           // $response['positions'][] = [ 'section_positions'    => $get_sectionpositions];
-                
-            // Section Ads 
+            // $response['positions'][] = [ 'section_positions'    => $get_sectionpositions];
+
+            // Section Ads
             $banner_results = MyFuncs::section_banner_display(2,$lang,$articlecounts);
             $response['banner_results'] = $banner_results;
-           
+
             $i=1;
-            $bannercounts = count($response['banner_results']);            
+            $bannercounts = count($response['banner_results']);
             foreach($response['articles'] as $akey => $ainfo)
-            {   
+            {
                 // First banner
                 if($i==1 && isset($banner_results[0]))
-                 $response1['sections_content'][] = $banner_results[0];               
-                
-                 $response1['sections_content'][] = $ainfo;
-                 
-                // Mid banner 
+                    $response1['sections_content'][] = $banner_results[0];
+
+                $response1['sections_content'][] = $ainfo;
+
+                // Mid banner
                 if($i==3 && isset($banner_results[1]))
-                 $response1['sections_content'][] = $banner_results[1];
-               
+                    $response1['sections_content'][] = $banner_results[1];
+
                 // Last banner
                 if($i==$articlecounts && $articlecounts>3 && isset($banner_results[2]))
-                 $response1['sections_content'][] = $banner_results[2];
+                    $response1['sections_content'][] = $banner_results[2];
                 elseif($i==$articlecounts && $articlecounts<3 && isset($banner_results[1]))
-                 $response1['sections_content'][] = $banner_results[1];    
-                
-               $i++;
-            } 
-          
+                    $response1['sections_content'][] = $banner_results[1];
+
+                $i++;
+            }
+
         }catch (Exception $e){
             $statusCode = 400;
-        }finally{          
+        }finally{
             return response()->json([$response1, $statusCode]);
-        }    
-    } 
-    
+        }
+    }
+
     public function article($aid)
     {
        $articles = Article::whereRaw("status=1 and article_id='$aid'")->get();
